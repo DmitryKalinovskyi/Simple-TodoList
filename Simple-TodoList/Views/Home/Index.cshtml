@@ -32,7 +32,7 @@
                     <div class="my-2">
                     <div class="d-flex align-items-center justify-content-between">
 
-                        <form asp-action="UpdateTaskComplition" method="post">
+                        <form asp-action="UpdateTaskComplition" method="post" class="d-flex align-items-center">
                             <input id="taskInput-@task.Id" name="isCompleted" @(task.IsCompleted?"checked":"") type="checkbox" onchange="this.form.submit()"/>
                             <label for="taskInput-@task.Id">
                                 @if (task.IsCompleted)
@@ -45,9 +45,22 @@
                                 }
                             </label>
                             <input name="id" value="@task.Id" hidden/>
+                            
                         </form>
 
                         <form asp-action="RemoveTask" method="post">
+                            @if (task.CategoryId != null)
+                            {
+                                <div class="badge text-bg-secondary">
+                                    category
+                                </div>
+                            }
+                            @if (task.Deadline != null)
+                            {
+                                <div class="badge bg-secondary">
+                                    @task.Deadline
+                                </div>
+                            }
                         <button class="btn btn-primary">
                             X
                         </button>
