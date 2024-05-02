@@ -11,12 +11,15 @@
             <label for="inputTask" class="visually-hidden">Task name</label>
             <input name="Name" class="form-control" id="inputTask" placeholder="Enter task name...">
         </div>
-        @* <div class="col-auto">
-            <select class="form-select">
-                <option>Food</option>
-                <option>Grocery</option>
+        <div class="col-auto">
+            <select class="form-select" name="CategoryId">
+                <option value="" selected> Without category</option>
+                @foreach(var category in Model.Categories)
+                {
+                    <option value="@category.Id">@category.Name</option>
+                }
             </select>
-        </div> *@
+        </div>
         <div class="col-auto">
             <input name="Deadline" type="datetime-local" class="form-control"/>
         </div>
@@ -44,26 +47,27 @@
                                     @task.Name
                                 }
                             </label>
-                            <input name="id" value="@task.Id" hidden/>
-                            
+                            <input  name="id" value="@task.Id" hidden/>
+                            @if (task.CategoryId != null)
+                            {
+                                <div class="badge mx-2 bg-danger">
+                                    @Model.Categories.First(category => category.Id == task.CategoryId).Name
+                                </div>
+                            }
                         </form>
 
                         <form asp-action="RemoveTask" method="post">
-                            @if (task.CategoryId != null)
-                            {
-                                <div class="badge text-bg-secondary">
-                                    category
-                                </div>
-                            }
+                            
+
                             @if (task.Deadline != null)
                             {
                                 <div class="badge bg-secondary">
                                     @task.Deadline
                                 </div>
                             }
-                        <button class="btn btn-primary">
-                            X
-                        </button>
+                            <button class="btn btn-primary">
+                                X
+                            </button>
                             <input name="id" value="@task.Id" hidden />
                         </form>
                     </div>
@@ -72,26 +76,6 @@
 
             foreach (var task in Model.Tasks)
                 await RenderTask(task);
-
-            // foreach(var task in Model.Tasks
-            //     .Where(task => task.Deadline != null && !task.IsCompleted)
-            //     .OrderBy(task => task.Deadline))
-            // {
-            //     await RenderTask(task);
-            // }
-
-            // foreach(var task in Model.Tasks
-            //     .Where(task => task.Deadline != null && !task.IsCompleted)
-            //     .OrderBy(task => task.Deadline))
-            // {
-            //     await RenderTask(task);
-            // }
-
-            // foreach (var task in Model.Tasks.Where(task => task.IsCompleted))
-            // {
-            //     await RenderTask(task);
-            // }
-
         }
     </div>
  </div>
