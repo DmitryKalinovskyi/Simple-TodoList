@@ -6,15 +6,19 @@ using System.Diagnostics;
 
 namespace Simple_TodoList.Controllers
 {
-    public class HomeController(ITaskResository taskResository) : Controller
+    public class HomeController
+        (ITaskResository taskResository,
+        ICategoriesRepository categoriesRepository) : Controller
     {
         private ITaskResository _taskRepository = taskResository;
+        private ICategoriesRepository _categoriesRepository = categoriesRepository;
 
         public async Task<IActionResult> Index()
         {
             var viewModel = new IndexViewModel();
 
-            viewModel.Tasks = await _taskRepository.GetAll();
+            viewModel.Tasks = await _taskRepository.GetAllWithStandartOrdering();
+            viewModel.Categories = await _categoriesRepository.GetAll();
 
             return View(viewModel);
         }

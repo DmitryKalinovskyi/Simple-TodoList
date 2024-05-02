@@ -67,18 +67,30 @@
                             <input name="id" value="@task.Id" hidden />
                         </form>
                     </div>
-                    </div>
+                </div>
             }
 
-            foreach(var task in Model.Tasks.Where(task => !task.IsCompleted))
-            {
+            foreach (var task in Model.Tasks)
                 await RenderTask(task);
-            }
 
-            foreach (var task in Model.Tasks.Where(task => task.IsCompleted))
-            {
-                await RenderTask(task);
-            }
+            // foreach(var task in Model.Tasks
+            //     .Where(task => task.Deadline != null && !task.IsCompleted)
+            //     .OrderBy(task => task.Deadline))
+            // {
+            //     await RenderTask(task);
+            // }
+
+            // foreach(var task in Model.Tasks
+            //     .Where(task => task.Deadline != null && !task.IsCompleted)
+            //     .OrderBy(task => task.Deadline))
+            // {
+            //     await RenderTask(task);
+            // }
+
+            // foreach (var task in Model.Tasks.Where(task => task.IsCompleted))
+            // {
+            //     await RenderTask(task);
+            // }
 
         }
     </div>

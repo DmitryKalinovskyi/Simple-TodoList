@@ -15,6 +15,8 @@ namespace Simple_TodoList.Repository
 
         #endregion
 
+        public Task<IEnumerable<TaskModel>> GetAllWithStandartOrdering();
+
         public Task<IEnumerable<TaskModel>> GetAll();
 
         public Task UpdateName(int id, string name);

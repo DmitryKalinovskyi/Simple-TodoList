@@ -5,14 +5,21 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
-// Add task repository to the di container
-builder.Services.AddSingleton<ITaskResository>(provider => {
+
+// Initialize repositories
+{
     string? connectionString = builder.Configuration.GetConnectionString("TodoDB");
 
     if (connectionString == null) throw new ArgumentNullException(nameof(connectionString));
 
-    return new TaskRepository(connectionString);
-});
+    // Add task repository to the di container
+    builder.Services.AddSingleton<ITaskResository>(
+        provider => new TaskRepository(connectionString));
+
+    // Add categories repository to the di container
+    builder.Services.AddSingleton<ICategoriesRepository>(
+        provider => new CategoriesRepository(connectionString));
+}
 
 var app = builder.Build();
 

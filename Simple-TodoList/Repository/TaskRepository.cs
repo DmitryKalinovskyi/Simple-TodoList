@@ -27,6 +27,21 @@ namespace Simple_TodoList.Repository
             return await connection.QueryAsync<TaskModel>("select * from Tasks");
         }
 
+        public async Task<IEnumerable<TaskModel>> GetAllWithStandartOrdering()
+        {
+            using var connection = new SqlConnection(_connectionString);
+
+            var sql = @"select * from Tasks order by IsCompleted, 
+                case 
+                    when Deadline is NULL then 1
+                    else 0
+                end,
+                Deadline
+                ";
+
+            return await connection.QueryAsync<TaskModel>(sql);
+        }
+
         public async Task<TaskModel> GetById(int id)
         {
             using var connection = new SqlConnection(_connectionString);
