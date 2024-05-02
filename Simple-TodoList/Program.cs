@@ -6,18 +6,20 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 
 // Add task repository to the di container
-builder.Services.AddSingleton<ITaskResository>(
-    provider => new TaskRepository(
-        builder.Configuration.GetConnectionString("TodoDB")
-        ?? throw new ArgumentNullException("Connection string was null")
-        ));
+builder.Services.AddSingleton<ITaskResository>(provider => {
+    string? connectionString = builder.Configuration.GetConnectionString("TodoDB");
+
+    if (connectionString == null) throw new ArgumentNullException(nameof(connectionString));
+
+    return new TaskRepository(connectionString);
+});
 
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {
-    app.UseExceptionHandler("/Home/Error");
+    app.UseExceptionHandler("/as/Error");
     // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }

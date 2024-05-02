@@ -1,6 +1,7 @@
 ﻿using Dapper;
 using Microsoft.Data.SqlClient;
 using Simple_TodoList.Models;
+using System.Threading.Tasks;
 
 namespace Simple_TodoList.Repository
 {
@@ -13,10 +14,10 @@ namespace Simple_TodoList.Repository
             _connectionString = connectionString;
         }
 
-        public async void Delete(int id)
+        public async Task Delete(int id)
         {
             using var connection = new SqlConnection(_connectionString);
-            await connection.ExecuteAsync("delete * from Tasks where Id = @id", new { id });
+            await connection.ExecuteAsync("delete from Tasks where Id = @id", new { id });
         }
 
         public async Task<IEnumerable<TaskModel>> GetAll()
@@ -33,7 +34,7 @@ namespace Simple_TodoList.Repository
             return await connection.QueryFirstAsync<TaskModel>("select * from Tasks where Id = @id", new {id});
         }
 
-        public async void Insert(TaskModel task)
+        public async Task Insert(TaskModel task)
         {
             using var connection = new SqlConnection(_connectionString);
 
@@ -45,14 +46,54 @@ namespace Simple_TodoList.Repository
             await connection.ExecuteAsync(sql, taskToInsert);
         }
 
-        public async void Update(TaskModel task)
+        public async Task Update(TaskModel task)
         {
             using var connection = new SqlConnection(_connectionString);
 
             var sql = "update Tasks set Name=@Name, IsCompleted=@IsCompleted, Deadline=@Deadline, CategoryId=@CategoryId" +
-                "where Id=@Id";
+                " where Id=@Id";
 
             await connection.ExecuteAsync(sql, task);
+        }
+
+        public async Task UpdateCategoryId(int id, int? categoryId)
+        {
+            using var connection = new SqlConnection(_connectionString);
+
+            var sql = "update Tasks set CategoryId=@categoryId" +
+            " where Id=@id";
+
+            await connection.ExecuteAsync(sql, new {id, categoryId});
+        }
+
+        public async  Task UpdateComplition(int id, bool isCompleted)
+        {
+            using var connection = new SqlConnection(_connectionString);
+
+            var sql = "update Tasks set IsCompleted=@isCompleted" +
+            " where Id=@id";
+
+            await connection.ExecuteAsync(sql, new { id, isCompleted });
+        }
+
+        public async Task UpdateDeadline(int id, DateTime deadline)
+        {
+            using var connection = new SqlConnection(_connectionString);
+
+            var sql = "update Tasks set Deadline=@deadline" +
+            " where Id=@id";
+
+            await connection.ExecuteAsync(sql, new { id, deadline });
+        }
+
+        public async Task UpdateName(int id, string name)
+        {
+            using var connection = new SqlConnection(_connectionString);
+
+            var sql = "update Tasks set Name=@name" +
+            " where Id=@id";
+
+            await connection.ExecuteAsync(sql, new { id, name });
         }
     }
 }

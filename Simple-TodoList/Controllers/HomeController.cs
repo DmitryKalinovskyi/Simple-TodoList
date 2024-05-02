@@ -20,9 +20,37 @@ namespace Simple_TodoList.Controllers
         }
 
         [HttpPost]
-        public IActionResult AddTask(TaskModel task)
+        public async Task<IActionResult> AddTask(TaskModel task)
         {
-            return View();
+            await _taskRepository.Insert(task);
+
+            return RedirectToAction("Index");
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> RemoveTask(int id)
+        {
+            await _taskRepository.Delete(id);
+
+            return RedirectToAction("Index");   
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> UpdateTaskComplition(int id, [FromForm] string isCompleted)
+        {
+            bool ok = isCompleted == "on";
+
+            await _taskRepository.UpdateComplition(id, ok);
+
+            return RedirectToAction("Index");
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> UpdateTaskName(int id, [FromForm] string name)
+        {
+            await _taskRepository.UpdateName(id, name);
+
+            return RedirectToAction("Index");
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
