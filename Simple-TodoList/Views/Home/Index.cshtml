@@ -1,8 +1,51 @@
-﻿@{
+﻿@using Simple_TodoList.ViewModels
+@model IndexViewModel
+
+@{
     ViewData["Title"] = "Home Page";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
+ <div class="container mt-5">
+    <form class="row g-3" >
+        <div class="col-auto">
+            <label for="inputPassword2" class="visually-hidden">Password</label>
+            <input type="password" class="form-control" id="inputPassword2" placeholder="Enter task name...">
+        </div>
+        <div class="col-auto">
+            <select class="form-select">
+                <option>Food</option>
+                <option>Grocery</option>
+            </select>
+        </div>
+        <div class="col-auto">
+            <input type="datetime-local" class="form-control"/>
+        </div>
+        <div class="col-auto">
+            <button type="submit" class="btn btn-primary mb-3">Add task</button>
+        </div>
+    </form> 
+
+    <div>
+        @{
+            async Task RenderTask(TaskModel task)
+            {
+                <form>
+                    <div>
+                        <input id="taskInput-@task.Id" type="checkbox" checked="@task.IsCompleted" />
+                        <label for="taskInput-@task.Id">@task.Name</label>
+                    </div>
+                </form>
+            }
+
+            foreach(var task in Model.Tasks.Where(task => task.IsCompleted))
+            {
+                await RenderTask(task);
+            }
+
+            foreach (var task in Model.Tasks.Where(task => !task.IsCompleted))
+            {
+                await RenderTask(task);
+            }
+        }
+    </div>
+ </div>

@@ -1,24 +1,37 @@
 using Microsoft.AspNetCore.Mvc;
 using Simple_TodoList.Models;
+using Simple_TodoList.ViewModels;
 using System.Diagnostics;
 
 namespace Simple_TodoList.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
-
-        public HomeController(ILogger<HomeController> logger)
-        {
-            _logger = logger;
-        }
-
         public IActionResult Index()
         {
-            return View();
+            var viewModel = new IndexViewModel();
+
+            viewModel.Tasks = [
+                new Models.TaskModel
+                {
+                    Id = 1,
+                    Name = "Task 1"
+                },
+                new Models.TaskModel
+                {
+                    Id = 2,
+                    Name = "Task 2"
+                },
+
+                ];
+
+
+
+            return View(viewModel);
         }
 
-        public IActionResult Privacy()
+        [HttpPost]
+        public IActionResult AddTask(TaskModel task)
         {
             return View();
         }
