@@ -1,31 +1,20 @@
 using Microsoft.AspNetCore.Mvc;
 using Simple_TodoList.Models;
+using Simple_TodoList.Repository;
 using Simple_TodoList.ViewModels;
 using System.Diagnostics;
 
 namespace Simple_TodoList.Controllers
 {
-    public class HomeController : Controller
+    public class HomeController(ITaskResository taskResository) : Controller
     {
-        public IActionResult Index()
+        private ITaskResository _taskRepository = taskResository;
+
+        public async Task<IActionResult> Index()
         {
             var viewModel = new IndexViewModel();
 
-            viewModel.Tasks = [
-                new Models.TaskModel
-                {
-                    Id = 1,
-                    Name = "Task 1"
-                },
-                new Models.TaskModel
-                {
-                    Id = 2,
-                    Name = "Task 2"
-                },
-
-                ];
-
-
+            viewModel.Tasks = await _taskRepository.GetAll();
 
             return View(viewModel);
         }

@@ -1,7 +1,16 @@
+using Simple_TodoList.Repository;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+
+// Add task repository to the di container
+builder.Services.AddSingleton<ITaskResository>(
+    provider => new TaskRepository(
+        builder.Configuration.GetConnectionString("TodoDB")
+        ?? throw new ArgumentNullException("Connection string was null")
+        ));
 
 var app = builder.Build();
 
