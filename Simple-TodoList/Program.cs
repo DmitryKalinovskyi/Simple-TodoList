@@ -7,19 +7,19 @@ builder.Services.AddControllersWithViews();
 
 
 // Initialize repositories
-{
-    string? connectionString = builder.Configuration.GetConnectionString("TodoDB");
 
-    if (connectionString == null) throw new ArgumentNullException(nameof(connectionString));
+string? connectionString = builder.Configuration.GetConnectionString("TodoDB");
 
-    // Add task repository to the di container
-    builder.Services.AddSingleton<ITaskResository>(
-        provider => new TaskRepository(connectionString));
+if (connectionString == null) throw new ArgumentNullException(nameof(connectionString));
 
-    // Add categories repository to the di container
-    builder.Services.AddSingleton<ICategoriesRepository>(
-        provider => new CategoriesRepository(connectionString));
-}
+// Add task repository to the di container
+builder.Services.AddSingleton<ITaskResository>(
+    provider => new TaskRepository(connectionString));
+
+// Add categories repository to the di container
+builder.Services.AddSingleton<ICategoriesRepository>(
+    provider => new CategoriesRepository(connectionString));
+
 
 var app = builder.Build();
 
