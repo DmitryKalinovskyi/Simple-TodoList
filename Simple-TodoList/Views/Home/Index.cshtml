@@ -30,52 +30,68 @@
 
     <div>
         @{
-            async Task RenderTask(TaskModel task)
-            {
-                    <div class="my-2">
-                    <div class="d-flex align-items-center justify-content-between">
-
-                        <form asp-action="UpdateTaskComplition" method="post" class="d-flex align-items-center">
-                            <input id="taskInput-@task.Id" name="isCompleted" @(task.IsCompleted?"checked":"") type="checkbox" onchange="this.form.submit()"/>
-                            <label for="taskInput-@task.Id">
-                                @if (task.IsCompleted)
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">Name</th>
+                        <th scope="col">Category</th>
+                        <th scope="col">Deadline</th>
+                        <th scope="col">Delete</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var task in Model.Tasks)
+                    {
+                        <tr>
+                            <td>
+                                <form asp-action="UpdateTaskComplition" method="post" class="d-flex align-items-center">
+                                    <input id="taskInput-@task.Id" name="isCompleted" @(task.IsCompleted ? "checked" : "") type="checkbox" onchange="this.form.submit()" />
+                                    <label for="taskInput-@task.Id">
+                                        @if (task.IsCompleted)
+                                        {
+                                            <s>@task.Name</s>
+                                        }
+                                        else
+                                        {
+                                            @task.Name
+                                        }
+                                    </label>
+                                    <input name="id" value="@task.Id" hidden />
+                                        
+                                </form>
+                            </td>
+                            <td>
+                                @if (task.CategoryId != null)
                                 {
-                                    <s>@task.Name</s>
+                                    <div class="badge mx-2 bg-primary">
+                                        @Model.Categories.First(category => category.Id == task.CategoryId).Name
+                                    </div>
                                 }
-                                else
+                            </td>
+
+                            <td>
+                                @if (task.Deadline != null)
                                 {
-                                    @task.Name
+                                    <div class="badge bg-secondary">
+                                        @task.Deadline
+                                    </div>
                                 }
-                            </label>
-                            <input  name="id" value="@task.Id" hidden/>
-                            @if (task.CategoryId != null)
-                            {
-                                <div class="badge mx-2 bg-danger">
-                                    @Model.Categories.First(category => category.Id == task.CategoryId).Name
-                                </div>
-                            }
-                        </form>
+                            </td>
 
-                        <form asp-action="RemoveTask" method="post">
-                            
+                            <td>
+                                <form asp-action="RemoveTask" method="post">
+                                    <button class="btn btn-danger">
+                                        X
+                                    </button>
+                                    <input name="id" value="@task.Id" hidden />
+                                </form>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
 
-                            @if (task.Deadline != null)
-                            {
-                                <div class="badge bg-secondary">
-                                    @task.Deadline
-                                </div>
-                            }
-                            <button class="btn btn-primary">
-                                X
-                            </button>
-                            <input name="id" value="@task.Id" hidden />
-                        </form>
-                    </div>
-                </div>
-            }
-
-            foreach (var task in Model.Tasks)
-                await RenderTask(task);
+            
         }
     </div>
  </div>
