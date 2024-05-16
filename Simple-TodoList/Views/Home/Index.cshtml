@@ -30,7 +30,7 @@
 
     <div>
         @{
-            <table class="table">
+            <table class="table table-hover">
                 <thead>
                     <tr>
                         <th scope="col">Name</th>
@@ -40,24 +40,29 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach (var task in Model.Tasks)
+                    @for(var i = 0; i < Model.Tasks.Count; i++)
                     {
+                        var task = Model.Tasks[i];
                         <tr>
                             <td>
                                 <form asp-action="UpdateTaskComplition" method="post" class="d-flex align-items-center">
-                                    <input id="taskInput-@task.Id" name="isCompleted" @(task.IsCompleted ? "checked" : "") type="checkbox" onchange="this.form.submit()" />
-                                    <label for="taskInput-@task.Id">
-                                        @if (task.IsCompleted)
+                                    <input asp-for="@Model.Tasks[i].IsCompleted"
+                                           name="isCompleted"
+                 
+                                           onchange="this.form.submit()" />
+                                    
+                                    <label asp-for="@Model.Tasks[i].IsCompleted">
+                                        @if (Model.Tasks[i].IsCompleted)
                                         {
-                                            <s>@task.Name</s>
+                                            <s>@Model.Tasks[i].Name</s>
                                         }
                                         else
                                         {
-                                            @task.Name
+                                            @Model.Tasks[i].Name
                                         }
                                     </label>
+                                    
                                     <input name="id" value="@task.Id" hidden />
-                                        
                                 </form>
                             </td>
                             <td>

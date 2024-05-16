@@ -17,8 +17,8 @@ namespace Simple_TodoList.Controllers
         {
             var viewModel = new IndexViewModel();
 
-            viewModel.Tasks = await _taskRepository.GetAllWithStandartOrdering();
-            viewModel.Categories = await _categoriesRepository.GetAll();
+            viewModel.Tasks = (await _taskRepository.GetAllWithStandartOrdering()).ToList();
+            viewModel.Categories = (await _categoriesRepository.GetAll()).ToList();
 
             return View(viewModel);
         }
@@ -40,18 +40,15 @@ namespace Simple_TodoList.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> UpdateTaskComplition(int id, [FromForm] string isCompleted)
+        public async Task<IActionResult> UpdateTaskComplition(int id, bool IsCompleted)
         {
-            //?
-            bool ok = isCompleted == "on";
-
-            await _taskRepository.UpdateComplition(id, ok);
+            await _taskRepository.UpdateComplition(id, IsCompleted);
 
             return RedirectToAction("Index");
         }
 
         [HttpPost]
-        public async Task<IActionResult> UpdateTaskName(int id, [FromForm] string name)
+        public async Task<IActionResult> UpdateTaskName(int id, string name)
         {
             await _taskRepository.UpdateName(id, name);
 
