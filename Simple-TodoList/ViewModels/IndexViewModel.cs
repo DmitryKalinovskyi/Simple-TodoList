@@ -7,5 +7,7 @@ namespace Simple_TodoList.ViewModels
         public List<TaskModel> Tasks { get; set; } = [];
 
         public List<CategoryModel> Categories { get; set; } = [];
+
+        public TaskModel Task { get; set; } = new();
     }
 }

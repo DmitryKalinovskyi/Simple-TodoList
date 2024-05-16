@@ -2,101 +2,106 @@
 @model IndexViewModel
 
 @{
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = "Todo";
 }
 
  <div class="container mt-5">
-    <form class="row g-3" asp-action="AddTask">
+    <form asp-action="AddTask" class="row g-3">
         <div class="col-auto">
-            <label for="inputTask" class="visually-hidden">Task name</label>
-            <input name="Name" class="form-control" id="inputTask" placeholder="Enter task name...">
+
+            <label asp-for="Task.Name"
+                   class="visually-hidden">
+                Task name
+            </label>
+            <input asp-for="Task.Name"
+                   name="Name"
+                   class="form-control"
+                   placeholder="Enter task name...">
         </div>
+
         <div class="col-auto">
-            <select class="form-select" name="CategoryId">
-                <option value="" selected> Without category</option>
+            <select asp-for="Task.CategoryId" name="CategoryId" class="form-select" >
+                <option selected>
+                    Select Category
+                </option>
                 @foreach(var category in Model.Categories)
                 {
                     <option value="@category.Id">@category.Name</option>
                 }
             </select>
         </div>
+
         <div class="col-auto">
             <input name="Deadline" type="datetime-local" class="form-control"/>
         </div>
+
         <div class="col-auto">
             <button type="submit" class="btn btn-primary mb-3">Add task</button>
         </div>
     </form> 
 
-    <div>
-        @{
-            <table class="table table-hover">
-                <thead>
-                    <tr>
-                        <th scope="col">Name</th>
-                        <th scope="col">Category</th>
-                        <th scope="col">Deadline</th>
-                        <th scope="col">Delete</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @for(var i = 0; i < Model.Tasks.Count; i++)
-                    {
-                        var task = Model.Tasks[i];
-                        <tr>
-                            <td>
-                                <form asp-action="UpdateTaskComplition" method="post" class="d-flex align-items-center">
-                                    <input asp-for="@Model.Tasks[i].IsCompleted"
-                                           name="isCompleted"
-                 
-                                           onchange="this.form.submit()" />
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th scope="col">Name</th>
+                <th scope="col">Category</th>
+                <th scope="col">Deadline</th>
+                <th scope="col">Delete</th>
+            </tr>
+        </thead>
+        <tbody>
+            @for(var i = 0; i < Model.Tasks.Count; i++)
+            {
+                var task = Model.Tasks[i];
+                <tr>
+                    <td>
+                        <form asp-action="UpdateTaskComplition" method="post" class="d-flex align-items-center">
+                            <input asp-for="@Model.Tasks[i].IsCompleted"
+                                    name="isCompleted"
+                                    onchange="this.form.submit()" />
                                     
-                                    <label asp-for="@Model.Tasks[i].IsCompleted">
-                                        @if (Model.Tasks[i].IsCompleted)
-                                        {
-                                            <s>@Model.Tasks[i].Name</s>
-                                        }
-                                        else
-                                        {
-                                            @Model.Tasks[i].Name
-                                        }
-                                    </label>
+                            <label asp-for="@Model.Tasks[i].IsCompleted">
+                                @if (Model.Tasks[i].IsCompleted)
+                                {
+                                    <s>@Model.Tasks[i].Name</s>
+                                }
+                                else
+                                {
+                                    @Model.Tasks[i].Name
+                                }
+                            </label>
                                     
-                                    <input name="id" value="@task.Id" hidden />
-                                </form>
-                            </td>
-                            <td>
-                                @if (task.CategoryId != null)
-                                {
-                                    <div class="badge mx-2 bg-primary">
-                                        @Model.Categories.First(category => category.Id == task.CategoryId).Name
-                                    </div>
-                                }
-                            </td>
+                            <input name="id" value="@task.Id" hidden />
+                        </form>
+                    </td>
+                    <td>
+                        @if (task.CategoryId != null)
+                        {
+                            <div class="badge mx-2 bg-primary">
+                                @Model.Categories.First(category => category.Id == task.CategoryId).Name
+                            </div>
+                        }
+                    </td>
 
-                            <td>
-                                @if (task.Deadline != null)
-                                {
-                                    <div class="badge bg-secondary">
-                                        @task.Deadline
-                                    </div>
-                                }
-                            </td>
+                    <td>
+                        @if (task.Deadline != null)
+                        {
+                            <div class="badge bg-secondary">
+                                @task.Deadline
+                            </div>
+                        }
+                    </td>
 
-                            <td>
-                                <form asp-action="RemoveTask" method="post">
-                                    <button class="btn btn-danger">
-                                        X
-                                    </button>
-                                    <input name="id" value="@task.Id" hidden />
-                                </form>
-                            </td>
-                        </tr>
-                    }
-                </tbody>
-            </table>
-
-            
-        }
-    </div>
+                    <td>
+                        <form asp-action="RemoveTask" method="post">
+                            <button class="btn btn-danger">
+                                X
+                            </button>
+                            <input name="id" value="@task.Id" hidden />
+                        </form>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
  </div>
