@@ -19,12 +19,6 @@ namespace Simple_TodoList.Repository
 
         public Task<IEnumerable<TaskModel>> GetAll();
 
-        public Task UpdateName(int id, string name);
-
         public Task UpdateComplition(int id, bool isComplete);
-
-        public Task UpdateDeadline(int id, DateTime deadline);
-
-        public Task UpdateCategoryId(int id, int? categoryId);
     }
 }

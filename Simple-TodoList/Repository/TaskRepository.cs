@@ -71,16 +71,6 @@ namespace Simple_TodoList.Repository
             await connection.ExecuteAsync(sql, task);
         }
 
-        public async Task UpdateCategoryId(int id, int? categoryId)
-        {
-            using var connection = new SqlConnection(_connectionString);
-
-            var sql = "update Tasks set CategoryId=@categoryId" +
-            " where Id=@id";
-
-            await connection.ExecuteAsync(sql, new {id, categoryId});
-        }
-
         public async  Task UpdateComplition(int id, bool isCompleted)
         {
             using var connection = new SqlConnection(_connectionString);
@@ -89,26 +79,6 @@ namespace Simple_TodoList.Repository
             " where Id=@id";
 
             await connection.ExecuteAsync(sql, new { id, isCompleted });
-        }
-
-        public async Task UpdateDeadline(int id, DateTime deadline)
-        {
-            using var connection = new SqlConnection(_connectionString);
-
-            var sql = "update Tasks set Deadline=@deadline" +
-            " where Id=@id";
-
-            await connection.ExecuteAsync(sql, new { id, deadline });
-        }
-
-        public async Task UpdateName(int id, string name)
-        {
-            using var connection = new SqlConnection(_connectionString);
-
-            var sql = "update Tasks set Name=@name" +
-            " where Id=@id";
-
-            await connection.ExecuteAsync(sql, new { id, name });
         }
     }
 }

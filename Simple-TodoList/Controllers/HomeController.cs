@@ -10,15 +10,16 @@ namespace Simple_TodoList.Controllers
         (ITaskResository taskResository,
         ICategoriesRepository categoriesRepository) : Controller
     {
-        private ITaskResository _taskRepository = taskResository;
-        private ICategoriesRepository _categoriesRepository = categoriesRepository;
+        private readonly ITaskResository _taskRepository = taskResository;
+        private readonly ICategoriesRepository _categoriesRepository = categoriesRepository;
 
         public async Task<IActionResult> Index()
         {
-            var viewModel = new IndexViewModel();
-
-            viewModel.Tasks = (await _taskRepository.GetAllWithStandartOrdering()).ToList();
-            viewModel.Categories = (await _categoriesRepository.GetAll()).ToList();
+            var viewModel = new IndexViewModel
+            {
+                Tasks = (await _taskRepository.GetAllWithStandartOrdering()).ToList(),
+                Categories = (await _categoriesRepository.GetAll()).ToList()
+            };
 
             return View(viewModel);
         }
@@ -43,14 +44,6 @@ namespace Simple_TodoList.Controllers
         public async Task<IActionResult> UpdateTaskComplition(int id, bool IsCompleted)
         {
             await _taskRepository.UpdateComplition(id, IsCompleted);
-
-            return RedirectToAction("Index");
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> UpdateTaskName(int id, string name)
-        {
-            await _taskRepository.UpdateName(id, name);
 
             return RedirectToAction("Index");
         }
