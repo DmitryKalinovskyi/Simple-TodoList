@@ -1,0 +1,43 @@
+﻿@using Simple_TodoList.ViewModels
+@model CategoriesViewModel;
+
+@{
+    <div class="container">
+        <form asp-action="AddCategory">
+            <div class="mb-3">
+                <label for="categoryNameField" class="form-label">Category Name</label>
+                <input class="form-control" id="categoryNameField" name="categoryName">
+            </div>
+            
+            <button type="submit" class="btn btn-primary">Add category</button>
+        </form>
+
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th scope="col">Name</th>
+                    <th scope="col">Delete</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var category in Model.Categories)
+                {
+                    <tr>
+                        <td>
+                            @category.Name
+                        </td>
+
+                        <td>
+                            <form asp-action="RemoveCategory" method="post">
+                                <button class="btn btn-danger">
+                                    X
+                                </button>
+                                <input name="id" value="@category.Id" hidden />
+                            </form>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}

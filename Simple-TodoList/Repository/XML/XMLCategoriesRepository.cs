@@ -9,6 +9,11 @@ namespace Simple_TodoList.Repository.XML
 
         private readonly IXMLStorage _xmlStorage = xmlStorage;
 
+        public async Task Delete(int id)
+        {
+            await _xmlStorage.DeleteRecord(COLLECTION, id.ToString());
+        }
+
         public async Task<IEnumerable<CategoryModel>> GetAll()
         {
             return await _xmlStorage.GetRecords<CategoryModel>(COLLECTION);
@@ -17,6 +22,11 @@ namespace Simple_TodoList.Repository.XML
         public async Task<CategoryModel> GetById(int id)
         {
             return await _xmlStorage.FindRecord<CategoryModel>(COLLECTION, id.ToString());
+        }
+
+        public async Task Insert(CategoryModel category)
+        {
+            await _xmlStorage.AddRecord(COLLECTION, category);
         }
     }
 }

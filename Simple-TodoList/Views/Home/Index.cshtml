@@ -77,9 +77,14 @@
                     <td>
                         @if (task.CategoryId != null)
                         {
-                            <div class="badge mx-2 bg-primary">
-                                @Model.Categories.First(category => category.Id == task.CategoryId).Name
-                            </div>
+                            var category = @Model.Categories.FirstOrDefault(category => category.Id == task.CategoryId, null);
+
+                            if(category != null)
+                            {
+                                <div class="badge mx-2 bg-primary">
+                                    @category.Name
+                                </div>
+                            }
                         }
                     </td>
 
