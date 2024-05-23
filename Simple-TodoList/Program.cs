@@ -1,25 +1,20 @@
-using Simple_TodoList.Repository;
+using Simple_TodoList.Repository.SQL;
+using Simple_TodoList.Repository.XML;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
+// Add task repositories
+builder.Services
+    .AddScoped<TaskRepository>()
+    .AddScoped<XMLTaskRepository>();
 
-// Initialize repositories
-
-string? connectionString = builder.Configuration.GetConnectionString("TodoDB");
-
-if (connectionString == null) throw new ArgumentNullException(nameof(connectionString));
-
-// Add task repository to the di container
-builder.Services.AddSingleton<ITaskResository>(
-    provider => new TaskRepository(connectionString));
-
-// Add categories repository to the di container
-builder.Services.AddSingleton<ICategoriesRepository>(
-    provider => new CategoriesRepository(connectionString));
-
+// Add categories repositories
+builder.Services
+    .AddScoped<CategoriesRepository>()
+    .AddScoped<XMLCategoriesRepository>();
 
 var app = builder.Build();
 

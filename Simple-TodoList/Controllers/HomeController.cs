@@ -1,14 +1,15 @@
 using Microsoft.AspNetCore.Mvc;
 using Simple_TodoList.Models;
 using Simple_TodoList.Repository;
+using Simple_TodoList.Repository.SQL;
 using Simple_TodoList.ViewModels;
 using System.Diagnostics;
 
 namespace Simple_TodoList.Controllers
 {
     public class HomeController
-        (ITaskResository taskResository,
-        ICategoriesRepository categoriesRepository) : Controller
+        (TaskRepository taskResository,
+        CategoriesRepository categoriesRepository) : Controller
     {
         private readonly ITaskResository _taskRepository = taskResository;
         private readonly ICategoriesRepository _categoriesRepository = categoriesRepository;
@@ -41,9 +42,9 @@ namespace Simple_TodoList.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> UpdateTaskComplition(int id, bool IsCompleted)
+        public async Task<IActionResult> UpdateTaskComplition(int id, bool isCompleted)
         {
-            await _taskRepository.UpdateComplition(id, IsCompleted);
+            await _taskRepository.UpdateComplition(id, isCompleted);
 
             return RedirectToAction("Index");
         }

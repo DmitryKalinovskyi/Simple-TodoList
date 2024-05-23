@@ -8,6 +8,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Folder Include="Data\XML\" />
     <Folder Include="Services\" />
   </ItemGroup>
 
