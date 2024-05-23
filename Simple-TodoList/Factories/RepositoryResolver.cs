@@ -15,7 +15,7 @@ namespace Simple_TodoList.Factories
     {
         private readonly IServiceProvider _serviceProvider = serviceProvider;
 
-        private IRepositoryFactory _factory = serviceProvider.GetRequiredService<XMLRepositoryFactory>();
+        private IRepositoryFactory _factory = serviceProvider.GetRequiredService<SQLRepositoryFactory>();
 
         public ICategoriesRepository GetCategoriesRepository()
         {

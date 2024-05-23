@@ -2,6 +2,7 @@
 using Microsoft.Data.SqlClient;
 using Simple_TodoList.Extensions;
 using Simple_TodoList.Models;
+using System.Threading.Tasks;
 
 namespace Simple_TodoList.Repositories.SQLRepositories
 {
@@ -14,9 +15,10 @@ namespace Simple_TodoList.Repositories.SQLRepositories
             _connectionString = configuration.GetSQLServerConnectionString();
         }
 
-        public Task Delete(int id)
+        public async Task Delete(int id)
         {
-            throw new NotImplementedException();
+            using var connection = new SqlConnection(_connectionString);
+            await connection.ExecuteAsync("delete from Categories where Id = @id", new { id });
         }
 
         public async Task<IEnumerable<CategoryModel>> GetAll()
@@ -33,9 +35,14 @@ namespace Simple_TodoList.Repositories.SQLRepositories
             return await connection.QueryFirstAsync<CategoryModel>("select * from Categories where Id = @id", new { id });
         }
 
-        public Task Insert(CategoryModel category)
+        public async Task Insert(CategoryModel category)
         {
-            throw new NotImplementedException();
+            using var connection = new SqlConnection(_connectionString);
+            object categoryToInsert = new { category.Name};
+            var sql = "insert into Categories (Name)" +
+            " values (@Name)";
+
+            await connection.ExecuteAsync(sql, categoryToInsert);
         }
     }
 }
