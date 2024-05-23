@@ -2,7 +2,7 @@
 
 namespace Simple_TodoList.Repository
 {
-    public interface ITaskResository
+    public interface ITasksResository
     {
         #region CRUD
         public Task Insert(TaskModel task);

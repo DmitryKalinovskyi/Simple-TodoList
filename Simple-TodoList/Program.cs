@@ -1,5 +1,7 @@
+using Simple_TodoList.Factories;
 using Simple_TodoList.Repository.SQL;
 using Simple_TodoList.Repository.XML;
+using Simple_TodoList.Services.XMLStorage;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -8,13 +10,19 @@ builder.Services.AddControllersWithViews();
 
 // Add task repositories
 builder.Services
-    .AddScoped<TaskRepository>()
-    .AddScoped<XMLTaskRepository>();
+    .AddScoped<TasksRepository>()
+    .AddScoped<XMLTasksRepository>();
 
 // Add categories repositories
 builder.Services
     .AddScoped<CategoriesRepository>()
     .AddScoped<XMLCategoriesRepository>();
+
+
+builder.Services.AddScoped<SQLRepositoryFactory>();
+builder.Services.AddScoped<XMLRepositoryFactory>();
+builder.Services.AddScoped<RepositoryResolver>();
+builder.Services.AddScoped<IXMLStorage, XMLStorage>();
 
 var app = builder.Build();
 

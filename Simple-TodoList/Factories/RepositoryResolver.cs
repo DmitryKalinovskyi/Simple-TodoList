@@ -11,28 +11,38 @@ namespace Simple_TodoList.Factories
         XML
     }
 
-    public class RepositoryResolver(IServiceProvider serviceProvider)
+    public class RepositoryResolver(IServiceProvider serviceProvider): IRepositoryFactory
     {
         private readonly IServiceProvider _serviceProvider = serviceProvider;
 
-        public ICategoriesRepository ResolveCategoriesRepository(StorageType storageType)
+        private IRepositoryFactory _factory = serviceProvider.GetRequiredService<XMLRepositoryFactory>();
+
+        public ICategoriesRepository GetCategoriesRepository()
         {
-            return storageType switch
-            {
-                StorageType.SQL => _serviceProvider.GetRequiredService<CategoriesRepository>(),
-                StorageType.XML => _serviceProvider.GetRequiredService<XMLCategoriesRepository>(),
-                _ => throw new InvalidEnumArgumentException(nameof(storageType))
-            };
+            return _factory.GetCategoriesRepository();
         }
 
-        public ITaskResository ResolveTaskResository(StorageType storageType)
+        public ITasksResository GetTasksRepository()
         {
-            return storageType switch
+            return _factory.GetTasksRepository();
+        }
+
+        public RepositoryResolver SetFactory(IRepositoryFactory repositoryFactory)
+        {
+            _factory = repositoryFactory;
+            return this;
+        }
+
+        public RepositoryResolver SetFactoryByStorageType(StorageType storageType)
+        {
+            switch(storageType)
             {
-                StorageType.SQL => _serviceProvider.GetRequiredService<TaskRepository>(),
-                StorageType.XML => _serviceProvider.GetRequiredService<XMLTaskRepository>(),
-                _ => throw new InvalidEnumArgumentException(nameof(storageType))
-            };
+                case StorageType.SQL: _factory = _serviceProvider.GetRequiredService<SQLRepositoryFactory>(); break;
+                case StorageType.XML: _factory = _serviceProvider.GetRequiredService<SQLRepositoryFactory>(); break;
+                default:  throw new InvalidEnumArgumentException(nameof(storageType));
+            }
+
+            return this;
         }
     }
 }

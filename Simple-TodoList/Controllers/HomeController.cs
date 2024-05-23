@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using Simple_TodoList.Factories;
 using Simple_TodoList.Models;
 using Simple_TodoList.Repository;
 using Simple_TodoList.Repository.SQL;
@@ -8,18 +9,19 @@ using System.Diagnostics;
 namespace Simple_TodoList.Controllers
 {
     public class HomeController
-        (TaskRepository taskResository,
-        CategoriesRepository categoriesRepository) : Controller
+        (RepositoryResolver repositoryResolver) : Controller
     {
-        private readonly ITaskResository _taskRepository = taskResository;
-        private readonly ICategoriesRepository _categoriesRepository = categoriesRepository;
+        private readonly RepositoryResolver _repositories = repositoryResolver;
 
         public async Task<IActionResult> Index()
         {
+            var tasksRepository = _repositories.GetTasksRepository();
+            var categoriesRepository = _repositories.GetCategoriesRepository();
+
             var viewModel = new IndexViewModel
             {
-                Tasks = (await _taskRepository.GetAllWithStandartOrdering()).ToList(),
-                Categories = (await _categoriesRepository.GetAll()).ToList()
+                Tasks = [..await tasksRepository.GetAllWithStandartOrdering()],
+                Categories = [..await categoriesRepository.GetAll()]
             };
 
             return View(viewModel);
@@ -28,7 +30,7 @@ namespace Simple_TodoList.Controllers
         [HttpPost]
         public async Task<IActionResult> AddTask(TaskModel task)
         {
-            await _taskRepository.Insert(task);
+            await _repositories.GetTasksRepository().Insert(task);
 
             return RedirectToAction("Index");
         }
@@ -36,7 +38,7 @@ namespace Simple_TodoList.Controllers
         [HttpPost]
         public async Task<IActionResult> RemoveTask(int id)
         {
-            await _taskRepository.Delete(id);
+            await _repositories.GetTasksRepository().Delete(id);
 
             return RedirectToAction("Index");   
         }
@@ -44,7 +46,7 @@ namespace Simple_TodoList.Controllers
         [HttpPost]
         public async Task<IActionResult> UpdateTaskComplition(int id, bool isCompleted)
         {
-            await _taskRepository.UpdateComplition(id, isCompleted);
+            await _repositories.GetTasksRepository().UpdateComplition(id, isCompleted);
 
             return RedirectToAction("Index");
         }

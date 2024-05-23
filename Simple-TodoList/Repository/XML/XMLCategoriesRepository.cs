@@ -1,17 +1,22 @@
 ﻿using Simple_TodoList.Models;
+using Simple_TodoList.Services.XMLStorage;
 
 namespace Simple_TodoList.Repository.XML
 {
-    public class XMLCategoriesRepository : ICategoriesRepository
+    public class XMLCategoriesRepository(IXMLStorage xmlStorage) : ICategoriesRepository
     {
-        public Task<IEnumerable<CategoryModel>> GetAll()
+        private const string COLLECTION = "Categories";
+
+        private readonly IXMLStorage _xmlStorage = xmlStorage;
+
+        public async Task<IEnumerable<CategoryModel>> GetAll()
         {
-            throw new NotImplementedException();
+            return await _xmlStorage.GetRecords<CategoryModel>(COLLECTION);
         }
 
-        public Task<CategoryModel> GetById(int id)
+        public async Task<CategoryModel> GetById(int id)
         {
-            throw new NotImplementedException();
+            return await _xmlStorage.FindRecord<CategoryModel>(COLLECTION, id.ToString());
         }
     }
 }
