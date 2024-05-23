@@ -1,4 +1,4 @@
-﻿using Simple_TodoList.Repository;
+﻿using Simple_TodoList.Repositories;
 
 namespace Simple_TodoList.Factories
 {

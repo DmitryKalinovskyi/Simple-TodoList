@@ -1,6 +1,6 @@
 using Simple_TodoList.Factories;
-using Simple_TodoList.Repository.SQL;
-using Simple_TodoList.Repository.XML;
+using Simple_TodoList.Repositories.SQLRepositories;
+using Simple_TodoList.Repositories.XMLRepositories;
 using Simple_TodoList.Services.XMLStorage;
 
 var builder = WebApplication.CreateBuilder(args);

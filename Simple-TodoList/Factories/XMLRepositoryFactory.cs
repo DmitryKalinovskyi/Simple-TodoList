@@ -1,5 +1,5 @@
-﻿using Simple_TodoList.Repository;
-using Simple_TodoList.Repository.XML;
+﻿using Simple_TodoList.Repositories;
+using Simple_TodoList.Repositories.XMLRepositories;
 
 namespace Simple_TodoList.Factories
 {

@@ -1,7 +1,7 @@
 ﻿using Simple_TodoList.Models;
 using Simple_TodoList.Services.XMLStorage;
 
-namespace Simple_TodoList.Repository.XML
+namespace Simple_TodoList.Repositories.XMLRepositories
 {
     public class XMLCategoriesRepository(IXMLStorage xmlStorage) : ICategoriesRepository
     {

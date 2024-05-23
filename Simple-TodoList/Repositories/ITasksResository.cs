@@ -1,6 +1,6 @@
 ﻿using Simple_TodoList.Models;
 
-namespace Simple_TodoList.Repository
+namespace Simple_TodoList.Repositories
 {
     public interface ITasksResository
     {
