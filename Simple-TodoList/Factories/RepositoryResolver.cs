@@ -14,7 +14,7 @@ namespace Simple_TodoList.Factories
     public class RepositoryResolver(IServiceProvider serviceProvider): IRepositoryFactory
     {
         private readonly IServiceProvider _serviceProvider = serviceProvider;
-
+        private StorageType _storageType = StorageType.SQL;
         private IRepositoryFactory _factory = serviceProvider.GetRequiredService<SQLRepositoryFactory>();
 
         public ICategoriesRepository GetCategoriesRepository()
@@ -27,22 +27,22 @@ namespace Simple_TodoList.Factories
             return _factory.GetTasksRepository();
         }
 
-        public RepositoryResolver SetFactory(IRepositoryFactory repositoryFactory)
+        public RepositoryResolver SetStorageType(StorageType storageType)
         {
-            _factory = repositoryFactory;
-            return this;
-        }
-
-        public RepositoryResolver SetFactoryByStorageType(StorageType storageType)
-        {
+            _storageType = storageType;
             switch(storageType)
             {
                 case StorageType.SQL: _factory = _serviceProvider.GetRequiredService<SQLRepositoryFactory>(); break;
-                case StorageType.XML: _factory = _serviceProvider.GetRequiredService<SQLRepositoryFactory>(); break;
+                case StorageType.XML: _factory = _serviceProvider.GetRequiredService<XMLRepositoryFactory>(); break;
                 default:  throw new InvalidEnumArgumentException(nameof(storageType));
             }
 
             return this;
+        }
+
+        public StorageType GetStorageType()
+        {
+            return _storageType;
         }
     }
 }

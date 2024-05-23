@@ -2,7 +2,7 @@
 <TaskModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <Id>10</Id>
   <Name>Add xml Storage</Name>
-  <IsCompleted>false</IsCompleted>
+  <IsCompleted>true</IsCompleted>
   <Deadline>2024-05-23T16:00:00</Deadline>
   <CategoryId xsi:nil="true" />
 </TaskModel>

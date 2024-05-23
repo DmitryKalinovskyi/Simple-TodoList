@@ -20,8 +20,9 @@ namespace Simple_TodoList.Controllers
 
             var viewModel = new IndexViewModel
             {
-                Tasks = [..await tasksRepository.GetAllWithStandartOrdering()],
-                Categories = [..await categoriesRepository.GetAll()]
+                Tasks = [.. await tasksRepository.GetAllWithStandartOrdering()],
+                Categories = [.. await categoriesRepository.GetAll()],
+                StorageType = _repositories.GetStorageType()
             };
 
             return View(viewModel);
@@ -47,6 +48,14 @@ namespace Simple_TodoList.Controllers
         public async Task<IActionResult> UpdateTaskComplition(int id, bool isCompleted)
         {
             await _repositories.GetTasksRepository().UpdateComplition(id, isCompleted);
+
+            return RedirectToAction("Index");
+        }
+
+        [HttpPost]
+        public IActionResult ChangeStorageType(StorageType storageType)
+        {
+            _repositories.SetStorageType(storageType);
 
             return RedirectToAction("Index");
         }

@@ -1,44 +1,52 @@
-﻿@using Simple_TodoList.ViewModels
+﻿@using Simple_TodoList.Factories
+@using Simple_TodoList.ViewModels
 @model IndexViewModel
 
 @{
     ViewData["Title"] = "Todo";
 }
 
- <div class="container mt-5">
-    <form asp-action="AddTask" class="row g-3">
-        <div class="col-auto">
+<div class="container mt-5">
+    <div class="d-flex flex-wrap align-items-start">
+        <form asp-action="AddTask" class="row g-3">
+            <div class="col-auto">
 
-            <label asp-for="Task.Name"
-                   class="visually-hidden">
-                Task name
-            </label>
-            <input asp-for="Task.Name"
-                   name="Name"
-                   class="form-control"
-                   placeholder="Enter task name...">
-        </div>
+                <label asp-for="Task.Name"
+                       class="visually-hidden">
+                    Task name
+                </label>
+                <input asp-for="Task.Name"
+                       name="Name"
+                       class="form-control"
+                       placeholder="Enter task name...">
+            </div>
 
-        <div class="col-auto">
-            <select asp-for="Task.CategoryId" name="CategoryId" class="form-select" >
-                <option selected>
-                    Select Category
-                </option>
-                @foreach(var category in Model.Categories)
-                {
-                    <option value="@category.Id">@category.Name</option>
-                }
-            </select>
-        </div>
+            <div class="col-auto">
+                <select asp-for="Task.CategoryId" name="CategoryId" class="form-select" >
+                    <option selected>
+                        Select Category
+                    </option>
+                    @foreach(var category in Model.Categories)
+                    {
+                        <option value="@category.Id">@category.Name</option>
+                    }
+                </select>
+            </div>
 
-        <div class="col-auto">
-            <input asp-for="Task.Deadline" name="Deadline" class="form-control"/>
-        </div>
+            <div class="col-auto">
+                <input asp-for="Task.Deadline" name="Deadline" class="form-control"/>
+            </div>
 
-        <div class="col-auto">
-            <button type="submit" class="btn btn-primary mb-3">Add task</button>
-        </div>
-    </form> 
+            <div class="col-auto">
+                <button type="submit" class="btn btn-primary mb-3">Add task</button>
+            </div>
+        </form> 
+        <form asp-action="ChangeStorageType" class="mx-3">
+                <select asp-for="StorageType" class="form-select col-auto" asp-items="Html.GetEnumSelectList<StorageType>()" onchange="this.form.submit()">
+                </select>
+        </form>
+    </div>
+
 
     <table class="table table-hover">
         <thead>
@@ -109,4 +117,4 @@
             }
         </tbody>
     </table>
- </div>
+</div>

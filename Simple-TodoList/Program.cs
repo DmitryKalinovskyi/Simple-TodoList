@@ -10,19 +10,18 @@ builder.Services.AddControllersWithViews();
 
 // Add task repositories
 builder.Services
-    .AddScoped<TasksRepository>()
-    .AddScoped<XMLTasksRepository>();
+    .AddSingleton<TasksRepository>()
+    .AddSingleton<XMLTasksRepository>();
 
 // Add categories repositories
 builder.Services
-    .AddScoped<CategoriesRepository>()
-    .AddScoped<XMLCategoriesRepository>();
+    .AddSingleton<CategoriesRepository>()
+    .AddSingleton<XMLCategoriesRepository>();
 
-
-builder.Services.AddScoped<SQLRepositoryFactory>();
-builder.Services.AddScoped<XMLRepositoryFactory>();
-builder.Services.AddScoped<RepositoryResolver>();
-builder.Services.AddScoped<IXMLStorage, XMLStorage>();
+builder.Services.AddSingleton<SQLRepositoryFactory>();
+builder.Services.AddSingleton<XMLRepositoryFactory>();
+builder.Services.AddSingleton<IXMLStorage, XMLStorage>();
+builder.Services.AddSingleton<RepositoryResolver>();
 
 var app = builder.Build();
 
@@ -38,8 +37,6 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
-
-app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",

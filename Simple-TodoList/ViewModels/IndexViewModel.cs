@@ -1,4 +1,5 @@
-﻿using Simple_TodoList.Models;
+﻿using Simple_TodoList.Factories;
+using Simple_TodoList.Models;
 
 namespace Simple_TodoList.ViewModels
 {
@@ -9,5 +10,7 @@ namespace Simple_TodoList.ViewModels
         public List<CategoryModel> Categories { get; set; } = [];
 
         public TaskModel Task { get; set; } = new();
+
+        public StorageType StorageType { get; set; }
     }
 }
