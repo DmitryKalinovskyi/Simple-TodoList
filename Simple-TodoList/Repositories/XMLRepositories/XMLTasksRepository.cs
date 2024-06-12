@@ -4,7 +4,7 @@ using Simple_TodoList.Services.XMLStorage;
 
 namespace Simple_TodoList.Repositories.XMLRepositories
 {
-    public class XMLTasksRepository(IXMLStorage xmlStorage) : ITasksResository
+    public class XMLTasksRepository(IXMLStorage xmlStorage) : ITasksRepository
     {
         private const string COLLECTION = "Tasks";
 

@@ -12,7 +12,7 @@ namespace Simple_TodoList.Factories
             return _serviceProvider.GetRequiredService<XMLCategoriesRepository>();
         }
 
-        public ITasksResository GetTasksRepository()
+        public ITasksRepository GetTasksRepository()
         {
             return _serviceProvider.GetRequiredService<XMLTasksRepository>();
         }

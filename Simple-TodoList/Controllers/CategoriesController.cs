@@ -5,13 +5,11 @@ using Simple_TodoList.ViewModels;
 
 namespace Simple_TodoList.Controllers
 {
-    public class CategoriesController(RepositoryResolver repositoryResolver) : Controller
+    public class CategoriesController(IRepositoryResolver repositoryResolver) : Controller
     {
-        private readonly RepositoryResolver _repositoryResolver = repositoryResolver;
-
         public async Task<IActionResult> Index()
         {
-            var categoriesRepository = _repositoryResolver.GetCategoriesRepository();
+            var categoriesRepository = repositoryResolver.GetCategoriesRepository();
 
             var viewModel = new CategoriesViewModel
             {
@@ -24,7 +22,7 @@ namespace Simple_TodoList.Controllers
         [HttpPost]
         public async Task<IActionResult> AddCategory(string categoryName)
         {
-            var categories = _repositoryResolver.GetCategoriesRepository();
+            var categories = repositoryResolver.GetCategoriesRepository();
 
             await categories.Insert(new CategoryModel { Name = categoryName });
 
@@ -34,7 +32,7 @@ namespace Simple_TodoList.Controllers
         [HttpPost]
         public async Task<IActionResult> RemoveCategory(int id)
         {
-            var categories = _repositoryResolver.GetCategoriesRepository();
+            var categories = repositoryResolver.GetCategoriesRepository();
 
             await categories.Delete(id);
 

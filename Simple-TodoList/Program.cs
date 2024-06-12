@@ -1,4 +1,6 @@
+using Simple_TodoList.Extensions;
 using Simple_TodoList.Factories;
+using Simple_TodoList.Repositories;
 using Simple_TodoList.Repositories.SQLRepositories;
 using Simple_TodoList.Repositories.XMLRepositories;
 using Simple_TodoList.Services.XMLStorage;
@@ -21,9 +23,23 @@ builder.Services
 builder.Services.AddSingleton<SQLRepositoryFactory>();
 builder.Services.AddSingleton<XMLRepositoryFactory>();
 builder.Services.AddSingleton<IXMLStorage, XMLStorage>();
-builder.Services.AddSingleton<RepositoryResolver>();
+
+builder.Services.AddDistributedMemoryCache();
+
+builder.Services.AddSession(options =>
+{
+    options.IdleTimeout = TimeSpan.FromSeconds(10);
+    options.Cookie.HttpOnly = true;
+    options.Cookie.IsEssential = true;
+});
+
+builder.Services.AddHttpContextAccessor();
+
+builder.Services.AddScoped<IRepositoryResolver, SessionBasedRepositoryResolver>();
+builder.Services.AddRepositoryResolvers();
 
 var app = builder.Build();
+
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
@@ -35,6 +51,9 @@ if (!app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
+
+
+app.UseSession();
 
 app.UseRouting();
 

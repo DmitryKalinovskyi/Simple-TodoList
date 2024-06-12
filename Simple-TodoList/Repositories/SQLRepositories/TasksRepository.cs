@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Simple_TodoList.Repositories.SQLRepositories
 {
-    public class TasksRepository : ITasksResository
+    public class TasksRepository : ITasksRepository
     {
         private string _connectionString;
 

@@ -6,6 +6,6 @@ namespace Simple_TodoList.Factories
     {
         public ICategoriesRepository GetCategoriesRepository();
         
-        public ITasksResository GetTasksRepository();
+        public ITasksRepository GetTasksRepository();
     }
 }
