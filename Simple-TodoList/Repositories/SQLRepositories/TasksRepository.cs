@@ -43,11 +43,11 @@ namespace Simple_TodoList.Repositories.SQLRepositories
             return await connection.QueryAsync<TaskModel>(sql);
         }
 
-        public async Task<TaskModel> GetById(int id)
+        public async Task<TaskModel?> GetById(int id)
         {
             using var connection = new SqlConnection(_connectionString);
 
-            return await connection.QueryFirstAsync<TaskModel>("select * from Tasks where Id = @id", new { id });
+            return await connection.QueryFirstOrDefaultAsync<TaskModel>("select * from Tasks where Id = @id", new { id });
         }
 
         public async Task Insert(TaskModel task)

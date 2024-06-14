@@ -7,7 +7,7 @@ namespace Simple_TodoList.Repositories
         #region CRUD
         public Task Insert(TaskModel task);
 
-        public Task<TaskModel> GetById(int id);
+        public Task<TaskModel?> GetById(int id);
 
         public Task Update(TaskModel task);
 

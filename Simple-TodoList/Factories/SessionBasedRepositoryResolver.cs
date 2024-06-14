@@ -11,26 +11,25 @@ namespace Simple_TodoList.Factories
     {
         private const string SESSION_KEY = "_StorageType";
 
+        private Lazy<IRepositoryFactory> _factory;
         private IServiceProvider _serviceProvider;
-        private IRepositoryFactory _repositoryFactory;
         private readonly IHttpContextAccessor _httpContextAccessor;
 
         public SessionBasedRepositoryResolver(IHttpContextAccessor httpContextAccessor, IServiceProvider serviceProvider)
         {
             _serviceProvider = serviceProvider;
             _httpContextAccessor = httpContextAccessor;
-            _repositoryFactory = ResolveFactory();
+            _factory = new Lazy<IRepositoryFactory>(ResolveFactory);
         }
 
         private IRepositoryFactory ResolveFactory()
         {
-
             StorageType storageType = GetStorageType();
             IRepositoryFactory factory;
 
             switch (storageType)
             {
-                case StorageType.SQL: factory = _serviceProvider.GetRequiredService<SQLRepositoryFactory>(); break;
+                case StorageType.SQLServer: factory = _serviceProvider.GetRequiredService<SQLRepositoryFactory>(); break;
                 case StorageType.XML: factory = _serviceProvider.GetRequiredService<XMLRepositoryFactory>(); break;
                 default: throw new InvalidEnumArgumentException(nameof(storageType));
             }
@@ -40,30 +39,37 @@ namespace Simple_TodoList.Factories
 
         public ICategoriesRepository GetCategoriesRepository()
         {
-            return _repositoryFactory.GetCategoriesRepository();
+            return _factory.Value.GetCategoriesRepository();
         }
 
         public ITasksRepository GetTasksRepository()
         {
-            return _repositoryFactory.GetTasksRepository();
+            return _factory.Value.GetTasksRepository();
         }
 
         public IRepositoryFactory SetStorageType(StorageType storageType)
         {
-            // write into session new storage type
-            _httpContextAccessor.HttpContext.Session.SetString(SESSION_KEY, storageType.ToString());
+            _httpContextAccessor.HttpContext?.Session.SetString(SESSION_KEY, storageType.ToString());
+            _factory = new Lazy<IRepositoryFactory>(ResolveFactory);
 
             return this;
         }
 
         public StorageType GetStorageType()
         {
-            // look at the session
-            string value = _httpContextAccessor.HttpContext.Session.GetString(SESSION_KEY) ?? StorageType.SQL.ToString();
+            try
+            {
+                string? value = _httpContextAccessor.HttpContext.Session.GetString(SESSION_KEY);
 
-            StorageType storageType = (StorageType)Enum.Parse(typeof(StorageType), value);
+                if (!string.IsNullOrEmpty(value) && Enum.TryParse(typeof(StorageType), value, out var result))
+                {
+                    return (StorageType)result;
+                }
+            }
+            catch { };
 
-            return storageType;
+            // use sqlServer as default storage type
+            return StorageType.SQLServer;
         }
     }
 }

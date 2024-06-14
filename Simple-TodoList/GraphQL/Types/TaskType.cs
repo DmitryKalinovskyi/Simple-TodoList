@@ -10,8 +10,8 @@ namespace Simple_TodoList.GraphQL.Types
             Field(t => t.Id);
             Field(t => t.Name);
             Field(t => t.IsCompleted);
-            Field(t => t.Deadline);
-            Field(t => t.CategoryId);
+            Field(t => t.Deadline, nullable: true, typeof(DateTimeGraphType));
+            Field(t => t.CategoryId, nullable: true, typeof(IntGraphType));
         }
     }
 }

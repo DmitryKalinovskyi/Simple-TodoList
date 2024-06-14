@@ -2,7 +2,7 @@
 {
     public enum StorageType
     {
-        SQL,
+        SQLServer,
         XML
     }
 
