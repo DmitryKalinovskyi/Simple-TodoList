@@ -3,6 +3,7 @@ using GraphQL.Types;
 using Microsoft.Extensions.Configuration;
 using Simple_TodoList.Extensions;
 using Simple_TodoList.Factories;
+using Simple_TodoList.Factories.RepositoryResolvers;
 using Simple_TodoList.GraphQL.Queries;
 using Simple_TodoList.GraphQL.Schemas;
 using Simple_TodoList.GraphQL.Types;
@@ -42,14 +43,18 @@ builder.Services.AddSession(options =>
 
 builder.Services.AddHttpContextAccessor();
 
-builder.Services.AddSingleton<IRepositoryResolver, SessionBasedRepositoryResolver>();
+
 builder.Services.AddRepositoryResolvers();
 
 //builder.Services.AddGraphQLServices();
 builder.Services.AddTransient<TaskType>();
 builder.Services.AddTransient<CategoryType>();
+
 builder.Services.AddTransient<TaskQuery>();
-builder.Services.AddTransient<ISchema, TaskSchema>();
+builder.Services.AddTransient<CategoryQuery>();
+builder.Services.AddTransient<RootQuery>();
+
+builder.Services.AddTransient<ISchema, RootSchema>();
 
 builder.Services.AddGraphQL(b => b
     .AddAutoSchema<ISchema>()

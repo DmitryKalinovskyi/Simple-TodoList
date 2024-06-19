@@ -1,5 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
-using Simple_TodoList.Factories;
+using Simple_TodoList.Factories.RepositoryResolvers;
 using Simple_TodoList.Models;
 using Simple_TodoList.Repositories;
 using Simple_TodoList.Repositories.SQLRepositories;
@@ -9,7 +9,9 @@ using System.Diagnostics;
 namespace Simple_TodoList.Controllers
 {
     public class HomeController
-        (ITasksRepository tasksRepository, ICategoriesRepository categoriesRepository, IRepositoryResolver repositoryResolver) : Controller
+        (ITasksRepository tasksRepository,
+        ICategoriesRepository categoriesRepository,
+        IRepositoryResolver repositoryResolver) : Controller
     {
         public async Task<IActionResult> Index()
         {
@@ -50,7 +52,11 @@ namespace Simple_TodoList.Controllers
         [HttpPost]
         public IActionResult ChangeStorageType(StorageType storageType)
         {
-            repositoryResolver.SetStorageType(storageType);
+            if (repositoryResolver is IModifiableRepositoryResolver modifiableRepositoryResolver)
+            {
+                modifiableRepositoryResolver.SetStorageType(storageType);
+            }
+            else throw new NotSupportedException("Storage type can't be switched");
 
             return RedirectToAction("Index");
         }

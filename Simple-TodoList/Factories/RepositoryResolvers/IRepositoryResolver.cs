@@ -1,4 +1,4 @@
-﻿namespace Simple_TodoList.Factories
+﻿namespace Simple_TodoList.Factories.RepositoryResolvers
 {
     public enum StorageType
     {
@@ -8,7 +8,7 @@
 
     public interface IRepositoryResolver : IRepositoryFactory
     {
-        public IRepositoryFactory SetStorageType(StorageType storageType);
+        public IRepositoryFactory ResolveRepositoryFactory();
 
         public StorageType GetStorageType();
     }
