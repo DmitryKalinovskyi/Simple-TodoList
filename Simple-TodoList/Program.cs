@@ -12,7 +12,6 @@ using Simple_TodoList.Repositories.SQLRepositories;
 using Simple_TodoList.Repositories.XMLRepositories;
 using Simple_TodoList.Services.XMLStorage;
 
-
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -43,24 +42,9 @@ builder.Services.AddSession(options =>
 
 builder.Services.AddHttpContextAccessor();
 
-
 builder.Services.AddRepositoryResolvers();
 
-//builder.Services.AddGraphQLServices();
-builder.Services.AddTransient<TaskType>();
-builder.Services.AddTransient<CategoryType>();
-
-builder.Services.AddTransient<TaskQuery>();
-builder.Services.AddTransient<CategoryQuery>();
-builder.Services.AddTransient<RootQuery>();
-
-builder.Services.AddTransient<ISchema, RootSchema>();
-
-builder.Services.AddGraphQL(b => b
-    .AddAutoSchema<ISchema>()
-    .AddSystemTextJson()
-    .AddErrorInfoProvider(opt => opt.ExposeExceptionStackTrace = true)
-    );
+builder.Services.AddGraphQLServices();
 
 var app = builder.Build();
 

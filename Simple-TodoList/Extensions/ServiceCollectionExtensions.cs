@@ -8,6 +8,7 @@ using GraphQL.SystemTextJson;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
 using Simple_TodoList.Factories.RepositoryResolvers;
+using Simple_TodoList.GraphQL.Schemas;
 
 namespace Simple_TodoList.Extensions
 {
@@ -22,7 +23,6 @@ namespace Simple_TodoList.Extensions
             {
                 var httpContextAccessor = provider.GetRequiredService<IHttpContextAccessor>();
                 var httpContext = httpContextAccessor.HttpContext;
-                    return provider.GetRequiredService<HeaderBasedRepositoryResolver>();
 
                 if (httpContext.Request.Path.StartsWithSegments("/graphql"))
                 {
@@ -52,23 +52,20 @@ namespace Simple_TodoList.Extensions
         public static IServiceCollection AddGraphQLServices(this IServiceCollection services)
         {
 
-            // add graphql types
-            //services.AddTransient<CategoryType>()
-            //    .AddTransient<TaskType>();
+            services.AddTransient<TaskType>();
+            services.AddTransient<CategoryType>();
 
-            //// add queries
-            //services.AddTransient<TaskQuery>();
+            services.AddTransient<TaskQuery>();
+            services.AddTransient<CategoryQuery>();
+            services.AddTransient<RootQuery>();
 
-            //services.AddTransient<ISchema, TaskSchema>();
+            services.AddTransient<ISchema, RootSchema>();
 
-            //// add execution components
-            //services.AddGraphQL(builder => builder
-            //    .AddAutoSchema<ISchema>()
-            //    .AddSystemTextJson()
-            //    //.AddGraphTypes(typeof(TaskSchema).Assembly)
-            //);
-
-
+            services.AddGraphQL(b => b
+                .AddAutoSchema<ISchema>()
+                .AddSystemTextJson()
+                .AddErrorInfoProvider(opt => opt.ExposeExceptionDetails = true)
+                );
 
             return services;
         }
