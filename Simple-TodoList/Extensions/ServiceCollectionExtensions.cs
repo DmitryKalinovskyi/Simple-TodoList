@@ -9,6 +9,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
 using Simple_TodoList.Factories.RepositoryResolvers;
 using Simple_TodoList.GraphQL.Schemas;
+using Simple_TodoList.GraphQL.InputTypes;
+using Simple_TodoList.GraphQL.Mutation;
 
 namespace Simple_TodoList.Extensions
 {
@@ -51,13 +53,23 @@ namespace Simple_TodoList.Extensions
 
         public static IServiceCollection AddGraphQLServices(this IServiceCollection services)
         {
-
+            // types
             services.AddTransient<TaskType>();
             services.AddTransient<CategoryType>();
 
+            // input types
+            services.AddTransient<TaskInputType>();
+            services.AddTransient<CategoryInputType>();
+
+            // queries
             services.AddTransient<TaskQuery>();
             services.AddTransient<CategoryQuery>();
             services.AddTransient<RootQuery>();
+
+            // mutata
+            services.AddTransient<TaskMutation>();
+            services.AddTransient<CategoryMutation>();
+            services.AddTransient<RootMutation>();
 
             services.AddTransient<ISchema, RootSchema>();
 

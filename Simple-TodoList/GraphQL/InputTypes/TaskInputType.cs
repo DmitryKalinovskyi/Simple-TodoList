@@ -7,7 +7,6 @@ namespace Simple_TodoList.GraphQL.InputTypes
     {
         public TaskInputType()
         {
-            Field<IntGraphType>("id");
             Field<StringGraphType>("name");
             Field<BooleanGraphType>("isCompleted");
             Field<DateTimeGraphType>("deadline");

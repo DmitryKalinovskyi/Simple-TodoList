@@ -18,7 +18,6 @@
 
   <ItemGroup>
     <Folder Include="Data\XML\Tasks\" />
-    <Folder Include="GraphQL\Mutation\" />
   </ItemGroup>
 
 </Project>

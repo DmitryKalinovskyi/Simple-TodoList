@@ -1,4 +1,5 @@
 ﻿using Simple_TodoList.Extensions;
+using System;
 using System.Xml;
 using System.Xml.Serialization;
 
@@ -69,7 +70,7 @@ namespace Simple_TodoList.Services.XMLStorage
             }
         }
 
-        public async Task AddRecord<TRecord>(string collection, TRecord record)
+        public async Task<TRecord> AddRecord<TRecord>(string collection, TRecord record)
         {
             CreateCollectionIfNotSet(collection);
             var properties = await GetCollectionProperties(collection);
@@ -87,11 +88,12 @@ namespace Simple_TodoList.Services.XMLStorage
 
             var serialized = Serialize(record);
 
-
             using (var writer = new StreamWriter(filePath))
             {
                 await writer.WriteAsync(serialized);
             }
+
+            return record;
         }
 
         public async Task DeleteRecord(string collection, string key)
@@ -143,7 +145,12 @@ namespace Simple_TodoList.Services.XMLStorage
         public async Task UpdateRecord<TRecord>(string collection, string key, TRecord record)
         {
             await DeleteRecord(collection, key);
+            // set up by own id for that record
+            var type = record.GetType();
+            System.Reflection.PropertyInfo idProperty = type.GetProperty("Id");
+            idProperty.SetValue(record, key, null);
             var serialized = Serialize(record);
+
             var filePath = Path.Combine(_storagePath, collection, $"{key}.xml");
 
             using (var writer = new StreamWriter(filePath))

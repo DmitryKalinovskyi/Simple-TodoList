@@ -5,11 +5,11 @@ namespace Simple_TodoList.Repositories
     public interface ITasksRepository
     {
         #region CRUD
-        public Task Insert(TaskModel task);
+        public Task<TaskModel> Insert(TaskModel task);
 
         public Task<TaskModel?> GetById(int id);
 
-        public Task Update(TaskModel task);
+        public Task Update(int id, TaskModel task);
 
         public Task Delete(int id);
 

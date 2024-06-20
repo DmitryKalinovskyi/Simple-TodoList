@@ -6,7 +6,6 @@ namespace Simple_TodoList.GraphQL.InputTypes
     {
         public CategoryInputType() 
         {
-            Field<IntGraphType>("id");
             Field<StringGraphType>("name");
         }
     }

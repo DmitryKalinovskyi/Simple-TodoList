@@ -50,26 +50,38 @@ namespace Simple_TodoList.Repositories.SQLRepositories
             return await connection.QueryFirstOrDefaultAsync<TaskModel>("select * from Tasks where Id = @id", new { id });
         }
 
-        public async Task Insert(TaskModel task)
+        public async Task<TaskModel> Insert(TaskModel task)
         {
             using var connection = new SqlConnection(_connectionString);
 
-            object taskToInsert = new { task.Name, task.IsCompleted, task.Deadline, task.CategoryId };
+            var sqlInsert = @"insert into Tasks (Name, IsCompleted, Deadline, CategoryId)
+                      values (@Name, @IsCompleted, @Deadline, @CategoryId);
+                      SELECT CAST(SCOPE_IDENTITY() as int);";
 
-            var sql = "insert into Tasks (Name, IsCompleted, Deadline, CategoryId)" +
-                " values (@Name, @IsCompleted, @Deadline, @CategoryId)";
+            var taskToInsert = new { task.Name, task.IsCompleted, task.Deadline, task.CategoryId };
 
-            await connection.ExecuteAsync(sql, taskToInsert);
+            var newTaskId = await connection.QuerySingleAsync<int>(sqlInsert, taskToInsert);
+
+            return await GetById(newTaskId);
         }
 
-        public async Task Update(TaskModel task)
+        public async Task Update(int id, TaskModel task)
         {
             using var connection = new SqlConnection(_connectionString);
 
             var sql = "update Tasks set Name=@Name, IsCompleted=@IsCompleted, Deadline=@Deadline, CategoryId=@CategoryId" +
                 " where Id=@Id";
 
-            await connection.ExecuteAsync(sql, task);
+            var param = new
+            {
+                Id = id,
+                task.Name,
+                task.IsCompleted,
+                task.Deadline,
+                task.CategoryId,
+            };
+
+            await connection.ExecuteAsync(sql, param);
         }
 
         public async Task UpdateComplition(int id, bool isCompleted)

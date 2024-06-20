@@ -13,6 +13,7 @@ namespace Simple_TodoList.GraphQL.Types
             Field(t => t.Name);
             Field(t => t.IsCompleted);
             Field(t => t.Deadline, nullable: true, typeof(DateTimeGraphType));
+            Field(t => t.CategoryId, nullable: true, typeof(IntGraphType));
             Field<CategoryType>("category").ResolveAsync(async (context) =>
             {
                 var task = context.Source;
