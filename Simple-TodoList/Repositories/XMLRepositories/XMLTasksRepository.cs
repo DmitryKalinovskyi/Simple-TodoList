@@ -8,16 +8,14 @@ namespace Simple_TodoList.Repositories.XMLRepositories
     {
         private const string COLLECTION = "Tasks";
 
-        private readonly IXMLStorage _xmlStorage = xmlStorage;
-
         public async Task Delete(int id)
         {
-            await _xmlStorage.DeleteRecord(COLLECTION, id.ToString());
+            await xmlStorage.DeleteRecord(COLLECTION, id.ToString());
         }
 
         public async Task<IEnumerable<TaskModel>> GetAll()
         {
-            return await _xmlStorage.GetRecords<TaskModel>(COLLECTION);
+            return await xmlStorage.GetRecords<TaskModel>(COLLECTION);
         }
 
         public Task<IEnumerable<TaskModel>> GetAllWithStandartOrdering()
@@ -25,26 +23,26 @@ namespace Simple_TodoList.Repositories.XMLRepositories
             return GetAll();
         }
 
-        public async Task<TaskModel> GetById(int id)
+        public async Task<TaskModel?> GetById(int id)
         {
-            return await _xmlStorage.FindRecord<TaskModel>(COLLECTION, id.ToString());
+            return await xmlStorage.FindRecord<TaskModel>(COLLECTION, id.ToString());
         }
 
-        public async Task Insert(TaskModel task)
+        public async Task<TaskModel> Insert(TaskModel task)
         {
-            await _xmlStorage.AddRecord(COLLECTION, task);
+           return await xmlStorage.AddRecord(COLLECTION, task);
         }
 
-        public async Task Update(TaskModel task)
+        public async Task Update(int id, TaskModel task)
         {
-            await _xmlStorage.UpdateRecord(COLLECTION, task.Id.ToString(), task);
+            await xmlStorage.UpdateRecord(COLLECTION, id.ToString(), task);
         }
 
         public async Task UpdateComplition(int id, bool isCompleted)
         {
-            var task = await _xmlStorage.FindRecord<TaskModel>(COLLECTION, id.ToString());
+            var task = await xmlStorage.FindRecord<TaskModel>(COLLECTION, id.ToString());
             task.IsCompleted = isCompleted;
-            await _xmlStorage.UpdateRecord(COLLECTION, id.ToString(), task);
+            await xmlStorage.UpdateRecord(COLLECTION, id.ToString(), task);
         }
     }
 }

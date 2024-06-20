@@ -4,7 +4,7 @@
     {
         public Task<IEnumerable<TRecord>> GetRecords<TRecord>(string collection);
 
-        public Task AddRecord<TRecord>(string collection, TRecord record);
+        public Task<TRecord> AddRecord<TRecord>(string collection, TRecord record);
 
         public Task<TRecord> FindRecord<TRecord>(string collection, string key);
 

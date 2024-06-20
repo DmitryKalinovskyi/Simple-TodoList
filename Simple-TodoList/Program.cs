@@ -1,5 +1,12 @@
+using GraphQL;
+using GraphQL.Types;
+using Microsoft.Extensions.Configuration;
 using Simple_TodoList.Extensions;
 using Simple_TodoList.Factories;
+using Simple_TodoList.Factories.RepositoryResolvers;
+using Simple_TodoList.GraphQL.Queries;
+using Simple_TodoList.GraphQL.Schemas;
+using Simple_TodoList.GraphQL.Types;
 using Simple_TodoList.Repositories;
 using Simple_TodoList.Repositories.SQLRepositories;
 using Simple_TodoList.Repositories.XMLRepositories;
@@ -35,8 +42,9 @@ builder.Services.AddSession(options =>
 
 builder.Services.AddHttpContextAccessor();
 
-builder.Services.AddScoped<IRepositoryResolver, SessionBasedRepositoryResolver>();
 builder.Services.AddRepositoryResolvers();
+
+builder.Services.AddGraphQLServices();
 
 var app = builder.Build();
 
@@ -52,6 +60,8 @@ if (!app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 
+app.UseGraphQLAltair();
+app.UseGraphQL();
 
 app.UseSession();
 

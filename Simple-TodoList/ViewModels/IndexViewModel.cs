@@ -1,4 +1,4 @@
-﻿using Simple_TodoList.Factories;
+﻿using Simple_TodoList.Factories.RepositoryResolvers;
 using Simple_TodoList.Models;
 
 namespace Simple_TodoList.ViewModels
