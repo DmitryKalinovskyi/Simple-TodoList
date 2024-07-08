@@ -1,8 +1,9 @@
 import {useState} from "react";
 import Task from "../models/Task.ts";
+import {useDispatch} from "react-redux";
+import {add_task} from "../state/tasksSlice.ts";
 
 interface TaskFormProps{
-    onSubmit?: (task: Task) => void;
 }
 
 
@@ -11,6 +12,7 @@ export default function TaskForm(props: TaskFormProps){
     const [deadline, setDeadline] = useState<string>("");
     // const [categoryId, setCategoryId] = useState<string>("");
     const [category, setCategory] = useState<string>("");
+    const dispatch = useDispatch();
 
     function submitTask(){
         // ignore when name is empty
@@ -26,8 +28,7 @@ export default function TaskForm(props: TaskFormProps){
         if(category != "") task.category = {id: 0, name: category}
         // if(categoryId != "" && !isNaN(+categoryId)) task.categoryId = +categoryId;
 
-        props.onSubmit(task);
-
+        dispatch(add_task(task))
         setName("");
         setDeadline("");
         // setCategoryId("");

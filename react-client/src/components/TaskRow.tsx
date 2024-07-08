@@ -1,5 +1,6 @@
 import Task from "../models/Task.ts";
-import {useState} from "react";
+import {useDispatch} from "react-redux";
+import {change_complition, remove_task} from "../state/tasksSlice.ts";
 
 interface TaskRowProps{
     task: Task,
@@ -8,12 +9,10 @@ interface TaskRowProps{
 }
 
 export default function TaskRow(props: TaskRowProps ){
-    const [task, setTask] = useState(props.task);
+    const task = props.task;
+    // const [task, setTask] = useState(props.task);
+    const dispatch = useDispatch();
     const isCompleteCheckboxId = "isComplete-input-" + task.id;
-
-    function changeComplition(e){
-        setTask({...task, isCompleted: !task.isCompleted});
-    }
 
     return (
         <tr>
@@ -24,7 +23,7 @@ export default function TaskRow(props: TaskRowProps ){
                         type="checkbox"
                         id={isCompleteCheckboxId}
                         checked={task.isCompleted}
-                        onChange={changeComplition}
+                        onChange={() => dispatch(change_complition(task.id))}
                         className="mx-2"/>
                     <label htmlFor={isCompleteCheckboxId}>
                         {task.isCompleted ? <s>{task.name}</s> : <>{task.name}</>}
@@ -44,7 +43,7 @@ export default function TaskRow(props: TaskRowProps ){
             </td>
 
             <td>
-                <button className="btn btn-danger" onClick={() => props.onDelete(task.id)}>
+                <button className="btn btn-danger" onClick={() => dispatch(remove_task(task.id))}>
                     X
                 </button>
             </td>
