@@ -1,11 +1,18 @@
 import TaskRow from "./TaskRow.tsx";
-import {useSelector} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {RootState} from "../state/store.ts";
 import Task from "../models/Task.ts";
+import {fetch_tasks} from "../state/epics/tasksEpics.ts";
+import {useEffect} from "react";
 
 export function TaskTable(){
+    const dispatch = useDispatch();
+
+    useEffect(() => {
+        dispatch(fetch_tasks())
+    }, [dispatch]);
+
     const tasks = useSelector((state: RootState) => state.tasks.tasks);
-    // make a request to the api.
 
     function sortTasks(tasks: Task[]){
         tasks = [...tasks];
@@ -25,7 +32,7 @@ export function TaskTable(){
             return a.name < b.name? 1: -1;
         });
     }
-    // console.log(data);
+
     return (
         <table className="table table-hover">
             <thead>

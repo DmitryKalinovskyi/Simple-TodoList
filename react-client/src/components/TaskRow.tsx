@@ -1,6 +1,6 @@
 import Task from "../models/Task.ts";
 import {useDispatch} from "react-redux";
-import {change_complition, remove_task} from "../state/tasksSlice.ts";
+import {remove_task_request, update_task_request} from "../state/epics/tasksEpics.ts";
 
 interface TaskRowProps{
     task: Task,
@@ -10,9 +10,23 @@ interface TaskRowProps{
 
 export default function TaskRow(props: TaskRowProps ){
     const task = props.task;
-    // const [task, setTask] = useState(props.task);
     const dispatch = useDispatch();
     const isCompleteCheckboxId = "isComplete-input-" + task.id;
+
+    function getFormatedDeadline(deadline: string){
+        const date = new Date(deadline);
+        return date.toUTCString();
+    }
+
+    function toggleTodo(){
+        dispatch(update_task_request(
+            {
+                id: task.id,
+                task: {
+                    isCompleted: !task.isCompleted
+                }
+            }));
+    }
 
     return (
         <tr>
@@ -23,7 +37,7 @@ export default function TaskRow(props: TaskRowProps ){
                         type="checkbox"
                         id={isCompleteCheckboxId}
                         checked={task.isCompleted}
-                        onChange={() => dispatch(change_complition(task.id))}
+                        onChange={toggleTodo}
                         className="mx-2"/>
                     <label htmlFor={isCompleteCheckboxId}>
                         {task.isCompleted ? <s>{task.name}</s> : <>{task.name}</>}
@@ -38,12 +52,12 @@ export default function TaskRow(props: TaskRowProps ){
 
             <td>
                 <div className="badge bg-secondary">
-                    {task.deadline}
+                    {task.deadline && getFormatedDeadline(task.deadline)}
                 </div>
             </td>
 
             <td>
-                <button className="btn btn-danger" onClick={() => dispatch(remove_task(task.id))}>
+                <button className="btn btn-danger" onClick={() => dispatch(remove_task_request(task.id))}>
                     X
                 </button>
             </td>

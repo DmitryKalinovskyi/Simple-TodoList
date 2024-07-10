@@ -7,7 +7,11 @@ query TaskQuery{
             id,
             name,
             deadline,
-            isCompleted
+            isCompleted,
+            category{
+                id,
+                name
+            }
         }
     }
 }
@@ -17,7 +21,11 @@ const CREATE_TASK = gql`
 mutation CreateTask($task: TaskInputType!){
   taskMutation{
     createTask(task: $task){
-      id
+      id,
+      category{
+        id,
+        name
+      }
     }
   }
 }`
@@ -25,7 +33,7 @@ mutation CreateTask($task: TaskInputType!){
 const UPDATE_TASK = gql`
 mutation UpdateTask($id: Int!, $task: TaskInputType!){
   taskMutation{
-    updateTask(id: $id, task: $task){name}
+    updateTask(id: $id, task: $task){id}
   }
 }
 `;
