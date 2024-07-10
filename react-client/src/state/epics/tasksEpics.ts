@@ -1,5 +1,5 @@
 import {ofType} from "redux-observable";
-import {catchError, from, map, mergeMap, of, tap} from "rxjs";
+import {from, map, mergeMap} from "rxjs";
 import {client} from "../../api/client.ts";
 import {CREATE_TASK, DELETE_TASK, TASKS_QUERY, UPDATE_TASK} from "../../api/tasksRequests.ts";
 import {add_task, remove_task, set_tasks, update_task, UpdateTaskInput} from "../tasksSlice.ts";
