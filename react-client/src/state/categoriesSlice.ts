@@ -15,7 +15,6 @@ const result = (await client.query({
     variables: {}
 }));
 
-console.log(result);
 const categories = result.data.categoryQuery.categories;
 
 const initialState: CategoriesState = {

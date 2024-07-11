@@ -1,5 +1,4 @@
 import {useState} from "react";
-import Task from "../models/Task.ts";
 import {useDispatch, useSelector} from "react-redux";
 import {RootState} from "../state/store.ts";
 import {add_task_request} from "../state/epics/tasksEpics.ts";
