@@ -1,38 +1,38 @@
 import {useState} from "react";
-import Task from "../models/Task.ts";
-import {useDispatch} from "react-redux";
-import {add_task} from "../state/tasksSlice.ts";
+import {useDispatch, useSelector} from "react-redux";
+import {RootState} from "../state/store.ts";
+import {add_task_request} from "../state/epics/tasksEpics.ts";
+import {CreateTaskInput} from "../models/CreateTaskInput.ts";
 
 interface TaskFormProps{
 }
 
 
 export default function TaskForm(props: TaskFormProps){
+    const categories = useSelector((state: RootState) => state.categories.categories);
+
     const [name, setName] = useState("");
     const [deadline, setDeadline] = useState<string>("");
-    // const [categoryId, setCategoryId] = useState<string>("");
-    const [category, setCategory] = useState<string>("");
+    const [categoryId, setCategoryId] = useState<string>("");
+    // const [category, setCategory] = useState<string>("");
     const dispatch = useDispatch();
 
     function submitTask(){
         // ignore when name is empty
         if(name.trim() == "") return;
 
-        const task: Task = {
-            id: 0,
+        const task: CreateTaskInput = {
             name,
             isCompleted: false
         }
+        if(deadline != "") task.deadline = new Date(deadline).toISOString();
 
-        if(deadline != "") task.deadline = deadline;
-        if(category != "") task.category = {id: 0, name: category}
-        // if(categoryId != "" && !isNaN(+categoryId)) task.categoryId = +categoryId;
+        if(+categoryId) task.categoryId = +categoryId;
 
-        dispatch(add_task(task))
+        dispatch(add_task_request(task))
         setName("");
         setDeadline("");
-        // setCategoryId("");
-        setCategory("");
+        setCategoryId("");
     }
 
     return <>
@@ -53,15 +53,15 @@ export default function TaskForm(props: TaskFormProps){
 
                 <div className="col-auto">
                     <select
-                        onChange={(e) => setCategory(e.target.value)}
-                        value={category}
+                        onChange={(e) => setCategoryId(e.target.value)}
+                        value={categoryId}
                         className="form-select">
-                        <option selected>
+                        <option>
                             Select Category
                         </option>
-                        <option>Sport</option>
-                        <option>Learning</option>
-                        <option>Work</option>
+                        {categories.map((c) => {
+                            return <option value={c.id} key={c.id}>{c.name}</option>
+                        })}
                     </select>
                 </div>
 

@@ -47,7 +47,12 @@ builder.Services.AddRepositoryResolvers();
 builder.Services.AddGraphQLServices();
 
 var app = builder.Build();
-
+app.UseCors((policyBuilder) =>
+{
+    policyBuilder.AllowAnyHeader();
+    policyBuilder.AllowAnyMethod();
+    policyBuilder.AllowAnyOrigin();
+});
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())

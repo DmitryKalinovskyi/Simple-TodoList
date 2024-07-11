@@ -11,7 +11,7 @@ namespace Simple_TodoList.GraphQL.Queries
         {
             Field<ListGraphType<TaskType>>("tasks").ResolveAsync(async (context) =>
             {
-                return await tasksRepository.GetAll();
+                return await tasksRepository.GetAllWithStandartOrdering();
             });
 
             Field<TaskType>("task").Arguments(new QueryArguments(new QueryArgument<IntGraphType> { Name = "taskId" })).ResolveAsync(async (context) =>

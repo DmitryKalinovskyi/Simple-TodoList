@@ -1,10 +1,12 @@
 ﻿using GraphQL;
 using GraphQL.Types;
+using Newtonsoft.Json;
 using Simple_TodoList.GraphQL.InputTypes;
 using Simple_TodoList.GraphQL.Types;
 using Simple_TodoList.Models;
 using Simple_TodoList.Repositories;
 using System.Diagnostics.CodeAnalysis;
+using System.Text.Json.Serialization;
 
 namespace Simple_TodoList.GraphQL.Mutation
 {
@@ -24,11 +26,18 @@ namespace Simple_TodoList.GraphQL.Mutation
                 .ResolveAsync(async (context) =>
             {
                 var id = context.GetArgument<int>("id");
-                var task = context.GetArgument<TaskModel>("task");
+                var taskDb = await tasksRepository.GetById(id);
+                if (taskDb == null) return null;
 
-                await tasksRepository.Update(id, task);
+                // Convert to object with dynamic fields,
+                // then to json and after update database entity based on that info
+                var task = context.GetArgument<dynamic>("task");
+                var json = JsonConvert.SerializeObject(task);
+                JsonConvert.PopulateObject(json, taskDb);
+                
+                await tasksRepository.Update(id, taskDb);
 
-                return await tasksRepository.GetById(id);
+                return taskDb;
             });
 
             Field<StringGraphType>("deleteTask")
