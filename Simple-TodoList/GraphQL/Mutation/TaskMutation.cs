@@ -17,6 +17,8 @@ namespace Simple_TodoList.GraphQL.Mutation
             Field<TaskType>("createTask").Arguments(new QueryArgument<NonNullGraphType<TaskInputType>> {Name="task"}).ResolveAsync(async (context) => 
             {
                 var task = context.GetArgument<TaskModel>("task");
+
+
                 return await tasksRepository.Insert(task);
             });
 
