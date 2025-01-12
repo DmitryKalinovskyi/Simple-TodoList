@@ -1,13 +1,14 @@
 ﻿using GraphQL.Types;
 using Simple_TodoList.Factories;
+using Simple_TodoList.GraphQL.Categories;
 using Simple_TodoList.Models;
 using Simple_TodoList.Repositories;
 
-namespace Simple_TodoList.GraphQL.Types
+namespace Simple_TodoList.GraphQL.Tasks
 {
-    public class TaskType: ObjectGraphType<TaskModel>
+    public class TaskType : ObjectGraphType<TaskModel>
     {
-        public TaskType(ICategoriesRepository categoriesRepository) 
+        public TaskType(ICategoriesRepository categoriesRepository)
         {
             Field(t => t.Id);
             Field(t => t.Name);

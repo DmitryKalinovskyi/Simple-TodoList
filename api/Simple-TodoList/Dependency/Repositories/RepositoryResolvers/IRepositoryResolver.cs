@@ -1,4 +1,6 @@
-﻿namespace Simple_TodoList.Factories.RepositoryResolvers
+﻿using Simple_TodoList.Dependency.Repositories;
+
+namespace Simple_TodoList.Dependency.Repositories.RepositoryResolvers
 {
     public enum StorageType
     {

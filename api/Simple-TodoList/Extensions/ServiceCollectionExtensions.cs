@@ -1,16 +1,15 @@
 ﻿using GraphQL.Types;
 using GraphQL.DI;
-using Simple_TodoList.GraphQL.Types;
 using Simple_TodoList.Repositories;
 using GraphQL;
-using Simple_TodoList.GraphQL.Queries;
 using GraphQL.SystemTextJson;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
-using Simple_TodoList.Factories.RepositoryResolvers;
-using Simple_TodoList.GraphQL.Schemas;
-using Simple_TodoList.GraphQL.InputTypes;
-using Simple_TodoList.GraphQL.Mutation;
+using Simple_TodoList.GraphQL.Categories;
+using Simple_TodoList.GraphQL.Todos;
+using Simple_TodoList.GraphQL.Tasks;
+using Simple_TodoList.GraphQL;
+using Simple_TodoList.Dependency.Repositories.RepositoryResolvers;
 
 namespace Simple_TodoList.Extensions
 {

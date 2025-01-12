@@ -1,11 +1,12 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using Simple_TodoList.Dependency.Repositories;
 using Simple_TodoList.Repositories;
 using Simple_TodoList.Repositories.SQLRepositories;
 using Simple_TodoList.Repositories.XMLRepositories;
 using System;
 using System.ComponentModel;
 
-namespace Simple_TodoList.Factories.RepositoryResolvers
+namespace Simple_TodoList.Dependency.Repositories.RepositoryResolvers
 {
     public class SessionBasedRepositoryResolver : RepositoryResolverBase, IModifiableRepositoryResolver
     {
@@ -14,7 +15,7 @@ namespace Simple_TodoList.Factories.RepositoryResolvers
         private readonly IHttpContextAccessor _httpContextAccessor;
 
         public SessionBasedRepositoryResolver(IHttpContextAccessor httpContextAccessor,
-            IServiceProvider serviceProvider): base(serviceProvider)
+            IServiceProvider serviceProvider) : base(serviceProvider)
         {
             _httpContextAccessor = httpContextAccessor;
         }

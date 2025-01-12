@@ -1,7 +1,8 @@
-﻿using Simple_TodoList.Repositories;
+﻿using Simple_TodoList.Dependency.Repositories;
+using Simple_TodoList.Repositories;
 using System.ComponentModel;
 
-namespace Simple_TodoList.Factories.RepositoryResolvers
+namespace Simple_TodoList.Dependency.Repositories.RepositoryResolvers
 {
     public abstract class RepositoryResolverBase : IRepositoryResolver
     {
@@ -10,7 +11,7 @@ namespace Simple_TodoList.Factories.RepositoryResolvers
 
         public RepositoryResolverBase(IServiceProvider serviceProvider)
         {
-            _serviceProvider = serviceProvider;    
+            _serviceProvider = serviceProvider;
             _factory = new Lazy<IRepositoryFactory>(ResolveRepositoryFactory);
         }
 

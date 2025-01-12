@@ -1,7 +1,7 @@
 ﻿using Simple_TodoList.Repositories;
 using System.ComponentModel;
 
-namespace Simple_TodoList.Factories.RepositoryResolvers
+namespace Simple_TodoList.Dependency.Repositories.RepositoryResolvers
 {
     public class HeaderBasedRepositoryResolver : RepositoryResolverBase
     {

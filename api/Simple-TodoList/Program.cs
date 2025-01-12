@@ -1,13 +1,5 @@
-using GraphQL;
-using GraphQL.Types;
-using Microsoft.Extensions.Configuration;
+using Simple_TodoList.Dependency.Repositories;
 using Simple_TodoList.Extensions;
-using Simple_TodoList.Factories;
-using Simple_TodoList.Factories.RepositoryResolvers;
-using Simple_TodoList.GraphQL.Queries;
-using Simple_TodoList.GraphQL.Schemas;
-using Simple_TodoList.GraphQL.Types;
-using Simple_TodoList.Repositories;
 using Simple_TodoList.Repositories.SQLRepositories;
 using Simple_TodoList.Repositories.XMLRepositories;
 using Simple_TodoList.Services.XMLStorage;

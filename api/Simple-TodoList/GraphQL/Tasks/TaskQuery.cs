@@ -1,9 +1,8 @@
 ﻿using GraphQL;
 using GraphQL.Types;
-using Simple_TodoList.GraphQL.Types;
 using Simple_TodoList.Repositories;
 
-namespace Simple_TodoList.GraphQL.Queries
+namespace Simple_TodoList.GraphQL.Tasks
 {
     public class TaskQuery : ObjectGraphType
     {
@@ -14,10 +13,12 @@ namespace Simple_TodoList.GraphQL.Queries
                 return await tasksRepository.GetAllWithStandartOrdering();
             });
 
-            Field<TaskType>("task").Arguments(new QueryArguments(new QueryArgument<IntGraphType> { Name = "taskId" })).ResolveAsync(async (context) =>
+            Field<TaskType>("task")
+                .Argument<IntGraphType>("taskId")
+                .ResolveAsync(async (context) =>
             {
                 var id = context.GetArgument<int>("taskId");
-                
+
                 return await tasksRepository.GetById(id);
             });
         }

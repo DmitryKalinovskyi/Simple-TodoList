@@ -1,5 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
-using Simple_TodoList.Factories.RepositoryResolvers;
+using Simple_TodoList.Dependency.Repositories.RepositoryResolvers;
 using Simple_TodoList.Models;
 using Simple_TodoList.Repositories;
 using Simple_TodoList.Repositories.SQLRepositories;

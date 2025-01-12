@@ -1,27 +1,26 @@
 ﻿using GraphQL;
 using GraphQL.Types;
-using Simple_TodoList.GraphQL.InputTypes;
-using Simple_TodoList.GraphQL.Types;
+using Simple_TodoList.GraphQL.Tasks;
 using Simple_TodoList.Models;
 using Simple_TodoList.Repositories;
 using Simple_TodoList.Repositories.SQLRepositories;
 
-namespace Simple_TodoList.GraphQL.Mutation
+namespace Simple_TodoList.GraphQL.Categories
 {
-    public class CategoryMutation: ObjectGraphType
+    public class CategoryMutation : ObjectGraphType
     {
         public CategoryMutation(ICategoriesRepository categoriesRepository)
         {
             Field<CategoryType>("createCategory")
-                .Arguments(new QueryArgument<CategoryInputType> { Name = "category" })
+                .Argument<CategoryInputType>("category")
                 .ResolveAsync(async (context) =>
             {
                 return await categoriesRepository.Insert(context.GetArgument<CategoryModel>("category"));
             });
 
             Field<TaskType>("updateCategory")
-                .Arguments(new QueryArgument<NonNullGraphType<IntGraphType>> { Name = "id" },
-                new QueryArgument<NonNullGraphType<CategoryInputType>> { Name = "category" })
+                .Argument<IntGraphType>("id")
+                .Argument<CategoryInputType>("category")
                 .ResolveAsync(async (context) =>
                 {
                     var id = context.GetArgument<int>("id");
@@ -32,7 +31,7 @@ namespace Simple_TodoList.GraphQL.Mutation
                 });
 
             Field<StringGraphType>("deleteCategory")
-                .Arguments(new QueryArgument<NonNullGraphType<IntGraphType>> { Name = "id" })
+                .Argument<IntGraphType>("id")
                 .ResolveAsync(async (context) =>
                 {
                     var id = context.GetArgument<int>("id");

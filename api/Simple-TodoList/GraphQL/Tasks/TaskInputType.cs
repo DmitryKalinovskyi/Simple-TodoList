@@ -1,9 +1,8 @@
 ﻿using GraphQL.Types;
-using Simple_TodoList.GraphQL.Types;
 
-namespace Simple_TodoList.GraphQL.InputTypes
+namespace Simple_TodoList.GraphQL.Tasks
 {
-    public class TaskInputType: InputObjectGraphType
+    public class TaskInputType : InputObjectGraphType
     {
         public TaskInputType()
         {
