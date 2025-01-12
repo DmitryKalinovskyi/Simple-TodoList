@@ -23,9 +23,7 @@
 
             <div class="col-auto">
                 <select asp-for="Task.CategoryId" name="CategoryId" class="form-select" >
-                    <option selected>
-                        Select Category
-                    </option>
+                    <option selected value="">Select Category</option>
                     @foreach(var category in Model.Categories)
                     {
                         <option value="@category.Id">@category.Name</option>

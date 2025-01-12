@@ -54,9 +54,9 @@ namespace Simple_TodoList.Repositories.SQLRepositories
         {
             using var connection = new SqlConnection(_connectionString);
 
-            var sqlInsert = @"insert into Tasks (Name, IsCompleted, Deadline, CategoryId)
-                      values (@Name, @IsCompleted, @Deadline, @CategoryId);
-                      SELECT CAST(SCOPE_IDENTITY() as int);";
+            var sqlInsert = @"INSERT INTO Tasks (Name, IsCompleted, Deadline, CategoryId)
+OUTPUT INSERTED.Id
+VALUES (@Name, @IsCompleted, @Deadline, @CategoryId);";
 
             var taskToInsert = new { task.Name, task.IsCompleted, task.Deadline, task.CategoryId };
 
@@ -69,8 +69,7 @@ namespace Simple_TodoList.Repositories.SQLRepositories
         {
             using var connection = new SqlConnection(_connectionString);
 
-            var sql = "update Tasks set Name=@Name, IsCompleted=@IsCompleted, Deadline=@Deadline, CategoryId=@CategoryId" +
-                " where Id=@Id";
+            var sql = "update Tasks set Name=@Name, IsCompleted=@IsCompleted, Deadline=@Deadline, CategoryId=@CategoryId where Id=@Id";
 
             var param = new
             {
@@ -88,8 +87,7 @@ namespace Simple_TodoList.Repositories.SQLRepositories
         {
             using var connection = new SqlConnection(_connectionString);
 
-            var sql = "update Tasks set IsCompleted=@isCompleted" +
-            " where Id=@id";
+            var sql = "update Tasks set IsCompleted=@isCompleted where Id=@id";
 
             await connection.ExecuteAsync(sql, new { id, isCompleted });
         }

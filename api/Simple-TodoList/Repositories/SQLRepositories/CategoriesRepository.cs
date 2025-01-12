@@ -32,7 +32,7 @@ namespace Simple_TodoList.Repositories.SQLRepositories
         {
             using var connection = new SqlConnection(_connectionString);
 
-            return await connection.QueryFirstAsync<CategoryModel>("select * from Categories where Id = @id", new { id });
+            return await connection.QueryFirstOrDefaultAsync<CategoryModel>("select * from Categories where Id = @id", new { id });
         }
 
         public async Task<CategoryModel> Insert(CategoryModel category)
@@ -50,9 +50,19 @@ namespace Simple_TodoList.Repositories.SQLRepositories
             return await GetById(newCategoryId) ?? throw new InvalidOperationException("Inserted model is not founded.");
         }
 
-        public Task Update(int id, CategoryModel category)
+        public async Task Update(int id, CategoryModel category)
         {
-            throw new NotImplementedException();
+            using var connection = new SqlConnection(_connectionString);
+
+            var sql = "update Categories set Name=@Name where Id=@Id";
+
+            var param = new
+            {
+                Id = id,
+                category.Name,
+            };
+
+            await connection.ExecuteAsync(sql, param);
         }
     }
 }

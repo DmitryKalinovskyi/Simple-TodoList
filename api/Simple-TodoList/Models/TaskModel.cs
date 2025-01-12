@@ -1,11 +1,15 @@
 ﻿
+using System.ComponentModel.DataAnnotations;
+
 namespace Simple_TodoList.Models
 {
     public class TaskModel
     {
         public int Id { get; set; }
 
-        public string Name { get; set; } = ""; 
+        [Required]
+        [MinLength(1)]
+        public string Name { get; set; } = String.Empty; 
 
         public bool IsCompleted { get; set; } 
         
