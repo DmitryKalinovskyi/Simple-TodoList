@@ -4,13 +4,13 @@ using Simple_TodoList.Services.XMLStorage;
 
 namespace Simple_TodoList.Repositories.XMLRepositories
 {
-    public class XMLTasksRepository(IXMLStorage xmlStorage) : ITasksRepository
+    public class XMLTasksRepository(IXMLStorage<int> xmlStorage) : ITasksRepository
     {
         private const string COLLECTION = "Tasks";
 
         public async Task Delete(int id)
         {
-            await xmlStorage.DeleteRecord(COLLECTION, id.ToString());
+            await xmlStorage.DeleteRecord(COLLECTION, id);
         }
 
         public async Task<IEnumerable<TaskModel>> GetAll()
@@ -25,7 +25,7 @@ namespace Simple_TodoList.Repositories.XMLRepositories
 
         public async Task<TaskModel?> GetById(int id)
         {
-            return await xmlStorage.FindRecord<TaskModel>(COLLECTION, id.ToString());
+            return await xmlStorage.FindRecord<TaskModel>(COLLECTION, id);
         }
 
         public async Task<TaskModel> Insert(TaskModel task)
@@ -35,14 +35,14 @@ namespace Simple_TodoList.Repositories.XMLRepositories
 
         public async Task Update(int id, TaskModel task)
         {
-            await xmlStorage.UpdateRecord(COLLECTION, id.ToString(), task);
+            await xmlStorage.UpdateRecord(COLLECTION, id, task);
         }
 
         public async Task UpdateComplition(int id, bool isCompleted)
         {
-            var task = await xmlStorage.FindRecord<TaskModel>(COLLECTION, id.ToString());
+            var task = await xmlStorage.FindRecord<TaskModel>(COLLECTION, id);
             task.IsCompleted = isCompleted;
-            await xmlStorage.UpdateRecord(COLLECTION, id.ToString(), task);
+            await xmlStorage.UpdateRecord(COLLECTION, id, task);
         }
     }
 }

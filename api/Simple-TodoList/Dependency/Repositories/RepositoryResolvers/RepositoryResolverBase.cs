@@ -9,6 +9,8 @@ namespace Simple_TodoList.Dependency.Repositories.RepositoryResolvers
         protected Lazy<IRepositoryFactory> _factory;
         private IServiceProvider _serviceProvider;
 
+        public abstract StorageType StorageType { get;}
+
         public RepositoryResolverBase(IServiceProvider serviceProvider)
         {
             _serviceProvider = serviceProvider;
@@ -17,15 +19,12 @@ namespace Simple_TodoList.Dependency.Repositories.RepositoryResolvers
 
         public IRepositoryFactory ResolveRepositoryFactory()
         {
-            StorageType storageType = GetStorageType();
-            IRepositoryFactory factory;
-
-            switch (storageType)
+            IRepositoryFactory factory = StorageType switch
             {
-                case StorageType.SQLServer: factory = _serviceProvider.GetRequiredService<SQLRepositoryFactory>(); break;
-                case StorageType.XML: factory = _serviceProvider.GetRequiredService<XMLRepositoryFactory>(); break;
-                default: throw new InvalidEnumArgumentException(nameof(storageType));
-            }
+                StorageType.SQLServer => _serviceProvider.GetRequiredService<SQLRepositoryFactory>(),
+                StorageType.XML => _serviceProvider.GetRequiredService<XMLRepositoryFactory>(),
+                _ => throw new InvalidEnumArgumentException(nameof(StorageType))
+            };
 
             return factory;
         }
@@ -39,7 +38,5 @@ namespace Simple_TodoList.Dependency.Repositories.RepositoryResolvers
         {
             return _factory.Value.GetTasksRepository();
         }
-
-        public abstract StorageType GetStorageType();
     }
 }

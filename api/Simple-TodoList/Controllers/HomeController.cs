@@ -19,7 +19,7 @@ namespace Simple_TodoList.Controllers
             {
                 Tasks = [.. await tasksRepository.GetAllWithStandartOrdering()],
                 Categories = [.. await categoriesRepository.GetAll()],
-                StorageType = repositoryResolver.GetStorageType()
+                StorageType = repositoryResolver.StorageType
             };
 
             return View(viewModel);

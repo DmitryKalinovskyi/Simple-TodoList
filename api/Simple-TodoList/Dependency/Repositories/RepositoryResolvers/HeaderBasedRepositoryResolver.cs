@@ -5,6 +5,9 @@ namespace Simple_TodoList.Dependency.Repositories.RepositoryResolvers
 {
     public class HeaderBasedRepositoryResolver : RepositoryResolverBase
     {
+        public static StorageType DefaultStorageType { get; set; }
+        public override StorageType StorageType => GetStorageTypeFromHeader();
+
         private const string HEADER_NAME = "Storage-Type";
 
         private readonly IHttpContextAccessor _httpContextAccessor;
@@ -15,11 +18,11 @@ namespace Simple_TodoList.Dependency.Repositories.RepositoryResolvers
             _httpContextAccessor = httpContextAccessor;
         }
 
-        public override StorageType GetStorageType()
+        private StorageType GetStorageTypeFromHeader()
         {
-            var headers = _httpContextAccessor.HttpContext.Request.Headers;
+            var headers = _httpContextAccessor.HttpContext?.Request.Headers;
 
-            if (headers.TryGetValue(HEADER_NAME, out var storageTypeHeader))
+            if (headers is not null && headers.TryGetValue(HEADER_NAME, out var storageTypeHeader))
             {
                 if (Enum.TryParse(storageTypeHeader, true, out StorageType storageType))
                 {
@@ -27,8 +30,7 @@ namespace Simple_TodoList.Dependency.Repositories.RepositoryResolvers
                 }
             }
 
-            // Default storage type
-            return StorageType.SQLServer;
+            return DefaultStorageType;
         }
     }
 }

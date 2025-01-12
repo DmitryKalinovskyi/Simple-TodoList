@@ -21,7 +21,7 @@ builder.Services
 
 builder.Services.AddSingleton<SQLRepositoryFactory>();
 builder.Services.AddSingleton<XMLRepositoryFactory>();
-builder.Services.AddSingleton<IXMLStorage, XMLStorage>();
+builder.Services.AddSingleton<IXMLStorage<int>, XMLStorage>();
 
 builder.Services.AddDistributedMemoryCache();
 

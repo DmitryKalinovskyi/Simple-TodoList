@@ -1,5 +1,4 @@
 ﻿using GraphQL.Types;
-using Simple_TodoList.Factories;
 using Simple_TodoList.GraphQL.Categories;
 using Simple_TodoList.Models;
 using Simple_TodoList.Repositories;

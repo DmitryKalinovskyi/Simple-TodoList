@@ -1,5 +1,5 @@
-﻿@    using Simple_TodoList.Factories.RepositoryResolvers
-@    using Simple_TodoList.ViewModels
+﻿@using Simple_TodoList.Dependency.Repositories.RepositoryResolvers
+@using Simple_TodoList.ViewModels
 @model IndexViewModel
 
 @{
@@ -76,7 +76,7 @@
                                 }
                                 else
                                 {
-                                    @Model.Tasks[i].Name
+                                    <div>@Model.Tasks[i].Name</div>
                                 }
                             </label>
                                     

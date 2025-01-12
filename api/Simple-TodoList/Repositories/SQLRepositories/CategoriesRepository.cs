@@ -47,7 +47,7 @@ namespace Simple_TodoList.Repositories.SQLRepositories
 
             var newCategoryId = await connection.QuerySingleAsync<int>(sqlInsert, categoryToInsert);
 
-            return await GetById(newCategoryId);
+            return await GetById(newCategoryId) ?? throw new InvalidOperationException("Inserted model is not founded.");
         }
 
         public Task Update(int id, CategoryModel category)

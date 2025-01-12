@@ -62,7 +62,7 @@ namespace Simple_TodoList.Repositories.SQLRepositories
 
             var newTaskId = await connection.QuerySingleAsync<int>(sqlInsert, taskToInsert);
 
-            return await GetById(newTaskId);
+            return await GetById(newTaskId) ?? throw new InvalidOperationException("Inserted model is not founded.");
         }
 
         public async Task Update(int id, TaskModel task)

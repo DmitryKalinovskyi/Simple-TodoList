@@ -1,18 +1,14 @@
-﻿using Microsoft.Extensions.DependencyInjection;
-using Simple_TodoList.Dependency.Repositories;
-using Simple_TodoList.Repositories;
-using Simple_TodoList.Repositories.SQLRepositories;
-using Simple_TodoList.Repositories.XMLRepositories;
-using System;
-using System.ComponentModel;
-
-namespace Simple_TodoList.Dependency.Repositories.RepositoryResolvers
+﻿namespace Simple_TodoList.Dependency.Repositories.RepositoryResolvers
 {
     public class SessionBasedRepositoryResolver : RepositoryResolverBase, IModifiableRepositoryResolver
     {
-        private const string SESSION_KEY = "_StorageType";
+        public static StorageType DefaultStorageType = StorageType.SQLServer;
+
+        private const string SESSION_STORAGE_TYPE_KEY = "SESSION_STORAGE_TYPE";
 
         private readonly IHttpContextAccessor _httpContextAccessor;
+
+        public override StorageType StorageType => GetStorageTypeFromHttpContext();
 
         public SessionBasedRepositoryResolver(IHttpContextAccessor httpContextAccessor,
             IServiceProvider serviceProvider) : base(serviceProvider)
@@ -22,27 +18,22 @@ namespace Simple_TodoList.Dependency.Repositories.RepositoryResolvers
 
         public IRepositoryFactory SetStorageType(StorageType storageType)
         {
-            _httpContextAccessor.HttpContext?.Session.SetString(SESSION_KEY, storageType.ToString());
+            _httpContextAccessor.HttpContext?.Session.SetString(SESSION_STORAGE_TYPE_KEY, storageType.ToString());
             _factory = new Lazy<IRepositoryFactory>(ResolveRepositoryFactory);
 
             return this;
         }
 
-        public override StorageType GetStorageType()
+        private StorageType GetStorageTypeFromHttpContext()
         {
-            try
+            string? value = _httpContextAccessor.HttpContext?.Session.GetString(SESSION_STORAGE_TYPE_KEY);
+
+            if (!string.IsNullOrEmpty(value) && Enum.TryParse(typeof(StorageType), value, out var result))
             {
-                string? value = _httpContextAccessor.HttpContext.Session.GetString(SESSION_KEY);
-
-                if (!string.IsNullOrEmpty(value) && Enum.TryParse(typeof(StorageType), value, out var result))
-                {
-                    return (StorageType)result;
-                }
+                return (StorageType)result;
             }
-            catch { };
 
-            // use sqlServer as default storage type
-            return StorageType.SQLServer;
+            return DefaultStorageType;
         }
     }
 }

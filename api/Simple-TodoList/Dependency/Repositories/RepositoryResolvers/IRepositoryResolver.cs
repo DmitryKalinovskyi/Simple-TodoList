@@ -10,8 +10,7 @@ namespace Simple_TodoList.Dependency.Repositories.RepositoryResolvers
 
     public interface IRepositoryResolver : IRepositoryFactory
     {
+        public StorageType StorageType { get;}
         public IRepositoryFactory ResolveRepositoryFactory();
-
-        public StorageType GetStorageType();
     }
 }
