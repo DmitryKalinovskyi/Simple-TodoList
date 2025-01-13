@@ -9,7 +9,7 @@ namespace Simple_TodoList.ViewModels
 
         public List<CategoryModel> Categories { get; set; } = [];
 
-        public TaskModel Task { get; set; } = new();
+        public CreateTaskViewModel Task { get; set; } = new();
 
         public StorageType StorageType { get; set; }
     }

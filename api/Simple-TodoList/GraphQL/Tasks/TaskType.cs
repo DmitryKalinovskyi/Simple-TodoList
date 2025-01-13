@@ -12,7 +12,7 @@ namespace Simple_TodoList.GraphQL.Tasks
             Field(t => t.Id);
             Field(t => t.Name);
             Field(t => t.IsCompleted);
-            Field(t => t.Deadline, nullable: true, typeof(DateTimeGraphType));
+            Field(t => t.Deadline, nullable: true, typeof(DateTimeOffsetGraphType));
             Field(t => t.CategoryId, nullable: true, typeof(IntGraphType));
             Field<CategoryType>("category").ResolveAsync(async (context) =>
             {

@@ -26,11 +26,18 @@ namespace Simple_TodoList.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddTask(TaskModel task)
+        public async Task<IActionResult> AddTask(CreateTaskViewModel task)
         {
             if (ModelState.IsValid)
             {
-                await repositoryResolver.GetTasksRepository().Insert(task);
+                var mappedTask = new TaskModel()
+                {
+                    Name = task.Name,
+                    CategoryId = task.CategoryId,
+                    Deadline = task.Deadline
+                };
+
+                await repositoryResolver.GetTasksRepository().Insert(mappedTask);
             }
 
             return RedirectToAction("Index");

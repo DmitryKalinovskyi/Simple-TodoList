@@ -96,11 +96,9 @@
                     </td>
 
                     <td>
-                        @if (task.Deadline != null)
+                        @if (task.Deadline.HasValue)
                         {
-                            <div class="badge bg-secondary">
-                                @task.Deadline
-                            </div>
+                            @task.Deadline.Value.ToLocalTime().ToString("yyyy-MM-dd HH:mm:ss")
                         }
                     </td>
 
