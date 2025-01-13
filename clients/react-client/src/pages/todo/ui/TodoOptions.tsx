@@ -2,7 +2,7 @@ import * as Icon from 'react-bootstrap-icons';
 export default function TodoOptions() {
     return (
         <>
-            <div className="position-absolute" style={{left: '4px', bottom: '4px'}}>
+            <div className="position-fixed" style={{left: '4px', bottom: '4px'}}>
                 <button className="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
                     <Icon.GearFill size={20}/>
                 </button>

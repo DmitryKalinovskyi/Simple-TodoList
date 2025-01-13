@@ -1,8 +1,8 @@
-import Task from "../models/Task.ts";
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
-import {client} from "../api/client.ts";
-import Category from "../models/Category.ts";
 import {CATEGORIES_QUERY} from "../api/categoriesRequests.ts";
+import { client } from "../../../api/client.ts";
+import Category from "../../../models/Category.ts";
+import Task from "../../../models/Task.ts";
 
 interface CategoriesState{
     categories: Category[]
@@ -35,4 +35,4 @@ const categoriesSlice = createSlice({
 
 export const {add_category,remove_category} = categoriesSlice.actions;
 
-export default categoriesSlice.reducer;
+export const categoriesReducer = categoriesSlice.reducer;

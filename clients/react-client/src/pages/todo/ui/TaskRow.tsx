@@ -1,6 +1,7 @@
-import Task from "../models/Task.ts";
+import Task from "../../../models/Task.ts";
 import {useDispatch} from "react-redux";
-import {remove_task_request, update_task_request} from "../state/epics/tasksEpics.ts";
+import { update_task_request } from "../api/epics/updateTaskRequest.ts";
+import { remove_task_request } from "../api/epics/deleteTaskEpic.ts";
 
 interface TaskRowProps{
     task: Task,

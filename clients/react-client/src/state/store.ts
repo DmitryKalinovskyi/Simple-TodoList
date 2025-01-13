@@ -1,8 +1,8 @@
 import {configureStore, Tuple} from "@reduxjs/toolkit"
-import tasksReducer from "./tasksSlice.ts"
-import categoriesReducer from "./categoriesSlice.ts"
 import {createEpicMiddleware} from "redux-observable";
-import {rootEpic} from "./epics/rootEpics.ts";
+import { rootEpic } from "./rootEpics";
+import { categoriesReducer } from "../pages/categories/state/categoriesSlice";
+import { tasksReducer } from "../pages/todo/state/tasksSlice";
 
 const epicMiddleware = createEpicMiddleware();
 

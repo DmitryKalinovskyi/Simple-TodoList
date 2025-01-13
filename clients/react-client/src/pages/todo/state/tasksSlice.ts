@@ -1,6 +1,6 @@
-import Task from "../models/Task.ts";
-import {createSlice, PayloadAction} from "@reduxjs/toolkit";
-import { UpdateTaskInput } from "../models/UpdateTaskInput.ts";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit/react";
+import Task from "../../../models/Task";
+import { UpdateTaskInput } from "../../../models/UpdateTaskInput";
 
 interface TasksState{
     tasks: Task[]
@@ -53,4 +53,4 @@ export const {
     change_complition
 } = tasksSlice.actions;
 
-export default tasksSlice.reducer;
+export const tasksReducer = tasksSlice.reducer;
