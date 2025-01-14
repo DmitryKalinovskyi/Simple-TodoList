@@ -3,6 +3,13 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit/react";
 interface SettingsState{
     storageType: StorageType,
     displayCompleted: boolean
+    darkTheme: boolean,
+    groupedTasks: boolean
+}
+
+interface SettingsChange<SettingsType>{
+    key: string,
+    value: SettingsType,
 }
 
 export enum StorageType{
@@ -14,20 +21,29 @@ export enum StorageType{
 const initialState: SettingsState = {
     storageType: StorageType.SQLServer,
     displayCompleted: false,
+    darkTheme: false,
+    groupedTasks: false
 };
 
 const settingsSlice = createSlice({
     name: "settings",
     initialState,
     reducers: {
-        updateSettings: (_store, action: PayloadAction<SettingsState>) => {
+        updateAllSettings: (_state, action: PayloadAction<SettingsState>) => {
             return action.payload;
         },
+        updateSettings: (state, action: PayloadAction<SettingsChange<any>>) => {
+            return {
+                ...state,
+                [action.payload.key]: action.payload.value
+            }
+        }
     }
 });
 
 export const {
-    updateSettings, 
+    updateAllSettings, 
+    updateSettings
 } = settingsSlice.actions;
 
 export const settingsReducer = settingsSlice.reducer;

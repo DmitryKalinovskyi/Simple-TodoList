@@ -1,14 +1,17 @@
+import Task from "../../../../models/Task.ts";
 import TaskCard from "./TaskCard.tsx";
-import useTasks from "../hooks/useTasks.ts";
 import { List } from "antd";
 
+interface TaskListProps{
+    tasks: Task[]
+}
 
-export default function TaskList(){
-    const tasks = useTasks();
-
+export default function TaskList(props: TaskListProps){
     return (
         <List itemLayout="horizontal"
-        dataSource={tasks}
+        dataSource={props.tasks}
+        style={{width: "100%"}}
+        
         renderItem={(task) =>
             <List.Item>
                 <TaskCard task={task} key={task.id}/>

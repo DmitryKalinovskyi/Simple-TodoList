@@ -5,17 +5,10 @@ import { TodoListRootState } from "../../../state/store";
 export default function useTasks(): Task[]{
     const tasks = useSelector((state: TodoListRootState) => state.tasks.tasks);
     const displayCompleted = useSelector((state: TodoListRootState) => state.settings.displayCompleted);
-
+    
     return tasks
-    .filter((task) => {
-        if(!displayCompleted && task.isCompleted){
-            return false;
-        }
-        
-        return true;
-    })
+    .filter(task => displayCompleted || !task.isCompleted)
     .sort((a, b) => {
-        // put completed after uncompleted
         if(a.isCompleted !== b.isCompleted)
             return a.isCompleted ? 1: -1;
 
@@ -28,5 +21,5 @@ export default function useTasks(): Task[]{
 
         // order by name
         return a.name < b.name? 1: -1;
-    });
+    })
 }

@@ -1,10 +1,10 @@
 import { useDispatch, useSelector } from "react-redux";
 import { TodoListRootState } from "../../../../state/store";
-import { updateSettings } from "../state/settingsSlice";
+import { updateAllSettings } from "../state/settingsSlice";
 import { useCallback, useState } from "react";
 
 export default function useSettings<ValueType = string>(
-    key: "storageType" | "displayCompleted"
+    key: "storageType" | "displayCompleted" | "darkTheme" | "groupedTasks"
 ): [ValueType, (value: ValueType) => void] {
     useState();
     const properties = useSelector(
@@ -14,7 +14,7 @@ export default function useSettings<ValueType = string>(
 
     const setProperty = useCallback(
         (value: any) => {
-            dispatch(updateSettings({ ...properties, [key]: value }));
+            dispatch(updateAllSettings({ ...properties, [key]: value }));
         },
         [properties]
     );

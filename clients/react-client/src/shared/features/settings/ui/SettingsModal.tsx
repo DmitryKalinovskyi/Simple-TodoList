@@ -11,14 +11,13 @@ interface SettingsModalProps {
 export default function SettingsModal(props: SettingsModalProps) {
     const [storageType, setStorageType] = useSettings<StorageType>("storageType");
     const [displayCompleted, setDisplayCompleted] = useSettings<boolean>("displayCompleted");
+    const [darkTheme, setDarkTheme] = useSettings<boolean>("darkTheme");
+    const [groupedTasks, setGroupedTasks] = useSettings<boolean>("groupedTasks");
 
     const handleStorageTypeSelect = (value: string) => {
         if (value in StorageType) {
             setStorageType(value as StorageType);
         }
-    }
-    const handleDisplayCompletedChange = (checked: boolean) => {
-        setDisplayCompleted(checked);
     }
 
     const handleClose = () => {
@@ -31,7 +30,7 @@ export default function SettingsModal(props: SettingsModalProps) {
                 <List>
                     <List.Item>
                         <Typography.Text>
-                            Storage type:
+                            Storage type
                         </Typography.Text>
                         <Select
                             style={{ width: "150px" }}
@@ -43,13 +42,22 @@ export default function SettingsModal(props: SettingsModalProps) {
                     </List.Item>
                     <List.Item>
                         <Typography.Text>
-                            Display completed:
+                            Display completed
                         </Typography.Text>
-                        <Switch value={displayCompleted} onChange={handleDisplayCompletedChange} />
+                        <Switch value={displayCompleted} onChange={(checked) => setDisplayCompleted(checked)} />
                     </List.Item>
-                    {/* <div className="row align-items-center">
-                                    <button className="btn btn-primary col-auto" data-bs-dismiss="modal" onClick={handleSave}>Save</button>
-                                    </div> */}
+                    <List.Item>
+                        <Typography.Text>
+                            Dark theme
+                        </Typography.Text>
+                        <Switch value={darkTheme} onChange={(checked) => setDarkTheme(checked)}/>
+                    </List.Item>
+                    <List.Item>
+                        <Typography.Text>
+                            Grouped tasks
+                        </Typography.Text>
+                        <Switch value={groupedTasks} onChange={(checked) => setGroupedTasks(checked)}/>
+                    </List.Item>
                 </List>
             </Modal>
         </>

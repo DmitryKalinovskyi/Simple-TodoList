@@ -1,12 +1,12 @@
 import { combineEpics, Epic } from "redux-observable";
-import { removeTaskEpic } from "../pages/todo/api/epics/deleteTaskEpic";
-import { createTaskEpic } from "../pages/todo/api/epics/createTaskEpic";
-import { fetchTasksEpic } from "../pages/todo/api/epics/fetchTasksEpic";
-import { updateTaskEpic } from "../pages/todo/api/epics/updateTaskEpic";
+import { removeTaskEpic } from "../shared/features/todo/api/epics/deleteTaskEpic";
+import { createTaskEpic } from "../shared/features/todo/api/epics/createTaskEpic";
+import { fetchTasksEpic } from "../shared/features/todo/api/epics/fetchTasksEpic";
+import { updateTaskEpic } from "../shared/features/todo/api/epics/updateTaskEpic";
 import { Action } from "redux";
 import { TodoListRootState } from "./store";
 import { catchError } from "rxjs";
-import { fetchCategoriesEpic } from "../pages/categories/api/epics/fetchCategoriesEpic";
+import { fetchCategoriesEpic } from "../shared/features/categories/api/epics/fetchCategoriesEpic";
 
 export const rootEpic: Epic<Action, Action, TodoListRootState> = (
     action$,

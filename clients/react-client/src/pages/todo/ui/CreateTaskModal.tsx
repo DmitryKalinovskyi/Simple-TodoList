@@ -3,7 +3,7 @@ import { TodoListRootState } from "../../../state/store.ts";
 import { CreateTaskInput } from "../../../models/CreateTaskInput.ts";
 import { useFormik } from "formik";
 import * as Yup from 'yup';
-import { createTask } from "../state/tasksSlice.ts";
+import { createTask } from "../../../shared/features/todo/state/tasksSlice.ts";
 import { Button, DatePicker, Form, Input, Modal, Select } from "antd";
 
 interface CreateTaskModalProps {

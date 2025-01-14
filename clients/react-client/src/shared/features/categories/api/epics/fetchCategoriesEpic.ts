@@ -1,23 +1,19 @@
 import { Action } from "redux";
 import { Epic, ofType } from "redux-observable";
 import { switchMap } from "rxjs";
-import apiRequest from "../../../../shared/api/apiRequest";
-import graphqlRequestHandler from "../../../../shared/api/graphqlRequestHandler";
-import { TodoListRootState } from "../../../../state/store";
-import {
-    fetchCategories,
-    fetchCategoriesFailure,
-    fetchCategoriesSuccess,
-} from "../../state/categoriesSlice";
+import { appInit } from "../../../../../state/actions";
+import { TodoListRootState } from "../../../../../state/store";
+import apiRequest from "../../../../api/apiRequest";
+import graphqlRequestHandler from "../../../../api/graphqlRequestHandler";
+import { updateAllSettings } from "../../../settings/state/settingsSlice";
+import { fetchCategories, fetchCategoriesSuccess, fetchCategoriesFailure } from "../../state/categoriesSlice";
 import { categoriesQuery } from "../queries/categoriesQuery";
-import { updateSettings } from "../../../../shared/features/settings/state/settingsSlice";
-import { appInit } from "../../../../state/actions";
 
 export const fetchCategoriesEpic: Epic<Action, Action, TodoListRootState> = (
     action$
 ) =>
     action$.pipe(
-        ofType(appInit.type, fetchCategories.type, updateSettings.type),
+        ofType(appInit.type, fetchCategories.type, updateAllSettings.type),
         switchMap(() =>
             apiRequest<any>(categoriesQuery).pipe(
                 graphqlRequestHandler(

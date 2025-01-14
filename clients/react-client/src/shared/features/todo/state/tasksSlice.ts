@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit/react";
-import Task from "../../../models/Task";
-import { UpdateTaskInput } from "../../../models/UpdateTaskInput";
-import { CreateTaskInput } from "../../../models/CreateTaskInput";
+import Task from "../../../../models/Task";
+import { UpdateTaskInput } from "../../../../models/UpdateTaskInput";
+import { CreateTaskInput } from "../../../../models/CreateTaskInput";
 
 interface TasksState{
     tasks: Task[]

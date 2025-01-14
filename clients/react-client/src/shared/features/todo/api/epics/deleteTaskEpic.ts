@@ -7,9 +7,9 @@ import {
     deleteTaskSuccess,
 } from "../../state/tasksSlice";
 import { deleteTaskMutation } from "../queries/deleteTaskMutation";
-import apiRequest from "../../../../shared/api/apiRequest";
-import { TodoListRootState } from "../../../../state/store";
-import graphqlRequestHandler from "../../../../shared/api/graphqlRequestHandler";
+import apiRequest from "../../../../api/apiRequest";
+import { TodoListRootState } from "../../../../../state/store";
+import graphqlRequestHandler from "../../../../api/graphqlRequestHandler";
 
 export const removeTaskEpic: Epic<Action, Action, TodoListRootState> = (
     action$

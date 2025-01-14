@@ -1,16 +1,13 @@
-import { Action, PayloadAction } from "@reduxjs/toolkit";
+import { PayloadAction } from "@reduxjs/toolkit";
+import { Action } from "redux";
 import { Epic, ofType } from "redux-observable";
 import { mergeMap } from "rxjs";
-import { CreateTaskInput } from "../../../../models/CreateTaskInput";
-import {
-    createTask,
-    createTaskFailure,
-    createTaskSuccess,
-} from "../../state/tasksSlice";
+import { CreateTaskInput } from "../../../../../models/CreateTaskInput";
+import { TodoListRootState } from "../../../../../state/store";
+import apiRequest from "../../../../api/apiRequest";
+import graphqlRequestHandler from "../../../../api/graphqlRequestHandler";
+import { createTask, createTaskSuccess, createTaskFailure } from "../../state/tasksSlice";
 import { createTaskMutation } from "../queries/createTaskMutation";
-import apiRequest from "../../../../shared/api/apiRequest";
-import { TodoListRootState } from "../../../../state/store";
-import graphqlRequestHandler from "../../../../shared/api/graphqlRequestHandler";
 
 export const createTaskEpic: Epic<Action, Action, TodoListRootState> = (
     action$

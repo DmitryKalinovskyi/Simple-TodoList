@@ -1,9 +1,9 @@
-import Task from "../../../models/Task.ts";
 import { useDispatch } from "react-redux";
 import dayjs from "dayjs";
-import { deleteTask, updateTask } from "../state/tasksSlice.ts";
 import { Button, Checkbox, Flex, Tag, Typography } from "antd";
 import { DeleteFilled } from "@ant-design/icons";
+import Task from "../../../../models/Task";
+import { updateTask, deleteTask } from "../state/tasksSlice";
 
 const { Text } = Typography;
 
@@ -54,7 +54,7 @@ export default function TaskCard(props: TaskRowProps) {
 
             </div>
             <div>
-                <Button variant="solid" color="red" onClick={() => dispatch(deleteTask(task.id))}>
+                <Button danger type={"text"} onClick={() => dispatch(deleteTask(task.id))}>
                     <DeleteFilled />
                 </Button>
             </div>
