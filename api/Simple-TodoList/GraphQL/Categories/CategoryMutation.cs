@@ -1,5 +1,6 @@
 ﻿using GraphQL;
 using GraphQL.Types;
+using Simple_TodoList.GraphQL.Categories.Input;
 using Simple_TodoList.GraphQL.Tasks;
 using Simple_TodoList.Models;
 using Simple_TodoList.Repositories;
@@ -12,22 +13,20 @@ namespace Simple_TodoList.GraphQL.Categories
         public CategoryMutation(ICategoriesRepository categoriesRepository)
         {
             Field<CategoryType>("createCategory")
-                .Argument<CategoryInputType>("category")
+                .Argument<CreateCategoryInputType>("input")
                 .ResolveAsync(async (context) =>
             {
-                return await categoriesRepository.Insert(context.GetArgument<CategoryModel>("category"));
+                return await categoriesRepository.Insert(context.GetArgument<CategoryModel>("input"));
             });
 
             Field<TaskType>("updateCategory")
-                .Argument<IntGraphType>("id")
-                .Argument<CategoryInputType>("category")
+                .Argument<UpdateCategoryInputType>("input")
                 .ResolveAsync(async (context) =>
                 {
-                    var id = context.GetArgument<int>("id");
-                    var category = context.GetArgument<CategoryModel>("category");
-                    await categoriesRepository.Update(id, category);
+                    var input = context.GetArgument<CategoryModel>("input");
+                    await categoriesRepository.Update(input.Id, input);
 
-                    return await categoriesRepository.GetById(id);
+                    return await categoriesRepository.GetById(input.Id);
                 });
 
             Field<StringGraphType>("deleteCategory")

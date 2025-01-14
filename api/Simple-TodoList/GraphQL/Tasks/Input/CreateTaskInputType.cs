@@ -1,14 +1,14 @@
 ﻿using GraphQL.Types;
 
-namespace Simple_TodoList.GraphQL.Tasks
+namespace Simple_TodoList.GraphQL.Tasks.Input
 {
-    public class TaskInputType : InputObjectGraphType
+    public class CreateTaskInputType : InputObjectGraphType
     {
-        public TaskInputType()
+        public CreateTaskInputType()
         {
             Field<StringGraphType>("name");
             Field<BooleanGraphType>("isCompleted");
-            Field<DateTimeGraphType>("deadline");
+            Field<DateTimeOffsetGraphType>("deadline");
             Field<IntGraphType>("categoryId");
         }
     }
