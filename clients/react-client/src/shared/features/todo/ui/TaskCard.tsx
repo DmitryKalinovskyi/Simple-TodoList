@@ -1,9 +1,9 @@
 import { useDispatch } from "react-redux";
 import dayjs from "dayjs";
 import { Button, Checkbox, Flex, Tag, Typography } from "antd";
-import { DeleteFilled } from "@ant-design/icons";
+import { DeleteFilled, EditFilled } from "@ant-design/icons";
 import Task from "../../../../models/Task";
-import { updateTask, deleteTask } from "../state/tasksSlice";
+import { updateTask, deleteTask, showUpdateTaskModal } from "../state/tasksSlice";
 
 const { Text } = Typography;
 
@@ -18,13 +18,10 @@ export default function TaskCard(props: TaskRowProps) {
     const dispatch = useDispatch();
 
     function toggleTodo() {
-        dispatch(updateTask(
-            {
-                id: task.id,
-                task: {
-                    isCompleted: !task.isCompleted
-                }
-            }));
+        dispatch(updateTask({
+            id: task.id,
+            isCompleted: !task.isCompleted
+        }));
     }
 
     return (
@@ -34,7 +31,7 @@ export default function TaskCard(props: TaskRowProps) {
                     checked={task.isCompleted}
                     style={{ marginRight: "8px" }}
                 >
-                    <Flex gap={30} align={"center"}> 
+                    <Flex gap={30} align={"center"}>
                         <Flex vertical align={"flex-start"}>
                             {/* use key to invoke reconcillation and rerender text*/}
                             <Text delete={task.isCompleted} key={+task.isCompleted}>
@@ -44,16 +41,16 @@ export default function TaskCard(props: TaskRowProps) {
                                 {dayjs(task.deadline).format("MMMM D, YYYY h:mm A")}
                             </Text>}
                         </Flex>
-                        <div>
-                            {task.category && <Tag color="blue">
-                                {task.category.name}
-                            </Tag>}
-                        </div>
+                        {task.category && <Tag color="blue">
+                            {task.category.name}
+                        </Tag>}
                     </Flex>
                 </Checkbox>
-
             </div>
             <div>
+                <Button type={"text"} onClick={() => dispatch(showUpdateTaskModal(task))}>
+                    <EditFilled />
+                </Button>
                 <Button danger type={"text"} onClick={() => dispatch(deleteTask(task.id))}>
                     <DeleteFilled />
                 </Button>

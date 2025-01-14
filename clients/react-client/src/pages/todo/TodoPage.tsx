@@ -2,26 +2,29 @@ import SettingsModal from "../../shared/features/settings/ui/SettingsModal";
 import CreateTaskModal from "./ui/CreateTaskModal";
 import { FloatButton } from "antd";
 import { PlusOutlined, SettingOutlined } from "@ant-design/icons";
-import { useState } from "react";
-import useSettings from "../../shared/features/settings/hooks/useSettings";
+import useSetting from "../../shared/features/settings/hooks/useSetting";
 import CollapsableTasks from "./ui/CollapsableTasks";
 import Tasks from "./ui/Tasks";
+import UpdateTaskModal from "./ui/UpdateTaskModal";
+import { useDispatch } from "react-redux";
+import { showCreateTaskModal } from "../../shared/features/todo/state/tasksSlice";
+import { showSettingsModal } from "../../shared/features/settings/state/settingsSlice";
 
 export default function TodoPage() {
-    const [isCreateTaskModalOpen, setIsCreateTaskModalOpen] = useState(false);
-    const [isSettingsOpen, setIsSettingsOpen] = useState(false);
-    const [groupedTasks] = useSettings<boolean>("groupedTasks");
+    const dispatch = useDispatch();
+    const [groupedTasks] = useSetting<boolean>("groupedTasks");
 
     return (
         <>
-            <SettingsModal isOpen={isSettingsOpen} onClose={() => setIsSettingsOpen(false)} />
-            <CreateTaskModal isOpen={isCreateTaskModalOpen} onClose={() => setIsCreateTaskModalOpen(false)} />
+            <SettingsModal />
+            <CreateTaskModal />
+            <UpdateTaskModal />
             <FloatButton.Group>
-                <FloatButton icon={<SettingOutlined />} onClick={() => setIsSettingsOpen(true)} />
-                <FloatButton icon={<PlusOutlined />} onClick={() => setIsCreateTaskModalOpen(true)} />
+                <FloatButton icon={<SettingOutlined />} onClick={() => dispatch(showSettingsModal())} />
+                <FloatButton icon={<PlusOutlined />} onClick={() => dispatch(showCreateTaskModal())} />
             </FloatButton.Group>
-            
-            {groupedTasks ? <CollapsableTasks/> : <Tasks/>}
+
+            {groupedTasks ? <CollapsableTasks /> : <Tasks />}
         </>
     )
 }

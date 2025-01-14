@@ -2,7 +2,11 @@ import { Action, PayloadAction } from "@reduxjs/toolkit";
 import { Epic, ofType } from "redux-observable";
 import { mergeMap } from "rxjs";
 import { UpdateTaskInput } from "../../../../../models/UpdateTaskInput";
-import { updateTask, updateTaskFailure, updateTaskSuccess } from "../../state/tasksSlice";
+import {
+    updateTask,
+    updateTaskFailure,
+    updateTaskSuccess,
+} from "../../state/tasksSlice";
 import { updateTaskMutation } from "../queries/updateTaskMutation";
 import apiRequest from "../../../../api/apiRequest";
 import { TodoListRootState } from "../../../../../state/store";
@@ -14,12 +18,13 @@ export const updateTaskEpic: Epic<Action, Action, TodoListRootState> = (
     action$.pipe(
         ofType(updateTask.type),
         mergeMap((action: PayloadAction<UpdateTaskInput>) =>
-            apiRequest<any>(updateTaskMutation, {
-                id: action.payload.id,
-                task: action.payload.task,
-            }).pipe(
+            apiRequest<any>(updateTaskMutation, { input: action.payload }).pipe(
                 graphqlRequestHandler(
-                    () => updateTaskSuccess(action.payload),
+                    (ajaxResponse) => {
+                        return updateTaskSuccess(
+                            ajaxResponse.response.data.taskMutation.updateTask
+                        );
+                    },
                     () => updateTaskFailure()
                 )
             )

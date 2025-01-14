@@ -7,6 +7,7 @@ import { Action } from "redux";
 import { TodoListRootState } from "./store";
 import { catchError } from "rxjs";
 import { fetchCategoriesEpic } from "../shared/features/categories/api/epics/fetchCategoriesEpic";
+import { saveSettingsToStorageEpic } from "../shared/features/settings/epics/saveSettingsToStorageEpic";
 
 export const rootEpic: Epic<Action, Action, TodoListRootState> = (
     action$,
@@ -20,6 +21,8 @@ export const rootEpic: Epic<Action, Action, TodoListRootState> = (
         createTaskEpic,
 
         fetchCategoriesEpic,
+
+        saveSettingsToStorageEpic
     )(action$, store$, dependencies).pipe(
         catchError((error, source) => {
             console.error(error);

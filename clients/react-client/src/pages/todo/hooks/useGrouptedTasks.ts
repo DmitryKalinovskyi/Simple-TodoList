@@ -2,6 +2,7 @@ import { useSelector } from "react-redux";
 import Task from "../../../models/Task";
 import { TodoListRootState } from "../../../state/store";
 import dayjs from "dayjs";
+import useSetting from "../../../shared/features/settings/hooks/useSetting";
 
 interface TaskGroup{
     name: string,
@@ -10,7 +11,7 @@ interface TaskGroup{
 
 export default function useGrouptedTasks(): TaskGroup[]{
     const tasks = useSelector((state: TodoListRootState) => state.tasks.tasks);
-    const displayCompleted = useSelector((state: TodoListRootState) => state.settings.displayCompleted);
+    const [displayCompleted] = useSetting<boolean>("displayCompleted");
 
     const overdued: Task[] = [];
     const withoutDeadline: Task[] = [];

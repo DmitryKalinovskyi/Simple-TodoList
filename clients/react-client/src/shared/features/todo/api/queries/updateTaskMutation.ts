@@ -1,7 +1,16 @@
 export const updateTaskMutation = `
-mutation UpdateTask($id: Int!, $task: TaskInputType!){
+mutation UpdateTask($input: UpdateTaskInputType!){
   taskMutation{
-    updateTask(id: $id, task: $task){id}
+    updateTask(input: $input){
+      id,
+      name,
+      isCompleted,
+      deadline,
+      category{
+        id,
+        name
+      }
+    }
   }
 }
 `;

@@ -1,32 +1,23 @@
+import { useDispatch, useSelector } from "react-redux";
 import { getEnumKeys } from "../../../extension/getEnumKeys";
+import { closeSettingsModal, StorageType } from "../state/settingsSlice";
+import { ColorPicker, List, Modal, Select, Switch, Typography } from "antd";
+import { TodoListRootState } from "../../../../state/store";
 import useSettings from "../hooks/useSettings";
-import { StorageType } from "../state/settingsSlice";
-import { List, Modal, Select, Switch, Typography } from "antd";
 
-interface SettingsModalProps {
-    isOpen: boolean,
-    onClose: () => void
-}
+export default function SettingsModal() {
+    const dispatch = useDispatch();
+    const isOpen = useSelector((state: TodoListRootState) => state.settings.isSettingsModalOpen);
 
-export default function SettingsModal(props: SettingsModalProps) {
-    const [storageType, setStorageType] = useSettings<StorageType>("storageType");
-    const [displayCompleted, setDisplayCompleted] = useSettings<boolean>("displayCompleted");
-    const [darkTheme, setDarkTheme] = useSettings<boolean>("darkTheme");
-    const [groupedTasks, setGroupedTasks] = useSettings<boolean>("groupedTasks");
+    const [settings, setSetting] = useSettings();
 
-    const handleStorageTypeSelect = (value: string) => {
-        if (value in StorageType) {
-            setStorageType(value as StorageType);
-        }
-    }
-
-    const handleClose = () => {
-        props.onClose();
+    const close = () => {
+        dispatch(closeSettingsModal());
     }
 
     return (
         <>
-            <Modal title="Settings" open={props.isOpen} onCancel={handleClose} onOk={handleClose}>
+            <Modal title="Settings" open={isOpen} onCancel={close} onOk={close}>
                 <List>
                     <List.Item>
                         <Typography.Text>
@@ -34,8 +25,8 @@ export default function SettingsModal(props: SettingsModalProps) {
                         </Typography.Text>
                         <Select
                             style={{ width: "150px" }}
-                            onChange={handleStorageTypeSelect}
-                            value={storageType}
+                            onChange={(value: StorageType) => setSetting("storageType", value)}
+                            value={settings.storageType}
                             options={getEnumKeys(StorageType).map((key) =>
                                 ({ value: key, label: key })
                             )} />
@@ -44,19 +35,25 @@ export default function SettingsModal(props: SettingsModalProps) {
                         <Typography.Text>
                             Display completed
                         </Typography.Text>
-                        <Switch value={displayCompleted} onChange={(checked) => setDisplayCompleted(checked)} />
+                        <Switch value={settings.displayCompleted} onChange={(checked) => setSetting("displayCompleted", checked)} />
                     </List.Item>
                     <List.Item>
                         <Typography.Text>
                             Dark theme
                         </Typography.Text>
-                        <Switch value={darkTheme} onChange={(checked) => setDarkTheme(checked)}/>
+                        <Switch value={settings.darkTheme} onChange={(checked) => setSetting("darkTheme", checked)}/>
                     </List.Item>
                     <List.Item>
                         <Typography.Text>
                             Grouped tasks
                         </Typography.Text>
-                        <Switch value={groupedTasks} onChange={(checked) => setGroupedTasks(checked)}/>
+                        <Switch value={settings.groupedTasks} onChange={(checked) => setSetting("groupedTasks", checked)}/>
+                    </List.Item>
+                    <List.Item>
+                        <Typography.Text>
+                            Primary accent
+                        </Typography.Text>
+                        <ColorPicker value={settings.primaryColor} onChange={(value) => setSetting("primaryColor", value.toHex())}/>
                     </List.Item>
                 </List>
             </Modal>

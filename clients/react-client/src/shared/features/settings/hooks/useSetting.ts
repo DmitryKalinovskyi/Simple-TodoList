@@ -3,21 +3,22 @@ import { TodoListRootState } from "../../../../state/store";
 import { SettingsCollection, updateSettings } from "../state/settingsSlice";
 import { useCallback } from "react";
 
-type ValueType = SettingsCollection[keyof SettingsCollection];
-
-export default function useSettings(
-): [SettingsCollection, (key: keyof SettingsCollection, value: ValueType) => void] {
-    const settings = useSelector(
+export default function useSetting<T extends SettingsCollection[keyof SettingsCollection]>(
+    key: keyof SettingsCollection
+): [T, (value: T) => void] {
+    const settingsCollection = useSelector(
         (state: TodoListRootState) => state.settings.settingsCollection
     );
     const dispatch = useDispatch();
 
     const setSetting = useCallback(
-        (key: keyof SettingsCollection, value: ValueType) => {
+        (value: T) => {
             dispatch(updateSettings({ key, value }));
         },
-        [settings]
+        [settingsCollection]
     );
 
-    return [settings, setSetting];
+    const settingValue = settingsCollection[key] as T;
+
+    return [settingValue, setSetting];
 }

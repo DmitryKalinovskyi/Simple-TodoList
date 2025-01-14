@@ -5,12 +5,13 @@ import { appInit } from './state/actions.ts';
 import { ConfigProvider, Layout, Menu, theme } from 'antd';
 import 'antd/dist/reset.css';
 import './App.css'
-import useSettings from './shared/features/settings/hooks/useSettings.ts';
+import useSetting from './shared/features/settings/hooks/useSetting.ts';
 import { BookFilled, CalendarFilled, PieChartFilled } from '@ant-design/icons';
 
 function App() {
     const dispatch = useDispatch();
-    const [darkTheme] = useSettings<boolean>("darkTheme");
+    const [darkTheme] = useSetting<boolean>("darkTheme");
+    const [primaryColor] = useSetting<string>("primaryColor");
 
     useEffect(() => {
         dispatch(appInit())
@@ -21,12 +22,12 @@ function App() {
         algorithm: darkTheme ? theme.darkAlgorithm : theme.defaultAlgorithm,
         token: {
             // Seed Token
-            colorPrimary: '#771fc4',
+            colorPrimary: primaryColor,
             borderRadius: 16,
         },
     }}>
-        <Layout style={{ minHeight: '100vh' }}>
-            <Layout.Sider>
+        <Layout style={{ minHeight: '100vh', height: "100vh"}}>
+            <Layout.Sider >
                 <Menu
                     mode="inline"
                     style={{ height: '100%' }}
@@ -49,7 +50,7 @@ function App() {
                     ]}
                 />
             </Layout.Sider>
-            <Layout.Content style={{ padding: '16px', display: 'flex', justifyContent: 'center' }}>
+            <Layout.Content style={{ padding: '16px', display: 'flex', justifyContent: 'center', overflow: "auto" }}>
                 <TodoPage />
             </Layout.Content>
         </Layout>

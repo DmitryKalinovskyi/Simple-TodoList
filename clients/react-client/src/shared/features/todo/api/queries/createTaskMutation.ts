@@ -1,7 +1,7 @@
 export const createTaskMutation = `
-mutation CreateTask($task: TaskInputType!){
+mutation CreateTask($input: CreateTaskInputType!){
   taskMutation{
-    createTask(task: $task){
+    createTask(input: $input){
       id,
       category{
         id,

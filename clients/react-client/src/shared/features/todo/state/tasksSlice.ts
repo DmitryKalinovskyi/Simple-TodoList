@@ -4,11 +4,17 @@ import { UpdateTaskInput } from "../../../../models/UpdateTaskInput";
 import { CreateTaskInput } from "../../../../models/CreateTaskInput";
 
 interface TasksState{
-    tasks: Task[]
+    tasks: Task[],
+    operationTask: Task | null,
+    isUpdateTaskModalOpen: boolean,
+    isCreateTaskModalOpen: boolean
 }
 
 const initialState: TasksState = {
-    tasks: []
+    tasks: [],
+    operationTask: null,
+    isUpdateTaskModalOpen: false,
+    isCreateTaskModalOpen: false,
 };
 
 const tasksSlice = createSlice({
@@ -37,22 +43,32 @@ const tasksSlice = createSlice({
         deleteTaskFailure: () => {},
 
         updateTask: (state, action: PayloadAction<UpdateTaskInput>) => {},
-        updateTaskSuccess: (state, action: PayloadAction<UpdateTaskInput>) => {
+        updateTaskSuccess: (state, action: PayloadAction<Task>) => {
             // find and populate fields.
             state.tasks = state.tasks.map(task => {
                 if(task.id == action.payload.id){
-                    // we will rewrite fields
-                    return {...task, ...action.payload.task};
+                   return {...task, ...action.payload};
                 }
+
                 return task;
             })
         },
         updateTaskFailure: () => {},
 
-        change_complition: (state, action: PayloadAction<number>) => {
-            state.tasks.map(task => {
-                if(task.id == action.payload) task.isCompleted = !task.isCompleted;
-            });
+        showUpdateTaskModal: (state, action: PayloadAction<Task>) => {
+            state.operationTask = action.payload;
+            state.isUpdateTaskModalOpen = true;
+        },   
+        closeUpdateTaskModal: (state) => {
+            state.operationTask = null;
+            state.isUpdateTaskModalOpen = false;
+        },
+
+        showCreateTaskModal: (state) => {
+            state.isCreateTaskModalOpen = true;
+        },
+        closeCreateTaskModal: (state) => {
+            state.isCreateTaskModalOpen = false;
         }
     }
 });
@@ -74,7 +90,11 @@ export const {
     deleteTaskSuccess,
     deleteTaskFailure,
 
-    change_complition
+    showUpdateTaskModal,
+    closeUpdateTaskModal,
+
+    showCreateTaskModal,
+    closeCreateTaskModal,
 } = tasksSlice.actions;
 
 export const tasksReducer = tasksSlice.reducer;

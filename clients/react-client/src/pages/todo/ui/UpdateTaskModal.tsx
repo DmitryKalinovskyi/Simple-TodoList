@@ -1,54 +1,56 @@
 import { useDispatch, useSelector } from "react-redux";
 import { TodoListRootState } from "../../../state/store.ts";
-import { CreateTaskInput } from "../../../models/CreateTaskInput.ts";
 import { useFormik } from "formik";
 import * as Yup from 'yup';
-import { closeCreateTaskModal, createTask } from "../../../shared/features/todo/state/tasksSlice.ts";
+import { closeUpdateTaskModal, updateTask } from "../../../shared/features/todo/state/tasksSlice.ts";
 import { Button, DatePicker, Form, Input, Modal, Select } from "antd";
+import { UpdateTaskInput } from "../../../models/UpdateTaskInput.ts";
+import dayjs from "dayjs";
 
-export default function CreateTaskModal() {
+export default function UpdateTaskModal() {
     const categories = useSelector((state: TodoListRootState) => state.categories.categories);
-    const isOpen = useSelector((state: TodoListRootState) => state.tasks.isCreateTaskModalOpen);
+    const isOpen = useSelector((state: TodoListRootState) => state.tasks.isUpdateTaskModalOpen);
+    const selectedTask = useSelector((state: TodoListRootState) => state.tasks.operationTask);
     const dispatch = useDispatch();
-
     const formik = useFormik({
+        enableReinitialize: true,
         initialValues: {
-            name: '',
-            deadline: undefined,
-            categoryId: undefined,
+            name: selectedTask?.name ?? "",
+            deadline: selectedTask?.deadline,
+            categoryId: selectedTask?.category?.id,
         },
         validationSchema: Yup.object({
             name: Yup.string().required()
                 .min(1).max(200),
         }),
-        onSubmit: (values, { resetForm }) => {
-            console.log(values);
-            const task: CreateTaskInput = {
-                name: values.name,
-                deadline: values.deadline,
-                isCompleted: false
-            };
-
-            if (values.categoryId)
-                task.categoryId = +values.categoryId;
-
-            dispatch(createTask(task))
-            resetForm();
+        onSubmit: (values) => {
+            if(selectedTask){
+                const input: UpdateTaskInput = {
+                    id: selectedTask.id,
+                    name: values.name,
+                    deadline: values.deadline ?? null,
+                    isCompleted: selectedTask.isCompleted,
+                    categoryId: values.categoryId ?? null
+                };
+                
+                dispatch(updateTask(input))
+                close();
+            }
         },
     });
 
     const close = () => {
-        dispatch(closeCreateTaskModal());
+        dispatch(closeUpdateTaskModal());
     }
 
     return <>
-        <Modal title="Create new Task" open={isOpen} onCancel={close}
+        <Modal title="Update Task" open={isOpen} onCancel={close}
             footer={[
                 <Button key="cancel" onClick={close}>
                     Cancel
                 </Button>,
-                <Button key="add-task" type="primary" onClick={() => formik.submitForm()}>
-                    Add task
+                <Button key="update-task" type="primary" onClick={() => formik.submitForm()}>
+                    Update
                 </Button>
             ]}
         >
@@ -78,7 +80,7 @@ export default function CreateTaskModal() {
                         format="DD/MM/YYYY hh:mm A"
                         onChange={(date) => formik.setFieldValue("deadline", date)}
                         showTime={{ use12Hours: true }}
-                        value={formik.values.deadline}
+                        value={formik.values.deadline ? dayjs(formik.values.deadline) : undefined}
                     />
                 </Form.Item>
             </Form>

@@ -15,7 +15,7 @@ export const createTaskEpic: Epic<Action, Action, TodoListRootState> = (
     action$.pipe(
         ofType(createTask.type),
         mergeMap((action: PayloadAction<CreateTaskInput>) =>
-            apiRequest<any>(createTaskMutation, { task: action.payload }).pipe(
+            apiRequest<any>(createTaskMutation, { input: action.payload }).pipe(
                 graphqlRequestHandler(
                     (ajaxResponse) => {
                         const task = {
