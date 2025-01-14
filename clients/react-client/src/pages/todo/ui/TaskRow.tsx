@@ -1,26 +1,21 @@
 import Task from "../../../models/Task.ts";
-import {useDispatch} from "react-redux";
-import { update_task_request } from "../api/epics/updateTaskRequest.ts";
-import { remove_task_request } from "../api/epics/deleteTaskEpic.ts";
+import { useDispatch } from "react-redux";
+import dayjs from "dayjs";
+import { deleteTask, updateTask } from "../state/tasksSlice.ts";
 
-interface TaskRowProps{
+interface TaskRowProps {
     task: Task,
     onComplete?: (id: number) => void;
     onDelete?: (id: number) => void;
 }
 
-export default function TaskRow(props: TaskRowProps ){
+export default function TaskRow(props: TaskRowProps) {
     const task = props.task;
     const dispatch = useDispatch();
     const isCompleteCheckboxId = "isComplete-input-" + task.id;
 
-    function getFormatedDeadline(deadline: string){
-        const date = new Date(deadline);
-        return date.toUTCString();
-    }
-
-    function toggleTodo(){
-        dispatch(update_task_request(
+    function toggleTodo() {
+        dispatch(updateTask(
             {
                 id: task.id,
                 task: {
@@ -39,7 +34,7 @@ export default function TaskRow(props: TaskRowProps ){
                         id={isCompleteCheckboxId}
                         checked={task.isCompleted}
                         onChange={toggleTodo}
-                        className="mx-2"/>
+                        className="mx-2" />
                     <label htmlFor={isCompleteCheckboxId}>
                         {task.isCompleted ? <s>{task.name}</s> : <>{task.name}</>}
                     </label>
@@ -53,12 +48,12 @@ export default function TaskRow(props: TaskRowProps ){
 
             <td>
                 <div className="badge bg-secondary">
-                    {task.deadline && getFormatedDeadline(task.deadline)}
+                    {task.deadline && dayjs(task.deadline).format("MMMM D, YYYY h:mm A")}
                 </div>
             </td>
 
             <td>
-                <button className="btn btn-danger" onClick={() => dispatch(remove_task_request(task.id))}>
+                <button className="btn btn-danger" onClick={() => dispatch(deleteTask(task.id))}>
                     X
                 </button>
             </td>

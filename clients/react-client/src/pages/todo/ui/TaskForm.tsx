@@ -1,12 +1,12 @@
 import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "../../../state/store.ts";
+import { TodoListRootState } from "../../../state/store.ts";
 import { CreateTaskInput } from "../../../models/CreateTaskInput.ts";
 import { useFormik } from "formik";
 import * as Yup from 'yup';
-import { add_task_request } from "../api/epics/createTaskEpic.ts";
+import { createTask } from "../state/tasksSlice.ts";
 
 export default function TaskForm() {
-    const categories = useSelector((state: RootState) => state.categories.categories);
+    const categories = useSelector((state: TodoListRootState) => state.categories.categories);
 
     const dispatch = useDispatch();
 
@@ -21,20 +21,16 @@ export default function TaskForm() {
                 .min(1).max(200),
         }),
         onSubmit: (values, {resetForm}) => {
-            console.log(values)
             const task: CreateTaskInput = {
                 name: values.name,
+                deadline: values.deadline == "" ? undefined : new Date(values.deadline).toISOString(),
                 isCompleted: false
             };
 
-            if(values.deadline !== "") 
-                task.deadline = new Date(values.deadline).toISOString()
             if(values.categoryId !== "")
                 task.categoryId = +values.categoryId;
 
-            console.log(task);
-
-            dispatch(add_task_request(task))
+            dispatch(createTask(task))
             resetForm();
         },
     });

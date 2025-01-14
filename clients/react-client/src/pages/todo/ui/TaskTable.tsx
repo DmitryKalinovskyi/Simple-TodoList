@@ -1,18 +1,10 @@
 import TaskRow from "./TaskRow.tsx";
-import {useDispatch, useSelector} from "react-redux";
-import {RootState} from "../../../state/store.ts";
+import {useSelector} from "react-redux";
+import {TodoListRootState} from "../../../state/store.ts";
 import Task from "../../../models/Task.ts";
-import {useEffect} from "react";
-import { fetch_tasks } from "../api/epics/fetchTasksEpic.ts";
 
 export function TaskTable(){
-    const dispatch = useDispatch();
-
-    useEffect(() => {
-        dispatch(fetch_tasks())
-    }, [dispatch]);
-
-    const tasks = useSelector((state: RootState) => state.tasks.tasks);
+    const tasks = useSelector((state: TodoListRootState) => state.tasks.tasks);
 
     function sortTasks(tasks: Task[]){
         tasks = [...tasks];

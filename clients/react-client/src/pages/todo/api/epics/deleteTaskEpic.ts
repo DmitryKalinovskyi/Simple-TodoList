@@ -1,23 +1,29 @@
-import { PayloadAction } from "@reduxjs/toolkit";
-import { ofType } from "redux-observable";
-import { mergeMap, from, map } from "rxjs";
-import { client } from "../../../../api/client";
-import { remove_task } from "../../state/tasksSlice";
-import { DELETE_TASK } from "../queries/deleteTaskMutation";
+import { Action, PayloadAction } from "@reduxjs/toolkit";
+import { Epic, ofType } from "redux-observable";
+import { mergeMap } from "rxjs";
+import {
+    deleteTask,
+    deleteTaskFailure,
+    deleteTaskSuccess,
+} from "../../state/tasksSlice";
+import { deleteTaskMutation } from "../queries/deleteTaskMutation";
+import apiRequest from "../../../../shared/api/apiRequest";
+import { TodoListRootState } from "../../../../state/store";
+import graphqlRequestHandler from "../../../../shared/api/graphqlRequestHandler";
 
-export const remove_task_request = (payload: number) => ({type: "REMOVE_TASK_REQUEST", payload})
-export const removeTaskEpic = action$ => action$.pipe(
-    ofType("REMOVE_TASK_REQUEST"),
-    mergeMap((action: PayloadAction<number>) =>
-        from(client.mutate({
-                mutation: DELETE_TASK,
-                variables:
-                    {
-                        id: action.payload,
-                    }
-            })
-        ).pipe(
-            map(() => remove_task(action.payload))
+export const removeTaskEpic: Epic<Action, Action, TodoListRootState> = (
+    action$
+) =>
+    action$.pipe(
+        ofType(deleteTask.type),
+        mergeMap((action: PayloadAction<number>) =>
+            apiRequest<any>(deleteTaskMutation, {
+                id: action.payload,
+            }).pipe(
+                graphqlRequestHandler(
+                    () => deleteTaskSuccess(action.payload),
+                    () => deleteTaskFailure()
+                )
+            )
         )
-    )
-);
+    );

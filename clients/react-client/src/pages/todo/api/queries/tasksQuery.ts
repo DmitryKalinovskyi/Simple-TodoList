@@ -1,6 +1,4 @@
-import { gql } from "@apollo/client";
-
-export const TASKS_QUERY = gql`
+export const tasksQuery = `
 query TaskQuery{
     taskQuery{
         tasks{

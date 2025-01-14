@@ -1,23 +1,35 @@
-import { PayloadAction } from "@reduxjs/toolkit";
-import { ofType } from "redux-observable";
-import { mergeMap, from, map } from "rxjs";
-import { client } from "../../../../api/client";
+import { Action, PayloadAction } from "@reduxjs/toolkit";
+import { Epic, ofType } from "redux-observable";
+import { mergeMap } from "rxjs";
 import { CreateTaskInput } from "../../../../models/CreateTaskInput";
-import { add_task } from "../../state/tasksSlice";
-import { CREATE_TASK } from "../queries/createTaskMutation";
+import {
+    createTask,
+    createTaskFailure,
+    createTaskSuccess,
+} from "../../state/tasksSlice";
+import { createTaskMutation } from "../queries/createTaskMutation";
+import apiRequest from "../../../../shared/api/apiRequest";
+import { TodoListRootState } from "../../../../state/store";
+import graphqlRequestHandler from "../../../../shared/api/graphqlRequestHandler";
 
-export const add_task_request = (payload: CreateTaskInput) => ({type: "ADD_TASK_REQUEST", payload});
-export const addTaskEpic = action$ => action$.pipe(
-    ofType("ADD_TASK_REQUEST"),
-    mergeMap((action: PayloadAction<CreateTaskInput>) =>
-        from(client.mutate({
-            mutation: CREATE_TASK,
-            variables: {task: action.payload}
-        })).pipe(
-            map(response => {
-                const task = {...action.payload, ...response.data.taskMutation.createTask}
-                return add_task(task);
-            })
+export const createTaskEpic: Epic<Action, Action, TodoListRootState> = (
+    action$
+) =>
+    action$.pipe(
+        ofType(createTask.type),
+        mergeMap((action: PayloadAction<CreateTaskInput>) =>
+            apiRequest<any>(createTaskMutation, { task: action.payload }).pipe(
+                graphqlRequestHandler(
+                    (ajaxResponse) => {
+                        const task = {
+                            ...action.payload,
+                            ...ajaxResponse.response.data.taskMutation
+                                .createTask,
+                        };
+                        return createTaskSuccess(task);
+                    },
+                    () => createTaskFailure()
+                )
+            )
         )
-    )
-);
+    );

@@ -1,17 +1,32 @@
-import { ofType } from "redux-observable";
-import { mergeMap, from, map, switchMap } from "rxjs";
-import { client } from "../../../../api/client";
-import { set_tasks } from "../../state/tasksSlice";
-import { TASKS_QUERY } from "../queries/tasksQuery";
+import { Epic, ofType } from "redux-observable";
+import { switchMap } from "rxjs";
+import {
+    fetchTasks,
+    fetchTasksFailure,
+    fetchTasksSuccess,
+} from "../../state/tasksSlice";
+import { tasksQuery } from "../queries/tasksQuery";
+import apiRequest from "../../../../shared/api/apiRequest";
+import { Action } from "@reduxjs/toolkit";
+import { TodoListRootState } from "../../../../state/store";
+import graphqlRequestHandler from "../../../../shared/api/graphqlRequestHandler";
+import { updateProperties } from "../../../../shared/features/properties/state/propertiesSlice";
+import { appInit } from "../../../../state/actions";
 
-export const fetch_tasks = () => ({type: "FETCH_TASKS"});
-export const fetchTasksEpic = action$ => action$.pipe(
-    ofType("FETCH_TASKS"),
-    switchMap(() =>
-        from(client.query({
-            query: TASKS_QUERY,
-        })).pipe(
-            map(response => set_tasks(response.data.taskQuery.tasks))
+export const fetchTasksEpic: Epic<Action, Action, TodoListRootState> = (
+    action$
+) =>
+    action$.pipe(
+        ofType(appInit.type, fetchTasks.type, updateProperties.type),
+        switchMap(() =>
+            apiRequest<any>(tasksQuery).pipe(
+                graphqlRequestHandler(
+                    (ajaxResponse) =>
+                        fetchTasksSuccess(
+                            ajaxResponse.response.data.taskQuery.tasks
+                        ),
+                    () => fetchTasksFailure()
+                )
+            )
         )
-    )
-);
+    );

@@ -1,6 +1,4 @@
-import { gql } from "@apollo/client";
-
-export const UPDATE_TASK = gql`
+export const updateTaskMutation = `
 mutation UpdateTask($id: Int!, $task: TaskInputType!){
   taskMutation{
     updateTask(id: $id, task: $task){id}
