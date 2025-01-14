@@ -10,14 +10,14 @@ import {
     fetchCategoriesSuccess,
 } from "../../state/categoriesSlice";
 import { categoriesQuery } from "../queries/categoriesQuery";
-import { updateProperties } from "../../../../shared/features/properties/state/propertiesSlice";
+import { updateSettings } from "../../../../shared/features/settings/state/settingsSlice";
 import { appInit } from "../../../../state/actions";
 
 export const fetchCategoriesEpic: Epic<Action, Action, TodoListRootState> = (
     action$
 ) =>
     action$.pipe(
-        ofType(appInit.type, fetchCategories.type, updateProperties.type),
+        ofType(appInit.type, fetchCategories.type, updateSettings.type),
         switchMap(() =>
             apiRequest<any>(categoriesQuery).pipe(
                 graphqlRequestHandler(

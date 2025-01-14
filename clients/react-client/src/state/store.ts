@@ -3,7 +3,7 @@ import {createEpicMiddleware} from "redux-observable";
 import { rootEpic } from "./rootEpics";
 import { categoriesReducer } from "../pages/categories/state/categoriesSlice";
 import { tasksReducer } from "../pages/todo/state/tasksSlice";
-import { propertiesReducer } from "../shared/features/properties/state/propertiesSlice";
+import { settingsReducer } from "../shared/features/settings/state/settingsSlice";
 
 let epicMiddleware = createEpicMiddleware();
 
@@ -11,7 +11,7 @@ export const store = configureStore({
     reducer: {
         tasks: tasksReducer,
         categories: categoriesReducer,
-        properties: propertiesReducer,
+        settings: settingsReducer,
     },
     middleware: () => new Tuple(epicMiddleware)
 })

@@ -1,20 +1,20 @@
 import { useDispatch, useSelector } from "react-redux";
 import { TodoListRootState } from "../../../../state/store";
-import { updateProperties } from "../state/propertiesSlice";
+import { updateSettings } from "../state/settingsSlice";
 import { useCallback, useState } from "react";
 
-export default function useProperty<ValueType = string>(
-    key: "storageType"
+export default function useSettings<ValueType = string>(
+    key: "storageType" | "displayCompleted"
 ): [ValueType, (value: ValueType) => void] {
     useState();
     const properties = useSelector(
-        (state: TodoListRootState) => state.properties
+        (state: TodoListRootState) => state.settings
     );
     const dispatch = useDispatch();
 
     const setProperty = useCallback(
         (value: any) => {
-            dispatch(updateProperties({ ...properties, [key]: value }));
+            dispatch(updateSettings({ ...properties, [key]: value }));
         },
         [properties]
     );

@@ -10,14 +10,14 @@ import apiRequest from "../../../../shared/api/apiRequest";
 import { Action } from "@reduxjs/toolkit";
 import { TodoListRootState } from "../../../../state/store";
 import graphqlRequestHandler from "../../../../shared/api/graphqlRequestHandler";
-import { updateProperties } from "../../../../shared/features/properties/state/propertiesSlice";
+import { updateSettings } from "../../../../shared/features/settings/state/settingsSlice";
 import { appInit } from "../../../../state/actions";
 
 export const fetchTasksEpic: Epic<Action, Action, TodoListRootState> = (
     action$
 ) =>
     action$.pipe(
-        ofType(appInit.type, fetchTasks.type, updateProperties.type),
+        ofType(appInit.type, fetchTasks.type, updateSettings.type),
         switchMap(() =>
             apiRequest<any>(tasksQuery).pipe(
                 graphqlRequestHandler(
