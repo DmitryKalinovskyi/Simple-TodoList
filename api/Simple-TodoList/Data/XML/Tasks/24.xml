@@ -4,5 +4,5 @@
   <Name>Якесь завдання 😊</Name>
   <IsCompleted>false</IsCompleted>
   <Deadline xsi:nil="true" />
-  <CategoryId xsi:nil="true" />
+  <CategoryId>4</CategoryId>
 </TaskModel>

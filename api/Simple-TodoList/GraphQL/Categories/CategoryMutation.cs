@@ -19,7 +19,7 @@ namespace Simple_TodoList.GraphQL.Categories
                 return await categoriesRepository.Insert(context.GetArgument<CategoryModel>("input"));
             });
 
-            Field<TaskType>("updateCategory")
+            Field<CategoryType>("updateCategory")
                 .Argument<UpdateCategoryInputType>("input")
                 .ResolveAsync(async (context) =>
                 {
