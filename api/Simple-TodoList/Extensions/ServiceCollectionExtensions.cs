@@ -10,6 +10,8 @@ using Simple_TodoList.GraphQL.Todos;
 using Simple_TodoList.GraphQL.Tasks;
 using Simple_TodoList.GraphQL;
 using Simple_TodoList.Dependency.Repositories.RepositoryResolvers;
+using Simple_TodoList.GraphQL.Tasks.Input;
+using Simple_TodoList.GraphQL.Categories.Input;
 
 namespace Simple_TodoList.Extensions
 {
@@ -57,8 +59,11 @@ namespace Simple_TodoList.Extensions
             services.AddTransient<CategoryType>();
 
             // input types
-            services.AddTransient<TaskInputType>();
-            services.AddTransient<CategoryInputType>();
+            services.AddTransient<CreateTaskInputType>();
+            services.AddTransient<CreateCategoryInputType>();
+            services.AddTransient<UpdateTaskInputType>();
+            services.AddTransient<UpdateCategoryInputType>();
+
 
             // queries
             services.AddTransient<TaskQuery>();

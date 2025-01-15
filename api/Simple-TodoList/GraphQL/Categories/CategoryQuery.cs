@@ -15,10 +15,10 @@ namespace Simple_TodoList.GraphQL.Categories
             });
 
             Field<CategoryType>("category")
-                .Argument<IntGraphType>("categoryId")
+                .Argument<IntGraphType>("id")
                 .ResolveAsync(async (context) =>
             {
-                var id = context.GetArgument<int>("categoryId");
+                var id = context.GetArgument<int>("id");
 
                 return await categoriesRepository.GetById(id);
             });

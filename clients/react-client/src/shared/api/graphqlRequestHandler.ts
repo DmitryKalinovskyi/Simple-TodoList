@@ -15,6 +15,7 @@ export default function graphqlRequestHandler<
 ) {
     return map((ajaxResponse: AjaxResponse<ResponseType>) => {
         if (ajaxResponse.response.errors) {
+            console.log(ajaxResponse.response.errors)
             return onFailure(ajaxResponse);
         }
 

@@ -8,16 +8,17 @@ namespace Simple_TodoList.GraphQL.Tasks
     {
         public TaskQuery(ITasksRepository tasksRepository)
         {
-            Field<ListGraphType<TaskType>>("tasks").ResolveAsync(async (context) =>
+            Field<ListGraphType<TaskType>>("tasks")
+                .ResolveAsync(async (context) =>
             {
                 return await tasksRepository.GetAllWithStandartOrdering();
             });
 
             Field<TaskType>("task")
-                .Argument<IntGraphType>("taskId")
+                .Argument<IntGraphType>("id")
                 .ResolveAsync(async (context) =>
             {
-                var id = context.GetArgument<int>("taskId");
+                var id = context.GetArgument<int>("id");
 
                 return await tasksRepository.GetById(id);
             });
