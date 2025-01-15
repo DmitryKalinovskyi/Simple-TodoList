@@ -1,5 +1,5 @@
+import useTasks from "../../../shared/features/todo/hooks/useTasks";
 import TaskList from "../../../shared/features/todo/ui/TaskList";
-import useTasks from "../hooks/useTasks";
 
 export default function Tasks() {
     const tasks = useTasks();

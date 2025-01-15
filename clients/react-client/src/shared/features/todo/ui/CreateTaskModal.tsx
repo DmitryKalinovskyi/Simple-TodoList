@@ -1,21 +1,23 @@
 import { useDispatch, useSelector } from "react-redux";
-import { TodoListRootState } from "../../../state/store.ts";
-import { CreateTaskInput } from "../../../models/CreateTaskInput.ts";
+import { TodoListRootState } from "../../../../state/store.ts";
+import { CreateTaskInput } from "../../../../models/CreateTaskInput.ts";
 import { useFormik } from "formik";
 import * as Yup from 'yup';
-import { closeCreateTaskModal, createTask } from "../../../shared/features/todo/state/tasksSlice.ts";
+import { closeCreateTaskModal, createTask } from "../state/tasksSlice.ts";
 import { Button, DatePicker, Form, Input, Modal, Select } from "antd";
 
 export default function CreateTaskModal() {
     const categories = useSelector((state: TodoListRootState) => state.categories.categories);
     const isOpen = useSelector((state: TodoListRootState) => state.tasks.isCreateTaskModalOpen);
+    const initial = useSelector((state: TodoListRootState) => state.tasks.createTaskModalInitial);
     const dispatch = useDispatch();
 
     const formik = useFormik({
+        enableReinitialize: true,
         initialValues: {
-            name: '',
-            deadline: undefined,
-            categoryId: undefined,
+            name: initial.name,
+            deadline: initial.deadline,
+            categoryId: initial.categoryId,
         },
         validationSchema: Yup.object({
             name: Yup.string().required()

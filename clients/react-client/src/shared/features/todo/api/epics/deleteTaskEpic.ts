@@ -11,7 +11,7 @@ import apiRequest from "../../../../api/apiRequest";
 import { TodoListRootState } from "../../../../../state/store";
 import graphqlRequestHandler from "../../../../api/graphqlRequestHandler";
 
-export const removeTaskEpic: Epic<Action, Action, TodoListRootState> = (
+export const deleteTaskEpic: Epic<Action, Action, TodoListRootState> = (
     action$
 ) =>
     action$.pipe(

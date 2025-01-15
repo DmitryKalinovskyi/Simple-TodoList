@@ -2,12 +2,18 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit/react";
 import Task from "../../../../models/Task";
 import { UpdateTaskInput } from "../../../../models/UpdateTaskInput";
 import { CreateTaskInput } from "../../../../models/CreateTaskInput";
+import { Dayjs } from "dayjs";
 
 interface TasksState{
     tasks: Task[],
     operationTask: Task | null,
     isUpdateTaskModalOpen: boolean,
-    isCreateTaskModalOpen: boolean
+    isCreateTaskModalOpen: boolean,
+    createTaskModalInitial: {
+        name: string,
+        categoryId?: number,
+        deadline?: Dayjs,
+    }
 }
 
 const initialState: TasksState = {
@@ -15,6 +21,9 @@ const initialState: TasksState = {
     operationTask: null,
     isUpdateTaskModalOpen: false,
     isCreateTaskModalOpen: false,
+    createTaskModalInitial: {
+        name: ""
+    }
 };
 
 const tasksSlice = createSlice({
@@ -64,8 +73,14 @@ const tasksSlice = createSlice({
             state.isUpdateTaskModalOpen = false;
         },
 
-        showCreateTaskModal: (state) => {
+        showCreateTaskModal: (state, action: PayloadAction<undefined | {initialDeadline: Dayjs}>) => {
             state.isCreateTaskModalOpen = true;
+            if(action.payload){
+                state.createTaskModalInitial.deadline = action.payload.initialDeadline;
+            }
+            else{
+                state.createTaskModalInitial = {name: ""}
+            }
         },
         closeCreateTaskModal: (state) => {
             state.isCreateTaskModalOpen = false;

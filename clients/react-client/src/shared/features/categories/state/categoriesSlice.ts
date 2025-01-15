@@ -1,31 +1,65 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import Category from "../../../../models/Category.ts";
+import { CreateCategoryInput } from "../../../../models/CreateCategoryInput.ts";
+import { UpdateCategoryInput } from "../../../../models/UpdateCategoryInput.ts";
 
 interface CategoriesState {
     categories: Category[];
+    operationCategory: Category | null,
+    isUpdateCategoryModalOpen: boolean,
 }
 
 const initialState: CategoriesState = {
     categories: [],
+    operationCategory: null,
+    isUpdateCategoryModalOpen: false
 };
 
 const categoriesSlice = createSlice({
     name: "categories",
     initialState,
     reducers: {
-        fetchCategories: (state) => {},
+        fetchCategories: (_state) => {},
         fetchCategoriesSuccess: (state, action: PayloadAction<Category[]>) => {
             state.categories = action.payload;
         },
-        fetchCategoriesFailure: (state) => {},
+        fetchCategoriesFailure: (_state) => {},
 
-        addCategory: (state, action: PayloadAction<Category>) => {},
-        addCategorySuccess: (state, action) => {},
-        addCategoryFailure: (state, action) => {},
+        createCategory: (
+            _state,
+            _action: PayloadAction<CreateCategoryInput>
+        ) => {},
+        createCategorySuccess: (state, action: PayloadAction<Category>) => {
+            state.categories.push(action.payload);
+        },
+        createCategoryFailure: (_state) => {},
 
-        removeCategory: (state, action: PayloadAction<number>) => {},
-        removeCategorySuccess: (state, action) => {},
-        removeCategoryFailure: (state, action) => {},
+        updateCategory: (
+            _state,
+            _action: PayloadAction<UpdateCategoryInput>
+        ) => {},
+        updateCategorySuccess: (state, action: PayloadAction<Category>) => {
+            console.log(action.payload)
+            state.categories = state.categories.map((category) =>
+                category.id === action.payload.id ? action.payload : category
+            );
+        },
+        updateCategoryFailure: (_state) => {},
+
+        deleteCategory: (_state, _action: PayloadAction<number>) => {},
+        deleteCategorySuccess: (state, action: PayloadAction<number>) => {
+            state.categories = state.categories.filter(category => category.id != action.payload);
+        },
+        deleteCategoryFailure: (_state) => {},
+
+        showUpdateCategoryModal: (state, action: PayloadAction<Category>) => {
+            state.operationCategory = action.payload;
+            state.isUpdateCategoryModalOpen = true;
+        },
+        closeUpdateCategoryModal: (state) => {
+            state.operationCategory = null;
+            state.isUpdateCategoryModalOpen = false;
+        }
     },
 });
 
@@ -34,13 +68,20 @@ export const {
     fetchCategoriesSuccess,
     fetchCategoriesFailure,
 
-    addCategory,
-    addCategorySuccess,
-    addCategoryFailure,
+    createCategory,
+    createCategorySuccess,
+    createCategoryFailure,
 
-    removeCategory,
-    removeCategorySuccess,
-    removeCategoryFailure,
+    updateCategory,
+    updateCategorySuccess,
+    updateCategoryFailure,
+
+    deleteCategory,
+    deleteCategorySuccess,
+    deleteCategoryFailure,
+
+    showUpdateCategoryModal,
+    closeUpdateCategoryModal
 } = categoriesSlice.actions;
 
 export const categoriesReducer = categoriesSlice.reducer;

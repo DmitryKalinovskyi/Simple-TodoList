@@ -1,10 +1,10 @@
 import { useDispatch, useSelector } from "react-redux";
-import { TodoListRootState } from "../../../state/store.ts";
+import { TodoListRootState } from "../../../../state/store.ts";
 import { useFormik } from "formik";
 import * as Yup from 'yup';
-import { closeUpdateTaskModal, updateTask } from "../../../shared/features/todo/state/tasksSlice.ts";
+import { closeUpdateTaskModal, updateTask } from "../state/tasksSlice.ts";
 import { Button, DatePicker, Form, Input, Modal, Select } from "antd";
-import { UpdateTaskInput } from "../../../models/UpdateTaskInput.ts";
+import { UpdateTaskInput } from "../../../../models/UpdateTaskInput.ts";
 import dayjs from "dayjs";
 
 export default function UpdateTaskModal() {

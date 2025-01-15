@@ -1,10 +1,11 @@
 import { useSelector } from "react-redux";
-import Task from "../../../models/Task";
-import { TodoListRootState } from "../../../state/store";
+import Task from "../../../../models/Task";
+import { TodoListRootState } from "../../../../state/store";
+import useSetting from "../../settings/hooks/useSetting";
 
 export default function useTasks(): Task[]{
     const tasks = useSelector((state: TodoListRootState) => state.tasks.tasks);
-    const displayCompleted = useSelector((state: TodoListRootState) => state.settings.displayCompleted);
+    const [displayCompleted] = useSetting<boolean>("displayCompleted");
     
     return tasks
     .filter(task => displayCompleted || !task.isCompleted)
