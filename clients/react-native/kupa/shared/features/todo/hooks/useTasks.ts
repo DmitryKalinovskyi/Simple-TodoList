@@ -1,7 +1,7 @@
-import { TodoListRootState } from "@/lib/shared/state/store";
 import { useSelector } from "react-redux";
+import Task from "../../../../models/Task";
+import { TodoListRootState } from "../../../../state/store";
 import useSetting from "../../settings/hooks/useSetting";
-import Task from "@/lib/models/Task";
 
 export default function useTasks(): Task[]{
     const tasks = useSelector((state: TodoListRootState) => state.tasks.tasks);
