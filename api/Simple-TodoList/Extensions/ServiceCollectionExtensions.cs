@@ -18,6 +18,7 @@ using Simple_TodoList.Dependency.Repositories.RepositoryProxies;
 using System.Reflection;
 using Simple_TodoList.Services.Storage;
 using Simple_TodoList.Dependency.Repositories.RepositoryResolvers;
+using Simple_TodoList.GraphQL.Categories.Services;
 
 namespace Simple_TodoList.Extensions
 {
@@ -78,6 +79,7 @@ namespace Simple_TodoList.Extensions
         public static IServiceCollection AddGraphQLServices(this IServiceCollection services)
         {
             services.AddSingleton<ITaskEventHandler, TaskEventHandler>();
+            services.AddSingleton<ICategoryEventHandler, CategoryEventHandler>();
 
             // types
             services.AddSingleton<TaskType>();
@@ -101,6 +103,7 @@ namespace Simple_TodoList.Extensions
 
             // subscriptions
             services.AddSingleton<TaskSubscription>();
+            services.AddSingleton<CategorySubscription>();
             services.AddSingleton<RootSubscription>();
 
             services.AddSingleton<ISchema, RootSchema>();
@@ -109,10 +112,7 @@ namespace Simple_TodoList.Extensions
                 .AddAutoSchema<ISchema>()
                 .AddSystemTextJson()
                 .AddErrorInfoProvider(opt => opt.ExposeExceptionDetails = true)
-                ).AddWebSockets(b =>
-                {
-                    b.KeepAliveInterval = TimeSpan.FromSeconds(5);
-                });
+                );
             return services;
         }
     }
