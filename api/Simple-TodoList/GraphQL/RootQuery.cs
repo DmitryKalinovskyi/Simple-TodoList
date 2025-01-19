@@ -6,10 +6,10 @@ namespace Simple_TodoList.GraphQL
 {
     public class RootQuery : ObjectGraphType
     {
-        public RootQuery()
+        public RootQuery(IServiceProvider serviceProvider)
         {
-            Field<TaskQuery>("taskQuery").Resolve(context => new { });
-            Field<CategoryQuery>("categoryQuery").Resolve(context => new { });
+            Field<TaskQuery>("taskQuery").Resolve(context => serviceProvider.GetRequiredService<TaskQuery>());
+            Field<CategoryQuery>("categoryQuery").Resolve(context => serviceProvider.GetRequiredService<CategoryQuery>());
         }
     }
 }

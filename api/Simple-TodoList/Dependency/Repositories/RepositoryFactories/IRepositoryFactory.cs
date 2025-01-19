@@ -1,6 +1,6 @@
 ﻿using Simple_TodoList.Repositories;
 
-namespace Simple_TodoList.Dependency.Repositories
+namespace Simple_TodoList.Dependency.Repositories.RepositoryFactories
 {
     public interface IRepositoryFactory
     {

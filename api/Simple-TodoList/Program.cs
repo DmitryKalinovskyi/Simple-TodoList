@@ -1,4 +1,5 @@
-using Simple_TodoList.Dependency.Repositories;
+using Microsoft.AspNetCore.WebSockets;
+using Simple_TodoList.Dependency.Repositories.RepositoryFactories;
 using Simple_TodoList.Extensions;
 using Simple_TodoList.Repositories.SQLRepositories;
 using Simple_TodoList.Repositories.XMLRepositories;
@@ -41,9 +42,11 @@ builder.Services.AddGraphQLServices();
 var app = builder.Build();
 app.UseCors((policyBuilder) =>
 {
-    policyBuilder.AllowAnyHeader();
-    policyBuilder.AllowAnyMethod();
-    policyBuilder.AllowAnyOrigin();
+    policyBuilder
+        .AllowAnyHeader()
+        .AllowAnyMethod()
+        .AllowAnyOrigin()
+        .WithExposedHeaders("Sec-WebSocket-Accept");
 });
 
 // Configure the HTTP request pipeline.
@@ -57,15 +60,15 @@ if (!app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 
+app.UseWebSockets();
 app.UseGraphQLAltair();
 app.UseGraphQL();
 
 app.UseSession();
-
 app.UseRouting();
 
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
 
-app.Run();
+await app.RunAsync();

@@ -1,7 +1,7 @@
 ﻿using Simple_TodoList.Repositories;
 using Simple_TodoList.Repositories.SQLRepositories;
 
-namespace Simple_TodoList.Dependency.Repositories
+namespace Simple_TodoList.Dependency.Repositories.RepositoryFactories
 {
     public class SQLRepositoryFactory(IServiceProvider serviceProvider) : IRepositoryFactory
     {

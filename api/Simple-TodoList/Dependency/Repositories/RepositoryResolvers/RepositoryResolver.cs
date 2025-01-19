@@ -1,17 +1,16 @@
-﻿using Simple_TodoList.Dependency.Repositories;
+﻿using Simple_TodoList.Dependency.Repositories.RepositoryFactories;
 using Simple_TodoList.Repositories;
+using Simple_TodoList.Services.Storage;
 using System.ComponentModel;
 
 namespace Simple_TodoList.Dependency.Repositories.RepositoryResolvers
 {
-    public abstract class RepositoryResolverBase : IRepositoryResolver
+    public class RepositoryResolver : IRepositoryResolver
     {
         protected Lazy<IRepositoryFactory> _factory;
-        private IServiceProvider _serviceProvider;
+        protected readonly IServiceProvider _serviceProvider;
 
-        public abstract StorageType StorageType { get;}
-
-        public RepositoryResolverBase(IServiceProvider serviceProvider)
+        public RepositoryResolver(IServiceProvider serviceProvider)
         {
             _serviceProvider = serviceProvider;
             _factory = new Lazy<IRepositoryFactory>(ResolveRepositoryFactory);
@@ -19,7 +18,9 @@ namespace Simple_TodoList.Dependency.Repositories.RepositoryResolvers
 
         public IRepositoryFactory ResolveRepositoryFactory()
         {
-            IRepositoryFactory factory = StorageType switch
+            var storageTypeSource = _serviceProvider.GetRequiredService<IStorageTypeSource>();
+
+            IRepositoryFactory factory = storageTypeSource.StorageType switch
             {
                 StorageType.SQLServer => _serviceProvider.GetRequiredService<SQLRepositoryFactory>(),
                 StorageType.XML => _serviceProvider.GetRequiredService<XMLRepositoryFactory>(),

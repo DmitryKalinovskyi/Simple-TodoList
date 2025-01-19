@@ -1,5 +1,5 @@
-﻿using Simple_TodoList.Dependency.Repositories.RepositoryResolvers;
-using Simple_TodoList.Models;
+﻿using Simple_TodoList.Models;
+using Simple_TodoList.Services.Storage;
 
 namespace Simple_TodoList.ViewModels
 {

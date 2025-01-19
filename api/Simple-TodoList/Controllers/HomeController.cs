@@ -3,6 +3,7 @@ using Simple_TodoList.Dependency.Repositories.RepositoryResolvers;
 using Simple_TodoList.Models;
 using Simple_TodoList.Repositories;
 using Simple_TodoList.Repositories.SQLRepositories;
+using Simple_TodoList.Services.Storage;
 using Simple_TodoList.ViewModels;
 using System.Diagnostics;
 
@@ -11,7 +12,7 @@ namespace Simple_TodoList.Controllers
     public class HomeController
         (ITasksRepository tasksRepository,
         ICategoriesRepository categoriesRepository,
-        IRepositoryResolver repositoryResolver) : Controller
+        SessionStorageTypeSwitcher storageTypeSwitcher) : Controller
     {
         public async Task<IActionResult> Index()
         {
@@ -19,7 +20,7 @@ namespace Simple_TodoList.Controllers
             {
                 Tasks = [.. await tasksRepository.GetAllWithStandartOrdering()],
                 Categories = [.. await categoriesRepository.GetAll()],
-                StorageType = repositoryResolver.StorageType
+                StorageType = storageTypeSwitcher.StorageType
             };
 
             return View(viewModel);
@@ -37,7 +38,7 @@ namespace Simple_TodoList.Controllers
                     Deadline = task.Deadline
                 };
 
-                await repositoryResolver.GetTasksRepository().Insert(mappedTask);
+                await tasksRepository.Insert(mappedTask);
             }
 
             return RedirectToAction("Index");
@@ -46,7 +47,7 @@ namespace Simple_TodoList.Controllers
         [HttpPost]
         public async Task<IActionResult> RemoveTask(int id)
         {
-            await repositoryResolver.GetTasksRepository().Delete(id);
+            await tasksRepository.Delete(id);
 
             return RedirectToAction("Index");   
         }
@@ -54,7 +55,7 @@ namespace Simple_TodoList.Controllers
         [HttpPost]
         public async Task<IActionResult> UpdateTaskComplition(int id, bool isCompleted)
         {
-            await repositoryResolver.GetTasksRepository().UpdateComplition(id, isCompleted);
+            await tasksRepository.UpdateComplition(id, isCompleted);
 
             return RedirectToAction("Index");
         }
@@ -62,11 +63,7 @@ namespace Simple_TodoList.Controllers
         [HttpPost]
         public IActionResult ChangeStorageType(StorageType storageType)
         {
-            if (repositoryResolver is IModifiableRepositoryResolver modifiableRepositoryResolver)
-            {
-                modifiableRepositoryResolver.SetStorageType(storageType);
-            }
-            else throw new NotSupportedException("Storage type can't be switched");
+            storageTypeSwitcher.SwitchStorageType(storageType);
 
             return RedirectToAction("Index");
         }
