@@ -5,25 +5,16 @@ using System.ComponentModel;
 
 namespace Simple_TodoList.Dependency.Repositories.RepositoryResolvers
 {
-    public class RepositoryResolver : IRepositoryResolver
+    public class RepositoryResolver(IServiceProvider serviceProvider) : IRepositoryResolver
     {
-        protected Lazy<IRepositoryFactory> _factory;
-        protected readonly IServiceProvider _serviceProvider;
-
-        public RepositoryResolver(IServiceProvider serviceProvider)
-        {
-            _serviceProvider = serviceProvider;
-            _factory = new Lazy<IRepositoryFactory>(ResolveRepositoryFactory);
-        }
-
         public IRepositoryFactory ResolveRepositoryFactory()
         {
-            var storageTypeSource = _serviceProvider.GetRequiredService<IStorageTypeSource>();
+            var storageTypeSource = serviceProvider.GetRequiredService<IStorageTypeSource>();
 
             IRepositoryFactory factory = storageTypeSource.StorageType switch
             {
-                StorageType.SQLServer => _serviceProvider.GetRequiredService<SQLRepositoryFactory>(),
-                StorageType.XML => _serviceProvider.GetRequiredService<XMLRepositoryFactory>(),
+                StorageType.SQLServer => serviceProvider.GetRequiredService<SQLRepositoryFactory>(),
+                StorageType.XML => serviceProvider.GetRequiredService<XMLRepositoryFactory>(),
                 _ => throw new InvalidEnumArgumentException(nameof(StorageType))
             };
 
@@ -32,12 +23,12 @@ namespace Simple_TodoList.Dependency.Repositories.RepositoryResolvers
 
         public ICategoriesRepository GetCategoriesRepository()
         {
-            return _factory.Value.GetCategoriesRepository();
+            return ResolveRepositoryFactory().GetCategoriesRepository();
         }
 
         public ITasksRepository GetTasksRepository()
         {
-            return _factory.Value.GetTasksRepository();
+            return ResolveRepositoryFactory().GetTasksRepository();
         }
     }
 }

@@ -40,7 +40,9 @@ namespace Simple_TodoList.Extensions
                 var asRepositoryProxy = repositoryProxy as RepositoryProxy<TRepository>
                ?? throw new InvalidCastException($"Failed to cast {nameof(repositoryProxy)} to {nameof(RepositoryProxy<TRepository>)}.");
 
-                asRepositoryProxy.SetRepositoryFactory(() => resolve(provider.GetRequiredService<IRepositoryResolver>()));
+                asRepositoryProxy.SetRepositoryFactory(() => {
+                    return resolve(provider.GetRequiredService<IRepositoryResolver>());
+                    });
                 return repositoryProxy;
             });
 
