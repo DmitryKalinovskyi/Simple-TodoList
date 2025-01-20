@@ -12,7 +12,6 @@ import { deleteTaskEpic } from "../features/todo/api/epics/deleteTaskEpic";
 import { fetchTasksEpic } from "../features/todo/api/epics/fetchTasksEpic";
 import { updateTaskEpic } from "../features/todo/api/epics/updateTaskEpic";
 import { TodoListRootState } from "./store";
-import { notifyError } from "../features/notification/state/notificationSlice";
 
 export const rootEpic: Epic<Action, Action, TodoListRootState> = (
     action$,

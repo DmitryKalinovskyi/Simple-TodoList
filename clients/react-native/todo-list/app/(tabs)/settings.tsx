@@ -20,7 +20,7 @@ export default function SettingsTab() {
             onSelect={(indexPath: IndexPath) => setSetting("storageType", storageTypeSelectValues[indexPath.row])}
             >
                 {getEnumKeys(StorageType).map((value, index) => 
-                    <SelectItem title={value}/>
+                    <SelectItem title={value} key={index}/>
                 )}
             </Select>}/>
 

@@ -2,6 +2,7 @@ import CreateTaskInput from "@/lib/models/CreateTaskInput";
 import Task from "@/lib/models/Task";
 import UpdateTaskInput from "@/lib/models/UpdateTaskInput";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { Action } from "rxjs/internal/scheduler/Action";
 
 interface TasksState{
     tasks: Task[],
@@ -39,7 +40,9 @@ const tasksSlice = createSlice({
         
         createTask: (state, action: PayloadAction<CreateTaskInput>) => {},
         createTaskSuccess: (state, action: PayloadAction<Task>) => {
-            state.tasks.push(action.payload);
+            if(state.tasks.filter(task => task.id == action.payload.id).length == 0){
+                state.tasks.push(action.payload);
+            }
         },
         createTaskFailure: (state) => {
         },
@@ -83,7 +86,7 @@ const tasksSlice = createSlice({
         },
         closeCreateTaskModal: (state) => {
             state.isCreateTaskModalOpen = false;
-        }
+        },
     }
 });
 

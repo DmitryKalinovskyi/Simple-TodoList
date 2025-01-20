@@ -5,8 +5,7 @@ import { categoriesReducer } from "../features/categories/state/categoriesSlice"
 import { scheduleReducer } from "../features/schedule/state/scheduleSlice";
 import { settingsReducer } from "../features/settings/state/settingsSlice";
 import { tasksReducer } from "../features/todo/state/tasksSlice";
-import { notificationReducer } from "../features/notification/state/notificationSlice";
-
+import configureSubscriptions from "./configureSubscriptions";
 
 let epicMiddleware = createEpicMiddleware();
 
@@ -16,12 +15,12 @@ export const store = configureStore({
         categories: categoriesReducer,
         settings: settingsReducer,
         schedule: scheduleReducer,
-        notification: notificationReducer
     },
     middleware: () => new Tuple(epicMiddleware)
 })
 
 epicMiddleware.run(rootEpic);
+configureSubscriptions();
 
 export type TodoListRootState = ReturnType<typeof store.getState>;
 export type AppDispatch = typeof store.dispatch;
