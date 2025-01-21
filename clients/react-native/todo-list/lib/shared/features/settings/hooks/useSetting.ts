@@ -1,24 +1,23 @@
 import { useDispatch, useSelector } from "react-redux";
-import { TodoListRootState } from "../../../../state/store";
-import { SettingsCollection, updateSettings } from "../state/settingsSlice";
+import {updateSettings } from "../state/settingsSlice";
 import { useCallback } from "react";
+import { TodoListRootState } from "@/lib/shared/state/store";
+import { SettingsCollection } from "../SettingsCollection";
 
 export default function useSetting<T extends SettingsCollection[keyof SettingsCollection]>(
     key: keyof SettingsCollection
 ): [T, (value: T) => void] {
-    const settingsCollection = useSelector(
-        (state: TodoListRootState) => state.settings.settingsCollection
-    );
+    const setting = useSelector(
+        (state: TodoListRootState) => state.settings.settingsCollection[key]
+    ) as T;
     const dispatch = useDispatch();
 
     const setSetting = useCallback(
         (value: T) => {
             dispatch(updateSettings({ key, value }));
         },
-        [settingsCollection]
+        [setting]
     );
 
-    const settingValue = settingsCollection[key] as T;
-
-    return [settingValue, setSetting];
+    return [setting, setSetting];
 }

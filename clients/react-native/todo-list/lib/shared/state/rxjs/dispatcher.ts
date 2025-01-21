@@ -1,5 +1,5 @@
 import { tap } from "rxjs";
-import { store } from "./store";
+import { store } from "../store";
 import { Action } from "@reduxjs/toolkit";
 
 // dispatches all observable emitted actions to store.

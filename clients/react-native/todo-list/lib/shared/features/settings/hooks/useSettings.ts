@@ -1,7 +1,8 @@
 import { useDispatch, useSelector } from "react-redux";
-import { TodoListRootState } from "../../../../state/store";
-import { SettingsCollection, updateSettings } from "../state/settingsSlice";
 import { useCallback } from "react";
+import { TodoListRootState } from "@/lib/shared/state/store";
+import { SettingsCollection } from "../SettingsCollection";
+import { updateSettings } from "../state/settingsSlice";
 
 type ValueType = SettingsCollection[keyof SettingsCollection];
 
@@ -12,12 +13,9 @@ export default function useSettings(
     );
     const dispatch = useDispatch();
 
-    const setSetting = useCallback(
-        (key: keyof SettingsCollection, value: ValueType) => {
+    const setSetting = (key: keyof SettingsCollection, value: ValueType) => {
             dispatch(updateSettings({ key, value }));
-        },
-        [settings]
-    );
+        };
 
     return [settings, setSetting];
 }

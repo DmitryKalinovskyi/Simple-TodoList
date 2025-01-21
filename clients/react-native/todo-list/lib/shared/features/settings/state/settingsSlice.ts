@@ -1,50 +1,45 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit/react";
-export interface SettingsCollection{
-    storageType: StorageType,
-    displayCompleted: boolean
-    darkTheme: boolean,
-    groupedTasks: boolean,
-    primaryColor: string
+import { SettingsCollection } from "../SettingsCollection";
+import { StorageType } from "../StorageType";
+
+interface SettingsState {
+    settingsCollection: SettingsCollection;
+    isSettingsModalOpen: boolean;
 }
 
-interface SettingsState{
-    settingsCollection: SettingsCollection
-    isSettingsModalOpen: boolean
-}
-
-export interface SettingsChange{
-    key: keyof SettingsCollection,
-    value: SettingsCollection[keyof SettingsCollection]
-}
-
-export enum StorageType{
-    SQLServer = "SQLServer",
-    XML = "XML",
-    PostgreSQL = "PostgreSQL"
+export interface SettingsChange {
+    key: keyof SettingsCollection;
+    value: SettingsCollection[keyof SettingsCollection];
 }
 
 const initialState: SettingsState = {
-    settingsCollection:  {
+    settingsCollection: {
         storageType: StorageType.SQLServer,
         displayCompleted: false,
         darkTheme: false,
         groupedTasks: false,
-        primaryColor: "#1677ff"
+        primaryColor: "#1677ff",
+        enableLiveUpdates: false,
     },
     isSettingsModalOpen: false,
-}
+};
 
 const settingsSlice = createSlice({
     name: "settings",
     initialState,
     reducers: {
-        initializeFromStorageSuccess: (state, action: PayloadAction<SettingsCollection>) => {
+        initializeFromStorageSuccess: (
+            state,
+            action: PayloadAction<SettingsCollection>
+        ) => {
             state.settingsCollection = action.payload;
         },
-        initializeFromStorageFailure: () => {
-        },
+        initializeFromStorageFailure: () => {},
 
-        updateAllSettings: (state, action: PayloadAction<SettingsCollection>) => {
+        updateAllSettings: (
+            state,
+            action: PayloadAction<SettingsCollection>
+        ) => {
             state.settingsCollection = action.payload;
         },
         updateSettings: (state, action: PayloadAction<SettingsChange>) => {
@@ -52,24 +47,24 @@ const settingsSlice = createSlice({
                 ...state,
                 settingsCollection: {
                     ...state.settingsCollection,
-                    [action.payload.key]: action.payload.value
-                }
-            }
+                    [action.payload.key]: action.payload.value,
+                },
+            };
         },
 
         showSettingsModal: (state) => {
-            state.isSettingsModalOpen = true
+            state.isSettingsModalOpen = true;
         },
         closeSettingsModal: (state) => {
             state.isSettingsModalOpen = false;
-        }
-    }
+        },
+    },
 });
 
 export const {
     initializeFromStorageSuccess,
     initializeFromStorageFailure,
-    updateAllSettings, 
+    updateAllSettings,
     updateSettings,
     showSettingsModal,
     closeSettingsModal,

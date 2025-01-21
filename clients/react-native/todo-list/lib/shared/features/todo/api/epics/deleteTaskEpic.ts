@@ -4,21 +4,25 @@ import { TodoListRootState } from "@/lib/shared/state/store";
 import { Action, PayloadAction } from "@reduxjs/toolkit";
 import { Epic, ofType } from "redux-observable";
 import { mergeMap } from "rxjs";
-import { deleteTask, deleteTaskSuccess, deleteTaskFailure } from "../../state/tasksSlice";
+import {
+    apiDeleteTask,
+    apiDeleteTaskSuccess,
+    apiDeleteTaskFailure,
+} from "../../state/tasksSlice";
 import { deleteTaskMutation } from "../queries/deleteTaskMutation";
 
 export const deleteTaskEpic: Epic<Action, Action, TodoListRootState> = (
     action$
 ) =>
     action$.pipe(
-        ofType(deleteTask.type),
+        ofType(apiDeleteTask.type),
         mergeMap((action: PayloadAction<number>) =>
             apiRequest<any>(deleteTaskMutation, {
                 id: action.payload,
             }).pipe(
                 graphqlRequestHandler(
-                    () => deleteTaskSuccess(action.payload),
-                    () => deleteTaskFailure()
+                    () => apiDeleteTaskSuccess(action.payload),
+                    () => apiDeleteTaskFailure(action.payload)
                 )
             )
         )

@@ -4,27 +4,30 @@ import graphqlRequestHandler from "@/lib/shared/api/graphqlRequestHandler";
 import { TodoListRootState } from "@/lib/shared/state/store";
 import { Action, PayloadAction } from "@reduxjs/toolkit";
 import { Epic, ofType } from "redux-observable";
-import { mergeMap } from "rxjs";
-import { createTask, createTaskSuccess, createTaskFailure } from "../../state/tasksSlice";
+import { map, mergeMap, of } from "rxjs";
+import {
+    apiCreateTask,
+    apiCreateTaskSuccess,
+    apiCreateTaskFailure,
+} from "../../state/tasksSlice";
 import { createTaskMutation } from "../queries/createTaskMutation";
 
 export const createTaskEpic: Epic<Action, Action, TodoListRootState> = (
     action$
 ) =>
     action$.pipe(
-        ofType(createTask.type),
+        ofType(apiCreateTask.type),
         mergeMap((action: PayloadAction<CreateTaskInput>) =>
-            apiRequest<any>(createTaskMutation, { input: action.payload }).pipe(
+            apiRequest<any>(createTaskMutation, { input: {...action.payload, id: undefined} }).pipe(
                 graphqlRequestHandler(
-                    (ajaxResponse) => {
-                        const task = {
-                            ...action.payload,
-                            ...ajaxResponse.response.data.taskMutation
-                                .createTask,
-                        };
-                        return createTaskSuccess(task);
+                    (response) => {
+                        const task = response.data.taskMutation.createTask;
+                        return apiCreateTaskSuccess({
+                            task,
+                            input: action.payload,
+                        });
                     },
-                    () => createTaskFailure()
+                    () => apiCreateTaskFailure(action.payload)
                 )
             )
         )

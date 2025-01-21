@@ -5,21 +5,24 @@ import { TodoListRootState } from "@/lib/shared/state/store";
 import { Action } from "@reduxjs/toolkit";
 import { Epic, ofType } from "redux-observable";
 import { switchMap } from "rxjs";
-import { updateAllSettings, updateSettings } from "../../../settings/state/settingsSlice";
-import { fetchCategories, fetchCategoriesSuccess, fetchCategoriesFailure } from "../../state/categoriesSlice";
+import {
+    fetchCategories,
+    fetchCategoriesSuccess,
+    fetchCategoriesFailure,
+} from "../../state/categoriesSlice";
 import { categoriesQuery } from "../queries/categoriesQuery";
 
 export const fetchCategoriesEpic: Epic<Action, Action, TodoListRootState> = (
     action$
 ) =>
     action$.pipe(
-        ofType(appInit.type, fetchCategories.type, updateAllSettings.type, updateSettings.type),
+        ofType(fetchCategories.type),
         switchMap(() =>
             apiRequest<any>(categoriesQuery).pipe(
                 graphqlRequestHandler(
-                    (ajaxResponse) =>
+                    (response) =>
                         fetchCategoriesSuccess(
-                            ajaxResponse.response.data.categoryQuery.categories
+                            response.data.categoryQuery.categories
                         ),
                     () => fetchCategoriesFailure()
                 )

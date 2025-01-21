@@ -12,6 +12,8 @@ import { deleteTaskEpic } from "../features/todo/api/epics/deleteTaskEpic";
 import { fetchTasksEpic } from "../features/todo/api/epics/fetchTasksEpic";
 import { updateTaskEpic } from "../features/todo/api/epics/updateTaskEpic";
 import { TodoListRootState } from "./store";
+import { taskFetchStrategyEpic } from "./epics/taskFetchStrategyEpic";
+import { categoriesFetchStrategyEpic } from "./epics/categoriesFetchStrategyEpic";
 
 export const rootEpic: Epic<Action, Action, TodoListRootState> = (
     action$,
@@ -31,6 +33,9 @@ export const rootEpic: Epic<Action, Action, TodoListRootState> = (
 
         saveSettingsEpic,
         loadSettingsEpic,
+
+        taskFetchStrategyEpic,
+        categoriesFetchStrategyEpic,
     )(action$, store$, dependencies).pipe(
         catchError((error, source) => {
             console.log(JSON.stringify(error));

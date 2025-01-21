@@ -1,6 +1,6 @@
-import { closeCreateTaskModal, createTask } from "@/lib/shared/features/todo/state/tasksSlice";
+import { closeCreateTaskModal, apiCreateTask } from "@/lib/shared/features/todo/state/tasksSlice";
 import { TodoListRootState } from "@/lib/shared/state/store";
-import { Button, Card, Input, Modal, Text } from "@ui-kitten/components";
+import { Button, Card, Datepicker, Input, Modal, Text } from "@ui-kitten/components";
 import { useState } from "react";
 import { StyleSheet, View } from 'react-native';
 import { useDispatch, useSelector } from "react-redux";
@@ -8,12 +8,26 @@ import { useDispatch, useSelector } from "react-redux";
 export default function CreateTaskModal() {
 	const dispatch = useDispatch();
 	const visible = useSelector((state: TodoListRootState) => state.tasks.isCreateTaskModalOpen);
-	const [text, setText] = useState('');
+
+	const [formFields, setFormFields] = useState<{
+		name: string,
+		deadline?: Date,
+		categoryId?: number
+	}>({
+		name: "",
+	});
 
 	const onCreate = () => {
-		if (text) {
-			dispatch(createTask({ name: text, isCompleted: false }));
-			setText('');
+		if (formFields.name) {
+			dispatch(apiCreateTask({
+				id: Math.floor(Math.random() * 1000000),
+				name: formFields.name,
+				isCompleted: false,
+				deadline: formFields.deadline?.toISOString(),
+				categoryId: formFields.categoryId
+			}));
+
+			setFormFields({ name: "" });
 			close();
 		}
 	}
@@ -33,7 +47,13 @@ export default function CreateTaskModal() {
 				Create task
 			</Text>
 			<View style={styles.modalInputs}>
-				<Input value={text} onChangeText={(t) => setText(t)} placeholder="Enter task name..." />
+				<Input value={formFields.name}
+					onChangeText={(name) => setFormFields({...formFields, name})}
+					placeholder="Enter task name..." />
+					
+				<Datepicker date={formFields.deadline}
+					placeholder=" Choose deadline..."
+					onSelect={(deadline) => setFormFields({...formFields, deadline})} />
 			</View>
 			<View style={styles.buttonGroup}>
 				<Button appearance="outline" onPress={close}>

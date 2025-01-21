@@ -5,7 +5,6 @@ import { categoriesReducer } from "../features/categories/state/categoriesSlice"
 import { scheduleReducer } from "../features/schedule/state/scheduleSlice";
 import { settingsReducer } from "../features/settings/state/settingsSlice";
 import { tasksReducer } from "../features/todo/state/tasksSlice";
-import configureSubscriptions from "./configureSubscriptions";
 
 let epicMiddleware = createEpicMiddleware();
 
@@ -20,7 +19,6 @@ export const store = configureStore({
 })
 
 epicMiddleware.run(rootEpic);
-configureSubscriptions();
 
 export type TodoListRootState = ReturnType<typeof store.getState>;
 export type AppDispatch = typeof store.dispatch;

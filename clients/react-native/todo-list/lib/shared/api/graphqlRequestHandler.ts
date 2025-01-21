@@ -3,22 +3,18 @@ import { Action } from "@reduxjs/toolkit";
 import { map } from "rxjs";
 import GraphQLResponse from "./GraphQLResponse";
 
-type RequestCallbackType<ResponseType> = (
-    response: AjaxResponse<ResponseType>
-) => Action;
-
 export default function graphqlRequestHandler<
     ResponseType extends GraphQLResponse
 >(
-    onSuccess: RequestCallbackType<ResponseType>,
-    onFailure: RequestCallbackType<ResponseType>
+    onSuccess: (response: ResponseType) => Action,
+    onFailure: (response: ResponseType) => Action
 ) {
-    return map((ajaxResponse: AjaxResponse<ResponseType>) => {
-        if (ajaxResponse.response.errors) {
-            console.log(ajaxResponse.response.errors)
-            return onFailure(ajaxResponse);
+    return map((response: ResponseType) => {
+        if (response.errors) {
+            console.log(response.errors)
+            return onFailure(response);
         }
 
-        return onSuccess(ajaxResponse);
+        return onSuccess(response);
     });
 }

@@ -5,9 +5,12 @@ import { TodoListRootState } from "@/lib/shared/state/store";
 import { Action, PayloadAction } from "@reduxjs/toolkit";
 import { Epic, ofType } from "redux-observable";
 import { mergeMap } from "rxjs";
-import { createCategory, createCategorySuccess, createCategoryFailure } from "../../state/categoriesSlice";
+import {
+    createCategory,
+    createCategorySuccess,
+    createCategoryFailure,
+} from "../../state/categoriesSlice";
 import { createCategoryMutation } from "../queries/createCategoryMutation";
-
 
 export const createCategoryEpic: Epic<Action, Action, TodoListRootState> = (
     action$
@@ -19,10 +22,9 @@ export const createCategoryEpic: Epic<Action, Action, TodoListRootState> = (
                 input: action.payload,
             }).pipe(
                 graphqlRequestHandler(
-                    (ajaxResponse) =>
+                    (response) =>
                         createCategorySuccess(
-                            ajaxResponse.response.data.categoryMutation
-                                .createCategory
+                            response.data.categoryMutation.createCategory
                         ),
                     () => createCategoryFailure()
                 )
