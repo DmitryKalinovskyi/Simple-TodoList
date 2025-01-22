@@ -11,5 +11,6 @@ const evaConfig = {
 
 module.exports = async () => {
   const defaultConfig = await getDefaultConfig(__dirname);
+
   return MetroConfig.create(evaConfig, defaultConfig);
 };

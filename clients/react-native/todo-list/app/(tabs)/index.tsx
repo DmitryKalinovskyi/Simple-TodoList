@@ -1,3 +1,4 @@
+import Fade from "@/components/animations/Fade";
 import FloatButton from "@/components/shared/float-button";
 import TodoList from "@/components/todo/todo-list";
 import useTasks from "@/lib/shared/features/todo/hooks/useTasks";
@@ -24,8 +25,11 @@ export default function TodoScreen() {
 
     return <SafeAreaView style={{ flex: 1 }}>
         <Layout style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-            {isTasksFetching ? <Spinner /> :
-                <TodoList taskIds={taskIds} ListFooterComponent={<View style={{ height: 80 }} />} />}
+            {isTasksFetching ?
+                <Spinner />
+                :
+                <TodoList taskIds={taskIds} ListFooterComponent={<View style={{ height: 80 }} />} />
+            }
         </Layout>
         <FloatButton onPress={() => dispatch(showCreateTaskModal())}
             attached="bottom"

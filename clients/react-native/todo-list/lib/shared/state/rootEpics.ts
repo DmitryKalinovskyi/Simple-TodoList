@@ -14,6 +14,7 @@ import { updateTaskEpic } from "../features/todo/api/epics/updateTaskEpic";
 import { TodoListRootState } from "./store";
 import { taskFetchStrategyEpic } from "./epics/taskFetchStrategyEpic";
 import { categoriesFetchStrategyEpic } from "./epics/categoriesFetchStrategyEpic";
+import { applicationLoaderEpic } from "./epics/applicationLoaderEpic";
 
 export const rootEpic: Epic<Action, Action, TodoListRootState> = (
     action$,
@@ -36,6 +37,7 @@ export const rootEpic: Epic<Action, Action, TodoListRootState> = (
 
         taskFetchStrategyEpic,
         categoriesFetchStrategyEpic,
+        applicationLoaderEpic
     )(action$, store$, dependencies).pipe(
         catchError((error, source) => {
             console.log(JSON.stringify(error));

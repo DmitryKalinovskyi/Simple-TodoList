@@ -12,6 +12,7 @@ import { EvaIconsPack } from "@ui-kitten/eva-icons";
 import { leafCareTheme } from "@/assets/custom-theme";
 import SubscriptionProvider from "@/providers/subscription-provider";
 import { StatusBar } from "react-native";
+import { LeafCareProvider } from "@/providers/leaf-care-provider";
 
 function ThemeContexted() {
   const theme = useTheme();
@@ -22,9 +23,11 @@ function ThemeContexted() {
       backgroundColor={theme["background-basic-color-1"]} />
     <CreateTaskModal />
     <IconRegistry icons={EvaIconsPack} />
-    <Stack screenOptions={{ navigationBarColor: theme["background-basic-color-1"] }}>
-      <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-    </Stack>
+    <LeafCareProvider>
+      <Stack screenOptions={{ navigationBarColor: theme["background-basic-color-1"] }}>
+        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+      </Stack>
+    </LeafCareProvider>
   </>
 }
 

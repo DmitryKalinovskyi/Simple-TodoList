@@ -5,6 +5,7 @@ import { categoriesReducer } from "../features/categories/state/categoriesSlice"
 import { scheduleReducer } from "../features/schedule/state/scheduleSlice";
 import { settingsReducer } from "../features/settings/state/settingsSlice";
 import { tasksReducer } from "../features/todo/state/tasksSlice";
+import { sharedReducer } from "./sharedSlice";
 
 let epicMiddleware = createEpicMiddleware();
 
@@ -14,6 +15,7 @@ export const store = configureStore({
         categories: categoriesReducer,
         settings: settingsReducer,
         schedule: scheduleReducer,
+        shared: sharedReducer,
     },
     middleware: () => new Tuple(epicMiddleware)
 })
