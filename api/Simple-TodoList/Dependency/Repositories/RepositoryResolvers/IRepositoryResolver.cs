@@ -1,16 +1,9 @@
-﻿using Simple_TodoList.Dependency.Repositories;
+﻿using Simple_TodoList.Dependency.Repositories.RepositoryFactories;
 
 namespace Simple_TodoList.Dependency.Repositories.RepositoryResolvers
 {
-    public enum StorageType
-    {
-        SQLServer,
-        XML
-    }
-
     public interface IRepositoryResolver : IRepositoryFactory
     {
-        public StorageType StorageType { get;}
         public IRepositoryFactory ResolveRepositoryFactory();
     }
 }

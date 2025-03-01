@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="utf-16"?>
-<TaskModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-  <Id>14</Id>
-  <Name>To do something in work</Name>
-  <IsCompleted>true</IsCompleted>
-  <Deadline xsi:nil="true" />
-  <CategoryId>1</CategoryId>
-</TaskModel>

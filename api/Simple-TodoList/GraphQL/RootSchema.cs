@@ -8,6 +8,7 @@ namespace Simple_TodoList.GraphQL
         {
             Query = serviceProvider.GetRequiredService<RootQuery>();
             Mutation = serviceProvider.GetRequiredService<RootMutation>();
+            Subscription = serviceProvider.GetRequiredService<RootSubscription>();
         }
     }
 }
