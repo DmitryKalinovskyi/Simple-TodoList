@@ -48,6 +48,7 @@ export default function SettingsTab() {
                 <StyledSwitch
                     checked={settings.enableLiveUpdates}
                     onPress={() => handleSettingChange("enableLiveUpdates", !settings.enableLiveUpdates)} />} />
+           <TestCheck/>
             {/* <ListItem title={"Dark theme"} disabled accessoryRight={() =>
                 <ColorPicker color={settings.primaryColor}
                 sliderComponent={(props: SliderProps) => <SliderComponent {...props}/>}

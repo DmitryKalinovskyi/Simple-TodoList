@@ -1,7 +1,6 @@
-import { ajax, AjaxConfig } from "rxjs/ajax";
 import buildHeaders from "./buildHeaders";
 import { BASE_GRAPHQL_URL } from "../../config";
-import { from, map, mergeMap, tap } from "rxjs";
+import { from, mergeMap } from "rxjs";
 
 export default function apiRequest<ResponseType>(query: string, variables: object = {}){
     return from(fetch(BASE_GRAPHQL_URL, {

@@ -5,7 +5,10 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Action } from "@reduxjs/toolkit";
 import { Epic, ofType } from "redux-observable";
 import { switchMap, from, map } from "rxjs";
-import { initializeFromStorageSuccess, initializeFromStorageFailure } from "../state/settingsSlice";
+import {
+    initializeFromStorageSuccess,
+    initializeFromStorageFailure,
+} from "../state/settingsSlice";
 
 export const loadSettingsEpic: Epic<Action, Action, TodoListRootState> = (
     action$,
