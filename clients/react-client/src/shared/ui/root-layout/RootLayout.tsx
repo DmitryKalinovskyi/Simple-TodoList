@@ -33,11 +33,11 @@ export default function RootLayout() {
                         icon: <CalendarFilled />,
                         label: 'Schedule',
                     },
-                    {
-                        key: '/activity',
-                        icon: <PieChartFilled />,
-                        label: 'Activity',
-                    },
+                    // {
+                    //     key: '/activity',
+                    //     icon: <PieChartFilled />,
+                    //     label: 'Activity',
+                    // },
                 ]}
             />
         </Layout.Sider>

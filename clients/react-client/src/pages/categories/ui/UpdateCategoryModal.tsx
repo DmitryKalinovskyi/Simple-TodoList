@@ -37,7 +37,7 @@ export default function UpdateCategoryModal() {
     }
 
     return <>
-        <Modal title="Create new Task" open={isOpen} onCancel={close}
+        <Modal title="Update Category" open={isOpen} onCancel={close}
             footer={[
                 <Button key="cancel" onClick={close}>
                     Cancel

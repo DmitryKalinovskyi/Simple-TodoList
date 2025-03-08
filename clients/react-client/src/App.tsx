@@ -36,7 +36,7 @@ function App() {
                     <Route index element={<TodoPage />} />
                     <Route path='/categories' element={<CategoriesPage />} />
                     <Route path='/schedule' element={<SchedulePage />} />
-                    <Route path='/activity' element={<ActivityPage />} />
+                    {/* <Route path='/activity' element={<ActivityPage />} /> */}
                 </Route>
             </Routes>
         </BrowserRouter>
